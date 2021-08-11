@@ -1,0 +1,73 @@
+// Avatar details
+//
+// This is the base file for the avatar group.
+//
+// .inline-title - arrange the second line of text inline for smaller displays.
+//
+// Markup: ../../styleguide/src/components/avatar-details.hbs
+//
+// Weight: 3
+//
+// Style guide: avatar.details
+
+.avatar-detail {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+
+  &-meta {
+    margin: 0;
+    padding-left: rem-calc(10);
+
+    .tag-list {
+      margin: 5px 0 0 0;
+    }
+
+    .tag {
+      line-height: 1.2;
+    }
+  }
+
+  &-desc {
+    display: block;
+    font-weight: var(--global-weight-normal);
+    opacity: 0.8;
+  }
+
+  .avatar {
+    flex: 0 0 auto;
+  }
+
+  .card-time,
+  .button,
+  .icon-link {
+    margin-left: auto;
+  }
+
+  &.inline-title {
+    .avatar-detail-meta {
+      line-height: 1;
+
+      .notification-flag {
+        margin: 0;
+        font-size: rem-calc(10);
+      }
+    }
+
+    .avatar-detail-desc {
+      display: inline;
+      font-size: 0.8em;
+    }
+  }
+
+  + .tag-list {
+    margin: rem-calc(10) 0 0 0;
+  }
+
+  @include breakpoint($nav-breakpoint) {
+    + .tag-list {
+      margin-left: calc(var(--avatar-size) + #{rem-calc(10)});
+    }
+  }
+}

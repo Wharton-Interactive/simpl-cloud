@@ -1,0 +1,16 @@
+<form class="card feature-card is-centered glow-shadow mt-2" action="{{ action|default:'.' }}" method="post">
+  {% csrf_token %}
+  {% with title=title|default:contents.title %}
+  {% if title %}
+  <h2 class="card-heading feature-size" style="margin-bottom: 1rem;">{{ title }}</h2>
+  {% endif %}
+  {% endwith %}
+  <div class="card-body">
+    {{ contents }}
+    {% if contents.buttons %}
+    <div class="button-wrap align-center">
+      {{ contents.buttons }}
+    </div>
+    {% endif %}
+  </div>
+</form>

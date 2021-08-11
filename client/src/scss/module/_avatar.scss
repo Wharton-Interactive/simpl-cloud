@@ -1,0 +1,150 @@
+// Avatars
+//
+// Avatars are used throughout the system, and can receive either two initials
+// or an image tag. Avatars can be sized by changing a global CSS variable at
+// the appropriate spot in the cascade.
+//
+// The modifier classes listed here can be used. Alternatively, use scoped CSS
+// variables to change `var(--avatar-size)` wherever you need.
+//
+// Finally, `data-online="true"` can be added to the `.avatar` element to add
+// a dot notification to the top right corner of the avatar. The default color
+// of the dot is `var(--success-color)`, though a theme class can be applied to
+// the `.avatar` to change the color of the dot as well.
+//
+// .small  - Small modifier
+// .medium  - Medium modifier
+// .large  - Large modifier
+// .is-leader - Adds a leader overlay
+//
+// Markup: ../../styleguide/src/components/avatar-examples.hbs
+//
+// Weight: 27
+//
+// Style guide: avatar
+
+// Avatar base
+//
+// Markup: ../../styleguide/src/components/avatar.hbs
+//
+// Style guide: No styleguide reference.
+
+:root {
+  --avatar-size: #{rem-calc(40)};
+}
+
+.avatar {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  border-radius: var(--avatar-radius, 50%);
+  background-color: var(--theme-color, var(--avatar-bg-color, var(--success-color)));
+  font-size: var(--avatar-font-size, #{rem-calc(16)});
+  font-weight: var(--global-weight-semibold);
+  text-align: center;
+  color: var(--knockout-color);
+
+  &-inner,
+  &-initials,
+  img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--avatar-radius, 50%);
+    line-height: var(--avatar-size);
+    mask-image: var(--avatar-inner-mask-image, unset);
+  }
+
+  &-inner {
+    background-color: var(--avatar-inner-bg-color, transparent);
+    padding: var(--avatar-inner-padding, 0);
+  }
+
+  img {
+    z-index: $z-index-abs-links;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &.small {
+    --avatar-size: #{rem-calc(30)};
+    --avatar-font-size: #{rem-calc(12)};
+  }
+
+  &.medium {
+    --avatar-size: #{rem-calc(50)};
+    --avatar-font-size: #{rem-calc(20)};
+  }
+
+  &.large {
+    --avatar-size: #{rem-calc(128)};
+    --avatar-font-size: #{rem-calc(34)};
+  }
+
+  &.has-icon {
+    position: relative;
+
+    .icon-button {
+      position: absolute;
+      right: -4px;
+      bottom: -4px;
+      z-index: $z-index-above-links;
+    }
+  }
+
+  &[data-online='true']:after {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    z-index: $z-index-abs-links;
+    display: block;
+    width: calc(var(--avatar-size) / 2.7);
+    height: calc(var(--avatar-size) / 2.7);
+    border-radius: 50%;
+    background: var(--theme-color, var(--success-color));
+    content: '';
+  }
+
+  // &.is-leader:before {
+  //   position: absolute;
+  //   bottom: 0;
+  //   left: 0;
+  //   z-index: $z-index-above-links;
+  //   display: block;
+  //   width: calc(var(--avatar-size) / 3);
+  //   height: calc(var(--avatar-size) / 3);
+  //   border-radius: var(--global-radius);
+  //   border-width: 0;
+  //   background-image: url('#{$sprite-path}#asterisk_white');
+  //   background-color: var(--leader-color);
+  //   background-position: center center;
+  //   background-repeat: no-repeat;
+  //   background-size: calc(var(--avatar-size) / 4.5) calc(var(--avatar-size) / 4.5);
+  //   mask-size: 100%;
+  //   content: var(--avatar-is-leader-override, '');
+  // }
+
+  // @at-root .is-checked & {
+  //   background-image: url('#{$sprite-path}#check_white');
+  //   background-color: var(--success-color);
+  //   background-position: center center;
+  //   background-repeat: no-repeat;
+  //   background-size: calc(var(--avatar-size) * 0.5) calc(var(--avatar-size) * 0.5);
+  //   font-size: 0;
+  //   color: transparent;
+  //
+  //   &[data-online='true']:after {
+  //     content: none; // hide unread dot in checked state
+  //   }
+  //
+  //   img {
+  //     display: none;
+  //   }
+  // }
+}

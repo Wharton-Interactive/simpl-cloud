@@ -1,0 +1,24 @@
+{% extends "simpl/base.html" %}
+{% load includecontents %}
+
+{% block content_inner %}
+<div class="page-header-description">
+  <form class="well" action="{{ action|default:'.' }}" method="post">
+    {% csrf_token %}
+    <h2 class="page-subheading">Start {% if not run.multiplayer and not run.continuous %}Practice{% endif %} Game</h2>
+
+    <p class="large">When you start the game, players will be able to begin gameplay.</p>
+
+    <p>
+      {% if run.continuous %}
+      Game instances will be automatically created for new players added after this run is started.
+      {% else %}
+      Players added after this run is started will need to be manually assigned to new teams.
+      {% endif %}
+    </p>
+    <div class="button-wrap">
+      <button type="submit" class="button large" {% if not ready %} disabled{% endif %}>Start {% if not run.multiplayer and not run.continuous %}Practice{% endif %} Game</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

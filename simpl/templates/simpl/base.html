@@ -1,0 +1,101 @@
+{% load static %}
+{% load includecontents %}
+<!DOCTYPE html>
+<html class="nav-is-closed" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Admin: A/B Testing Simulation | Wharton Interactive</title>
+  <meta name="viewport" content="width=device-width" />
+  <link rel="stylesheet" href="{% static 'simpl/style.css' %}" />
+  {% block extra_head %}{% endblock %}
+</head>
+
+<body class="{% if run.multiplayer %}theme-alt{% endif %}">
+  {% block header %}{% include "simpl/includes/site-header.html" %}{% endblock header %}
+
+  <main class="{% block main_wrap_classes %}{% if simpl_configuring %}is-below-edu-header{% else %}v-nav-page-layout{% endif %}{% endblock %}">
+    {% block content %}
+
+    {% block game_stage_steps %}
+    {% endblock game_stage_steps %}
+
+    {% block page_header %}
+    {% include "simpl/includes/page-header.html" %}
+    {% endblock page_header%}
+
+    <div class="{% block content_wrap_classes %}{% if simpl_configuring %}edu-h-pad has-todo-aside{% else %}edu-has-v-nav{% endif %}{% endblock %}">
+      {% block content_inner %}
+
+      {% if not simpl_configuring %}
+      {% block left_nav %}
+      <nav class="v-nav">
+        <ul class="v-nav-list">
+          {% for nav_key, item in simpl_nav.items %}
+          <li class="v-nav-item">
+            <a {% if item.status != NAV_DISABLED %}href="{{ item.url }}" {% endif %}class="v-nav-link"
+              {% if nav_key == simpl_current_nav %}aria-current="page" {% endif %}>
+              {% include "simpl/includes/nav-icon.html" %}
+              <span class="v-nav-text">{{ item.name }}</span>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </nav>
+      {% endblock %}
+      {% endif %}
+
+      {% endblock content_inner %}
+    </div>
+
+    {% endblock content %}
+
+    {% block wizard %}
+    {% if simpl_configuring %}
+
+    {% includecontents "simpl/includes/wizard.html" %}
+    {% contents title %}<strong>Action Steps</strong>{% endcontents %}
+    {% contents info %}Complete the following steps to begin gameplay.{% endcontents %}
+    {% url 'simpl.config' pk=run.pk as url %}
+    {% for nav_key, item in simpl_nav.items %}
+    {% includecontents "simpl/includes/wizard-item.html" %}
+
+    {{ nav_key }}
+    {{ item.name }}
+    {% contents help %}{{ item.hint }}{% endcontents %}
+    {% endincludecontents %}
+    {% endfor %}
+    {% endincludecontents %}
+
+    {% else %}
+
+    {% includecontents "simpl/includes/wizard.html" %}
+    {% contents title %}<strong>
+      Action Steps
+    </strong>{% endcontents %}
+    {% if run.status < run.STATUS.COMPLETE %}
+    {% if run.multiplayer %}
+    <a class="button full-width large" href="{% url 'simpl.debrief' pk=run.pk %}?redirect_to={{ request.path }}">
+      {% if run.status == run.STATUS.PLAY %}
+      Publish Player Reports
+      {% else %}
+      Hide Player Reports
+      {% endif %}</a>
+    {% endif %}
+    <a class="button full-width large mt" href="{% url 'simpl.end' pk=run.pk %}?redirect_to={{ request.path }}">
+      {% if not run.ended %}End Gameplay{% else %}Restart Gameplay{% endif %}
+    </a>
+    {% endif %}
+    {% endincludecontents %}
+
+    {% endif %}
+    {% endblock wizard %}
+    <p
+      class="copyright-text {% block footer_classes %}{% if not simpl_configuring %}layout-has-v-nav{% endif %}{% endblock %}">
+      ©{% now "Y" %}, The Wharton School, The University of Pennsylvania</p>
+  </main>
+
+  {% block extra_script %}{% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,19 @@
+<li class="todo-item" {% if nav_key and simpl_configuring %}id="simpl-{{ nav_key }}-nav" {% endif %}>
+  <a
+    class="
+      todo-link
+      {% if nav_key == simpl_current_nav %} is-active{% endif %}
+      {% if item.status == NAV_READY %} is-ready{% endif %}
+      {% if item.status == NAV_COMPLETE %} is-complete{% endif %}
+      {% if item.status == NAV_INCOMPLETE %} is-alert{% endif %}"
+
+    {% if item.status != NAV_DISABLED %}href=" {{ item.url }}" {% endif %}
+
+    >
+    <span class="todo-link-title">{{ contents }}</span>
+    {% if contents.help %} <span class="todo-help-text">
+      {{ contents.help }}
+    </span>
+    {% endif %}
+  </a>
+</li>

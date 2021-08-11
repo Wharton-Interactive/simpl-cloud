@@ -1,0 +1,292 @@
+// Icons
+//
+// Individual icons are placed in the `app/icons` folder, and then minified and
+// complied into `assets/icons/sprite.svg`.
+//
+// ### Prepare SVGs for compiling
+// To prepare SVGs for compiling into the main sprite sheet, the following steps
+// should be taken.
+// * Fills should be converted to `fill='currentColor'` to allow them to inherit
+// the text color of their parent element.
+// * The bounding box of individual icons should be tight around the boundaries
+// of the icon itself. That will ensure the proportions of the icon remain in
+// tact. CSS is used to apply sizes to the parent SVG container.
+// * Editor specific code or extras are acceptable in the source SVGs, as they
+// will be stripped out during the sprite generation process.
+// * If you are using CSS or IDs in your icon code, make sure that the names
+// used are unique to avoid collisions should they be embedded directly.
+// * When saving, use a filename that is short and descriptive, without spaces.
+// The filename you choose is the identifier for the SVG sprite. Favor bevity
+// and memorability. For example, a name like `user_alt2.svg` shouldn't be used
+// if there is no `user.svg` in _this_ system already.
+// * The styleguide list of icons isn't compiled automatically, so when a new
+// icon is added be sure to add it to `components/icons.hbs` for
+// future reference.
+// * `svg-sprite-config.json` at the root of the project contains details of the
+// sprite generation configuration.
+//
+// ### SVG Resources
+// * [Generate a new config file](http://jkphl.github.io/svg-sprite/#json)
+// * [Full SVG-Sprite documentation](https://github.com/jkphl/svg-sprite#installation)
+// * [The full icon pack is saved in the **ARC Wiki**](https://gitlab.com/wharton-interactive/lookingglass/wikis/SVG-Icons)
+//
+// Markup: ../../styleguide/src/components/icons.hbs
+//
+// Weight: 21
+//
+// Style guide: icons
+
+:root {
+  --icon-color: 'currentColor';
+  --icon-size: 36px;
+  --icon-pile-icon-size: #{rem-calc(24)};
+}
+
+.icon {
+  max-width: 100%;
+  color: var(--icon-color);
+  flex: 0 0 auto;
+  @include square(var(--icon-size));
+
+  &.icon-xsmall {
+    --icon-size: 16px;
+  }
+
+  &.icon-small {
+    --icon-size: 24px;
+  }
+
+  &.icon-large {
+    --icon-size: 80px;
+  }
+
+  &[class*='theme-'] {
+    --icon-color: var(--theme-color);
+  }
+}
+
+// Icon wrapper Utilities
+//
+// Some icon styles require a container, rather than applying a class directly
+// to the SVG.
+//
+// .icon-knockout-circle - Solid circle with knockout icon.
+// .icon-border-circle - Bordered circle
+// .icon-knockout-circle.theme-info-color - Circle classes can be combined with themes to change the color.
+// .icon-knockout-square - Square wrapper
+//
+// Markup: ../../styleguide/src/components/icon_wrap.hbs
+//
+// Weight: 2
+//
+// Style guide: icons.wrapper-utilities
+
+.icon-knockout-circle,
+.icon-border-circle,
+.icon-knockout-square {
+  @include square(var(--icon-size));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+
+  .icon {
+    @include square(calc(var(--icon-size) * 0.5));
+  }
+}
+
+.icon-knockout-circle,
+.icon-knockout-square {
+  --icon-color: var(--theme-text-color, var(--tint));
+  background-color: var(--theme-color, currentColor);
+}
+
+.icon-knockout-square {
+  border-radius: 0;
+}
+
+.icon-border-circle {
+  --icon-color: var(--theme-color, currentColor);
+  border: 4px solid var(--theme-color, currentColor);
+}
+
+// Icons themes and size utility classes
+//
+// Two default size utlity classes have been provided, though there may be size
+// overrides on icons throughout the system within different components.
+//
+// .icon-small - small variation
+// .icon-large - large variation
+// .theme-success-color - All theme colors can be applied to icons. If no theme is applied, the icon will inherit the color of the surrounding text.
+// .theme-info-color   - All base theme colors can be applied with the following classes.
+// .theme-caution-color - Caution Color
+//
+// Markup: ../../styleguide/src/components/icon_variations.hbs
+//
+// Weight: 3
+//
+// Style guide: icons.themes-sizes
+
+// Icons pile utility
+//
+// This class is used to overlap icons, avatars, or emojis. Rather than use
+// utility classes, this base style should be overriden when necessary in larger
+// components.
+//
+// Markup: ../../styleguide/src/components/icon_pile.hbs
+//
+// Weight: 3
+//
+// Style guide: icons.icon-pile
+
+.icon-pile {
+  --icon-size: var(--icon-pile-icon-size);
+  display: flex;
+
+  > * {
+    font-size: var(--icon-pile-icon-size);
+
+    &:not(:first-child) {
+      margin-left: calc(var(--icon-pile-icon-size) * -0.4);
+    }
+  }
+}
+
+// Icons count
+//
+// This component displays an icon list with a number below, to demonstrate
+// statistics with icons.
+//
+// Markup: ../../styleguide/src/components/icon_count.hbs
+//
+// Weight: 4
+//
+// Style guide: icons.icon-count
+
+.icon-count {
+  --icon-size: #{rem-calc(30)};
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &-item {
+    display: flex;
+    flex-direction: column;
+    margin: 0 5px;
+    text-align: center;
+  }
+
+  .emoji,
+  .icon {
+    display: block;
+    margin-bottom: rem-calc(10);
+    width: var(--icon-size);
+    height: var(--icon-size);
+    font-size: var(--icon-size);
+  }
+}
+
+// Icon link
+//
+// This is a themeable, actionable icon link.
+//
+// .theme-success-color - All theme colors can be applied to icon links.
+// .theme-info-color   - Info Color
+// .theme-caution-color - Caution Color
+//
+// Weight: 5
+//
+// Markup: ../../styleguide/src/components/icon-link.hbs
+//
+// Style guide: icons.icon-link
+
+.icon-link {
+  --icon-size: #{rem-calc(24)};
+  --icon-color: var(--theme-color, var(--brand-color));
+  display: flex;
+  align-self: flex-start;
+}
+
+a.icon-link:hover {
+  --icon-color: var(--theme-color-shade, var(--brand-color-shade));
+}
+
+// Icon centering utility
+//
+// This class should be applied to a container element to center an icon next
+// to text.
+//
+// Weight: 6
+//
+// Markup: <p class="center-icon">{{> icon }}Sample Text</p>
+//
+// Style guide: icons.icon-center
+
+.center-icon {
+  display: inline-flex;
+  align-items: center;
+
+  .icon {
+    margin-right: rem-calc(10);
+  }
+}
+
+// Time icon alert
+//
+// This component is used to call attention to an impending deadline.
+//
+// Weight: 7
+//
+// Markup: <div class="time-alert">
+//   {{> icon name="alarm_clock"}}
+//   <time class="time-alert-text">1 day
+//     <span class="time-alert-desc">to respond</span>
+//   </time>
+// </div>
+//
+// Style guide: icons.time-icon-alert
+
+.time-alert {
+  --icon-size: 28px;
+  --icon-color: var(--time-alert-icon-color, var(--text-color));
+  display: flex;
+  align-items: center;
+
+  .icon {
+    margin: 0 rem-calc(8) 0 0;
+  }
+
+  &-desc,
+  &-text {
+    color: var(--text-color-highlight2, var(--text-color));
+    line-height: 1;
+  }
+
+  &-text {
+    font-size: rem-calc(16);
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  &-desc {
+    display: block;
+    font-size: rem-calc(10);
+
+    font-weight: var(--global-weight-semibold);
+    text-transform: uppercase;
+  }
+}
+
+// Icon base file
+//
+// Markup: ../../styleguide/src/components/icon.hbs
+//
+// Style guide: No styleguide reference.
+
+// Icon example template
+//
+// Markup: ../../styleguide/src/components/icon_example.hbs
+//
+// Style guide: No styleguide reference.

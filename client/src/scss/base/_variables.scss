@@ -1,0 +1,38 @@
+// breakpoints
+$small: 0;
+$smedium: 570px;
+$medium: 768px;
+$large: 980px;
+$xlarge: 1200px;
+$xxlarge: 1280px;
+$small-only: max-width ($smedium - 1px);
+$below-medium: max-width ($medium - 1px);
+$below-large: max-width ($large - 1px);
+
+$nav-breakpoint: $large;
+$below-nav-breakpoint: max-width ($nav-breakpoint - 1);
+
+/// Site breakpoints
+$breakpoints: (
+  small: $small,
+  smedium: $smedium,
+  medium: $medium,
+  large: $large,
+  xlarge: $xlarge,
+  xxlarge: $xxlarge,
+);
+
+// Keep z-indexes here
+$z-index-abs-links: 1;
+$z-index-above-links: 2;
+$z-index-dropdowns: 3;
+$z-index-above-dropdowns: 4;
+$z-index-sticky-header: 5;
+$z-index-overlay-bg: 6;
+$z-index-overlays: 7;
+$z-index-above-overlays: 8;
+
+// Spinkit library variables
+$spinkit-size: 60px;
+$spinkit-spinner-color: var(--theme-color, var(--loading-color-default));
+$spinkit-spinner-margin: 0;

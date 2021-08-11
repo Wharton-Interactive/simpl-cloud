@@ -1,0 +1,94 @@
+.simpl-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--site-nav-background);
+  height: var(--site-nav-height);
+  padding-right: 1rem;
+  padding-left: 1rem;
+  color: var(--site-nav-link-color);
+  z-index: $z-index-abs-links;
+
+  @at-root .theme-alt &  {
+    background-image: var(--site-nav-background-alt);
+  }
+
+  p {
+    margin: 0;
+  }
+
+  &-title {
+    font-size: rem-calc(12);
+    opacity: 0.7;
+    font-weight: var(--global-weight-semibold);
+  }
+
+  &-subtitle {
+    .mode-flag {
+      font-style: italic;
+      background: rgba(255,255,255,0.15);
+      border-radius: 3px;
+      padding: 0px 6px;
+    }
+  }
+
+  &-title-wrap {
+    display: flex;
+    gap: 8px;
+  }
+
+  .wharton-shield-icon {
+    width: 20px;
+  }
+
+  &-info {
+    font-size: rem-calc(12);
+  }
+
+  &-link {
+    text-decoration: none;
+    color: var(--site-nav-link-color);
+    font-size: rem-calc(12);
+    display: block;
+    white-space: nowrap;
+  }
+}
+
+@include breakpoint($nav-breakpoint) {
+  .simpl-header {
+    &.has-todos {
+      padding-right: calc(var(--todo-aside-width) + 20px);
+    }
+
+    &-title {
+      font-size: rem-calc(13);
+    }
+
+    &-subtitle {
+      font-size: rem-calc(16);
+    }
+
+    &-info {
+      font-size: var(--font-size-small);
+    }
+
+    &-link {
+      font-size: var(--font-size-small);
+      display: inline;
+
+    }
+
+    &-mini-nav {
+      .simpl-header-link + .simpl-header-link:before {
+        display: inline-flex;
+        padding: 0 8px 0 4px;
+        opacity: 0.7;
+        content: "/";
+      }
+    }
+  }
+}

@@ -1,0 +1,391 @@
+// Dropdowns
+//
+// This element is used throughout the system in place of `<select>` boxes,
+// tooltips, or places where contextual options are hidden. The element can be
+// opened with keyboard navigation using the `:focus-within` pseudo element on
+// [most modern browsers](https://caniuse.com/#search=focus-within), or it can
+// be opened with javascript by adding `.is-expanded` to the parent element. If
+// managing the state with CSS (`:focus-within`) gets in the way of javascript
+// state management, `.disable-focus-within` can be added to the `.has-dropdown`
+// component to disable this feature.
+//
+// .disable-focus-within - This disables `:focus-within` CSS state management.
+// .align-above - Dropdown opens above the button.
+// .align-left - Dropdown opens aligned to the left side of the button.
+// .narrow-dropdown - Shrink the width of the dropdown.
+// .align-left.align-above - These classes can be combined.
+// .is-expanded - Toggle this class to manage the state with javascript.
+//
+// Markup: ../../styleguide/src/components/dropdowns.hbs
+//
+// Weight: 8
+//
+// Style guide: forms.dropdowns
+
+:root {
+  --checkmark-size: #{rem-calc(16)};
+  --new-badge-size: #{rem-calc(10)};
+}
+
+.has-dropdown {
+  position: relative;
+  display: inline-flex;
+  font-weight: var(--global-weight-normal);
+
+  // Open dropdown
+  &.is-expanded,
+  &:not(.disable-focus-within):focus-within {
+    .dropdown,
+    .dropdown-button:before {
+      display: block;
+    }
+
+    .dropdown-button:after {
+      transform: rotate(180deg);
+      padding-right: 8px;
+      padding-left: 0;
+      mask-position: top left;
+    }
+
+    .star-toggle.dropdown-button:after {
+      padding-right: 0;
+    }
+
+    &.align-above {
+      .dropdown-button:before {
+        top: auto;
+        bottom: 100%;
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  &.is-heading-select {
+    .dropdown-button {
+      padding-left: rem-calc(8);
+      padding-right: rem-calc(40);
+      font-size: rem-calc(24);
+      font-family: var(--heading-font-family);
+      color: var(--primary-heading-color);
+      text-decoration: none;
+      border: 1px solid var(--brand-color-tint4);
+      background-image: var(
+        --select-bg-image,
+        #{svg-url(
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 10"><path fill="none" vector-effect="non-scaling-stroke" stroke="' +
+              $text-color +
+              '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M1 1l8 8 8-8"/></svg>'
+          )}
+      );
+      background-color: transparent;
+      background-position: top 14px right 9px;
+      background-repeat: no-repeat;
+      background-size: 12px 12px;
+
+      &:after {
+        content: none;
+      }
+    }
+  }
+
+  @include breakpoint($small-only) {
+    margin-bottom: rem-calc(10);
+
+    &.is-heading-select {
+      .dropdown-button {
+        padding-left: rem-calc(8);
+        font-size: rem-calc(20);
+        background-position: top 10px right 14px;
+      }
+    }
+
+    .dropdown-button {
+      margin-right: 0;
+      width: 100%;
+    }
+
+    .dropdown {
+      width: 100%;
+      min-width: 80vw;
+    }
+
+    &.align-left .dropdown {
+      max-width: none;
+    }
+  }
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + #{rem-calc(10)});
+  right: -8px;
+  z-index: $z-index-dropdowns;
+  display: none;
+  padding: rem-calc(8) 0;
+  width: 80vh;
+  max-width: rem-calc(300);
+  box-shadow: var(--heavy-shadow);
+  border-radius: var(--global-radius);
+  background: var(--dropdown-bg);
+  font-size: rem-calc(16);
+
+  .align-above & {
+    top: auto;
+    bottom: calc(100% + #{rem-calc(10)});
+  }
+
+  .align-left & {
+    right: auto;
+    left: 0;
+    min-width: 100%;
+  }
+
+  .narrow-dropdown & {
+    max-width: rem-calc(180);
+  }
+
+  .small-dropdown & {
+    max-width: rem-calc(200);
+  }
+
+  &-link,
+  &-section-heading,
+  &-main-heading,
+  &-details,
+  &-main-heading {
+    color: var(--theme-color, var(--dropdown-color, var(--text-color)));
+  }
+
+  &,
+  a {
+    color: var(--theme-text-color, var(--button-color-default, var(--text-color)));
+
+    &:hover {
+      color: var(--theme-text-color, var(--button-color-default, var(--text-color)));
+    }
+  }
+
+  &-button {
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+
+    // in-button arrow
+    &:after {
+      display: block;
+      margin-right: -4px;
+      margin-left: auto;
+      padding-left: 8px;
+      width: 10px;
+      height: 8px;
+      background-color: var(
+        --theme-text-color,
+        var(--button-color-default, var(--knockout-color))
+      );
+      // mask-image: url('#{$sprite-path}#arrow_down');
+      mask-position: top right;
+      mask-repeat: no-repeat;
+      mask-size: 10px 10px;
+      content: '';
+    }
+
+    // This is the arrow that appears to be attached to the box
+    &:before {
+      position: absolute;
+      top: 100%;
+      right: 13px;
+      left: auto;
+      z-index: $z-index-above-dropdowns;
+      display: none;
+      width: 16px;
+      height: 16px;
+      background-color: var(--dropdown-bg);
+      mask-image: svg-url('<svg viewBox="0 0 15.6 11.2" id="dropdown_pip" xmlns="http://www.w3.org/2000/svg"><path d="M1 8.6l5.9-7.2c.2-.2.5-.4.8-.4s.6.2.8.4l5.9 7.2s-1 2.6-6.8 2.6S1 8.6 1 8.6z" fill="currentColor"/></svg>');
+      mask-repeat: no-repeat;
+      mask-size: 100% 100%;
+      content: '';
+    }
+
+    &.button.hollow {
+      border-color: rgba(0, 0, 0, 0.4);
+      color: var(--text-color);
+    }
+
+    &:hover:after {
+      background-color: var(
+        --button-color-hover-force,
+        var(--theme-color, var(--button-bg-default-color, var(--info-color)))
+      );
+    }
+  }
+
+  &-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &-item,
+  &-action-item {
+    margin: 0;
+    border-bottom: 1px solid var(--dropdown-border-color);
+
+    label {
+      margin: 0;
+      padding: rem-calc(6) 0;
+    }
+  }
+
+  &-item:last-child {
+    border-bottom: none;
+  }
+
+  &-link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 0;
+    padding: #{rem-calc(6)} #{rem-calc(16)};
+    text-decoration: none;
+    appearance: none;
+    border: 0 none;
+    background: transparent;
+    width: 100%;
+
+    &.is-checked {
+      position: relative;
+      padding-left: calc(var(--checkmark-size) + 24px);
+      font-weight: var(--global-weight-semibold);
+
+      &:after {
+        // background, checked state
+        position: absolute;
+        top: 50%;
+        left: 16px;
+        display: block;
+        margin-right: 6px;
+        width: var(--checkmark-size);
+        height: var(--checkmark-size);
+        background-color: var(--text-color);
+        mask-image: svg-url('<svg viewBox="0 0 23.043 17.154" id="check" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M22.501.542a1.852 1.852 0 00-2.526-.086l-.178.179-7.551 7.554-3.383 3.384c-.019.021-.038.043-.059.063l-.063.058-.007.006-.008.006a1.022 1.022 0 01-1.325-.027l-.009-.008a1.19 1.19 0 01-.073-.073l-.007-.009-3.404-3.403-.737-.738a1.855 1.855 0 00-2.627 0 1.852 1.852 0 00-.042 2.58l.087.088 6.7 6.7.056.057.019.018c.383.344.962.352 1.351.021l.12-.121 1.84-1.839-.001-.001.535-.534 4.7-4.699.042-.045.046-.042.678-.68.006.005L22.347 3.3l.291-.292a1.852 1.852 0 00-.137-2.466z"/></svg>');
+        mask-repeat: no-repeat;
+        mask-size: 100% 100%;
+        vertical-align: top;
+        content: '';
+        transform: translateY(-50%);
+      }
+    }
+
+    &.is-alert {
+      color: var(--alert-color);
+
+      &:hover {
+        background-color: var(--alert-color-tint5);
+        color: var(--alert-color);
+      }
+    }
+
+    &.has-new {
+      &:before {
+        display: inline-block;
+        margin-right: rem-calc(4);
+        width: var(--new-badge-size);
+        height: var(--new-badge-size);
+        border-radius: 50%;
+        background: var(--unread-color);
+        content: '';
+      }
+    }
+
+    .icon {
+      display: inline-block;
+      margin-right: 6px;
+      vertical-align: middle;
+      @include square(20px);
+    }
+
+    &:hover {
+      background-color: var(--dropdown-hover-color);
+    }
+  }
+
+  &-form {
+    @include bottomless;
+  }
+
+  &-primary {
+    margin: rem-calc(-20) rem-calc(-20) 0 rem-calc(-20);
+    padding: rem-calc(20);
+    border-radius: var(--global-radius) var(--global-radius) 0 0;
+    background: var(--dropdown-accent-bg);
+
+    &:last-child {
+      margin-bottom: rem-calc(-20);
+      border-radius: var(--global-radius);
+    }
+  }
+
+  .button {
+    margin: rem-calc(8) 0;
+    width: 100%;
+    font-size: var(--dropdown-button-size, #{rem-calc(12)});
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &-actions {
+    margin: 0 rem-calc(-20) rem-calc(-20);
+  }
+
+  &-section-heading {
+    font-size: rem-calc(10);
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+
+  &-main-heading {
+    margin: rem-calc(4) 0;
+    font-size: rem-calc(20);
+  }
+
+  &-details {
+    font-size: var(--font-size-small);
+  }
+
+  &-action-list {
+    --link-color: var(--text-color);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &-action-link {
+    display: flex;
+    align-items: center;
+    padding: rem-calc(10) rem-calc(20);
+    text-decoration: none;
+
+    .icon {
+      --icon-size: #{rem-calc(20)};
+      margin-right: rem-calc(4);
+    }
+
+    &:hover {
+      background: var(--dropdown-hover-bg, --card-bg-shade);
+    }
+
+    &.is-rp-link {
+      font-weight: var(--global-weight-semibold);
+    }
+  }
+
+  .tag-list {
+    margin-top: 0.5rem;
+  }
+
+  .game-label {
+    margin-bottom: 0.25rem;
+  }
+}

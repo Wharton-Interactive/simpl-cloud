@@ -1,0 +1,598 @@
+// Tables
+//
+// This is the base style for tables. They can be used to organize list views,
+// standard content, or complicated forms. Several modifier classes are
+// available for added flexibility.
+//
+// For the sake of mobile compatibility, a `.table-scroll` container class can
+// be applied to a parent element to allow for horizontal scrolling in cases
+// where the table is too wide for its container.
+//
+// .condensed - Remove default cell padding for increased data density.
+// .expanded - Add additional cell padding.
+// .striped - Add zebra-striping.
+// .hover-rows - Change row colors on hover.
+// .no-borders - Remove row borders.
+// .no-color - Light, colorless theme.
+// .no-h-pad - Remove horizontal padding from left and right sides
+// .large-text - Increase the text size
+// .no-header-shade - Removes default header background
+// .stretch-column - Expand this column to the maximum width.
+// .shrink-column - Contract this column to the minimum width.
+// .small-header-text - Smaller header text size.
+// .theme-success-color - Add any theme color to tables.
+// .theme-info-color.hover-rows.striped - Combine several classes.
+//
+// Markup: ../../styleguide/src/components/table.hbs
+//
+// Weight: 4
+//
+// Style guide: tables
+
+table {
+  --avatar-size: #{rem-calc(30)};
+  --avatar-font-size: #{rem-calc(11)};
+  margin-bottom: 1rem;
+  width: 100%;
+  // min-width: rem-calc(520);
+  border-color: var(--theme-color, var(--body-bg-shade2));
+  border-radius: 0;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+
+  td,
+  th {
+    padding: 4px 8px;
+    border-bottom: 1px solid var(--theme-color-tint2, var(--body-bg-shade2));
+    text-align: left;
+
+    &:first-child {
+      padding-left: 0.5rem;
+    }
+
+    &:last-child {
+      padding-right: 0.5rem;
+    }
+
+    &.border-bottom {
+      border-bottom: 1px solid var(--theme-color, var(--brand-color));
+    }
+
+    &.no-bottom-border {
+      border-bottom: 0;
+    }
+
+    &.top-pad {
+      padding-top: rem-calc(20);
+    }
+
+    &.stretch-column {
+      width: 100%;
+    }
+
+    &.shrink-column {
+      width: 1px;
+    }
+
+    &.highlight-row {
+      background-color: var(--theme-color-tint3, var(--well-bg));
+    }
+
+    &.col-actions {
+      text-align: right;
+    }
+
+    @include breakpoint($medium) {
+      &:first-child {
+        padding-left: 1rem;
+      }
+
+      &:last-child {
+        padding-right: 1rem;
+      }
+    }
+  }
+
+  th {
+    white-space: nowrap;
+  }
+
+  thead th,
+  .ellipsis {
+    font-weight: 300;
+    color: var(--text-color-highlight1, var(--text-color));
+  }
+
+  &.no-header-shade thead th:not(.highlight-row) {
+    background-color: transparent;
+  }
+
+  thead th.highlight-row {
+    border-radius: var(--global-radius) var(--global-radius) 0 0;
+  }
+
+  tbody tr:last-child .highlight-row,
+  tfoot th:last-child .highlight-row {
+    border-radius: 0 0 var(--global-radius) var(--global-radius);
+  }
+
+  thead th {
+    background-color: var(--theme-color, var(--body-bg-shade));
+    color: var(--theme-text-color, var(--text-color));
+
+    // &.will-sort,
+    // &.orderable {
+    //   position: relative;
+    //   padding-right: rem-calc(20);
+    //
+    //   &:before,
+    //   &:after {
+    //     position: absolute;
+    //     top: 50%;
+    //     right: rem-calc(6);
+    //     width: 8px;
+    //     height: 8px;
+    //     background-color: var(--text-color);
+    //     mask-image: url('#{$sprite-path}#arrow_down');
+    //     mask-repeat: no-repeat;
+    //     mask-size: 100% 100%;
+    //     content: '';
+    //     opacity: 0.5;
+    //   }
+    //
+    //   &:before {
+    //     transform: translateY(-100%) rotate(180deg);
+    //   }
+    //
+    //   &:hover {
+    //     background-color: var(--theme-color-tint1, var(--body-bg-shade));
+    //     cursor: pointer;
+    //   }
+    //
+    //   &.is-sorted-up,
+    //   &.asc {
+    //     &:before {
+    //       opacity: 1;
+    //     }
+    //
+    //     &:after {
+    //       opacity: 0.2;
+    //     }
+    //   }
+    //
+    //   &.is-sorted-down,
+    //   &.desc {
+    //     &:before {
+    //       opacity: 0.2;
+    //     }
+    //
+    //     &:after {
+    //       opacity: 1;
+    //     }
+    //   }
+    // }
+  }
+
+  tfoot th {
+    background-color: var(--theme-color-tint3, var(--body-bg-shade));
+  }
+
+  &.condensed {
+    td,
+    th {
+      padding: 0 4px;
+    }
+  }
+
+  &.expanded {
+    td,
+    th {
+      padding-top: rem-calc(12);
+      padding-bottom: rem-calc(12);
+    }
+  }
+
+  &.large-text {
+    font-size: 1.25rem;
+
+    .field.checkbox {
+      margin: 0.375rem 0 0.5rem 0;
+
+      label {
+        vertical-align: middle;
+      }
+    }
+  }
+
+  &.small-header-text {
+    thead th {
+      font-size: 0.8rem;
+    }
+  }
+
+  &.striped {
+    tbody tr:nth-child(even) {
+      td,
+      th {
+        background: var(--theme-color-tint4, var(--body-bg-shade-half));
+      }
+    }
+
+    &.hover-rows {
+      tbody tr:not(.no-hover):hover {
+        td,
+        th {
+          background: var(--theme-color-tint3, var(--body-bg-shade));
+        }
+      }
+    }
+  }
+
+  &.hover-rows {
+    tr:not(.no-hover):hover {
+      background: var(--theme-color-tint4, var(--body-bg-shade));
+    }
+  }
+
+  &.no-h-pad {
+    td,
+    th {
+      &:first-child {
+        padding-left: 0;
+      }
+
+      &:last-child {
+        padding-right: 0;
+      }
+
+      &.highlight-row {
+        padding-right: rem-calc(8);
+        padding-left: rem-calc(8);
+      }
+    }
+  }
+
+  &.no-borders {
+    td,
+    th {
+      border-bottom: none;
+    }
+  }
+
+  &.no-color {
+    td,
+    th {
+      border-bottom: var(
+        --table-no-color-border,
+        1px solid var(--theme-color-tint3, var(--body-bg-shade2))
+      );
+    }
+
+    tbody:last-child tr:last-child td,
+    tbody:last-child tr:last-child th {
+      border-bottom: 1px solid transparent;
+    }
+
+    thead th,
+    tfoot th {
+      background-color: transparent;
+    }
+  }
+
+  .checkbox {
+    margin: rem-calc(6) 0 0 0;
+  }
+
+  .icon-cell {
+    width: 50px;
+    text-align: right;
+  }
+
+  .has-error {
+    color: var(--error-color);
+
+    .error-message {
+      display: block;
+      margin: 0;
+      font-size: 0.8em;
+    }
+  }
+
+  &[class*='theme-'] {
+    thead th:before,
+    thead th:after {
+      background-color: var(--knockout-color);
+    }
+  }
+
+  .table-header-row th,
+  .table-header-row td {
+    padding-top: 1rem;
+    padding-bottom: 0.8rem;
+    font-size: 1.3rem;
+  }
+}
+
+.table-scroll {
+  position: relative;
+  margin-right: rem-calc(-10);
+  margin-bottom: 1rem;
+  max-width: calc(100% + #{rem-calc(10)});
+  overflow: auto;
+  -webkit-overflow-scrolling: touch; // sass-lint:disable-line no-misspelled-properties no-vendor-prefixes
+
+  table {
+    margin-bottom: 0;
+
+    td {
+      position: relative;
+
+      &:last-child:after {
+        position: absolute;
+        right: rem-calc(-10);
+        display: block;
+        width: rem-calc(10);
+        height: 1px;
+        content: '';
+      }
+    }
+  }
+
+  .filename {
+    color: var(--text-color-highlight1, var(--text-color));
+  }
+
+  @include breakpoint($nav-breakpoint) {
+    margin-right: 0;
+
+    table td:last-child:after {
+      content: none;
+    }
+  }
+}
+
+.page-team table {
+  td,
+  th {
+    display: var(--team-page-sub-column-display, table-cell);
+
+    &:first-child {
+      display: table-cell;
+    }
+  }
+
+  tr.card-shade {
+    display: var(--team-page-sub-column-display, table-row);
+  }
+}
+
+// Table example usage
+//
+// This is an example of what a table might look like in use.
+//
+// Markup: ../../styleguide/src/components/table-example.hbs
+//
+// Weight: 2
+//
+// chromeless: true
+//
+// full: true
+//
+// Style guide: tables.layout-example
+
+// File List table example
+//
+// This example shows how a variety of components can be combined to build
+// interactive tables.
+//
+// Markup: ../../styleguide/src/components/table-file-list.hbs
+//
+// Weight: 3
+//
+// Style guide: tables.file-list
+
+// Dashboard table card
+//
+// This card is used in the dashboard to display tabular data.
+//
+// Markup: ../../styleguide/src/components/table-card.hbs
+//
+// Weight: 7
+//
+// Style guide: cards.table-card
+
+// Sticky sidebar table
+//
+// The `.sticky-col-table` and `.sticky-col-wrap` classes make the first column
+// of a table stick as the table scrolls. Different theme utility classes are
+// used to change the appearance of the table. depict long-form tabular data.
+//
+// .budget-theme - Borders and backgrounds for the budget table.
+//
+// Markup: ../../styleguide/src/components/table_sticky_sidebar.hbs
+//
+// Weight: 4
+//
+// Style guide: tables.sticky-sidebar
+
+.sticky-col-table {
+  td,
+  th {
+    &:first-child {
+      position: sticky;
+      left: 0;
+      z-index: $z-index-abs-links;
+    }
+
+    &.is-not-sticky {
+      position: static;
+    }
+  }
+
+  // colors, borders, and alignment for the budget table.
+  &.budget-theme {
+    td,
+    th {
+      text-align: right;
+
+      &:first-child {
+        background-color: var(--theme-color, var(--body-bg-shade2));
+        text-align: left;
+      }
+    }
+
+    .subhead-row {
+      th,
+      td {
+        padding-top: 22px;
+        min-height: 53px;
+      }
+    }
+
+    thead th:first-child {
+      background-color: var(--theme-color, var(--body-bg-shade2));
+    }
+  }
+
+  @include breakpoint($small-only) {
+    &.disable-on-mobile {
+      td,
+      th {
+        &:first-child {
+          position: static;
+        }
+      }
+    }
+
+    &.card-theme th:first-child,
+    &.card-theme td:first-child {
+      &:after {
+        position: absolute;
+        top: 0;
+        right: -8px;
+        bottom: 0;
+        width: 8px;
+        background: linear-gradient(
+          to right,
+          rgba(0, 0, 0, 0.05) 0%,
+          rgba(255, 255, 255, 0) 100%
+        );
+        content: '';
+      }
+    }
+
+    &.card-theme th:first-child:after {
+      right: -12px;
+      width: 12px;
+      background: radial-gradient(
+        farthest-side at 0 50%,
+        rgba(0, 0, 0, 0.05) 0%,
+        rgba(255, 255, 255, 0) 100%
+      );
+    }
+
+    &.card-theme td.is-not-sticky:first-child:after {
+      content: none;
+    }
+  }
+}
+
+// Card theme for tables
+//
+// Make a table appear identical to the `.object-list` flexbox module.
+//
+// .sticky-col-table - Make the first column sticky
+//
+// Markup: ../../styleguide/src/components/table_card_theme.hbs
+//
+// Weight: 5
+//
+// Style guide: tables.card-theme
+
+:root {
+  --first-sticky-col-width: 200px;
+}
+.card-theme {
+  --avatar-size: #{rem-calc(36)};
+  --avatar-font-size: #{rem-calc(16)};
+  border-spacing: 0 rem-calc(6);
+  border-collapse: separate;
+
+  thead th {
+    border: none;
+    background: var(--body-bg-color);
+    font-size: rem-calc(20);
+    white-space: nowrap;
+  }
+
+  td,
+  th {
+    padding: rem-calc(10);
+    border: 1px solid var(--theme-color-tint3, var(--card-border-color-default));
+    border-width: 1px 0 1px 0;
+    background: var(--card-bg);
+
+    &:first-child {
+      width: 50%;
+      min-width: var(--first-sticky-col-width);
+      border-radius: var(--card-radius) 0 0 var(--card-radius);
+      border-width: 1px 0 1px 1px;
+    }
+
+    &.text-right {
+      text-align: right;
+    }
+
+    &:last-child {
+      border-radius: 0 var(--card-radius) var(--card-radius) 0;
+      border-width: 1px 1px 1px 0;
+    }
+
+    &.inactive {
+      @include bottomless;
+      padding-left: rem-calc(20);
+      background: var(--info-color);
+      color: var(--knockout-color);
+      text-align: left;
+
+      .page-subheading {
+        margin: 0;
+        font-size: rem-calc(20);
+        color: var(--knockout-color);
+      }
+    }
+  }
+
+  .card-shade {
+    td,
+    th {
+      background: var(--card-bg-shade2);
+    }
+  }
+
+  @include breakpoint($nav-breakpoint) {
+    --avatar-size: #{rem-calc(46)};
+  }
+}
+
+.table-item-label {
+  color: var(--theme-color-shade, var(--text-color));
+}
+
+.table-item-val {
+  display: block;
+  font-size: rem-calc(20);
+  color: var(--text-color-highlight2, var(--text-color));
+}
+
+.table-item-label {
+  --icon-size: #{rem-calc(12)};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: var(--font-size-small);
+
+  &.pull-down {
+    margin-bottom: rem-calc(-20);
+  }
+}

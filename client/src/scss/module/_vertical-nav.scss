@@ -1,0 +1,113 @@
+// Vertical Nav
+//
+// Markup: ../../styleguide/src/components/vertical-nav.hbs
+//
+// chromeless: true
+//
+// full: true
+//
+// Weight: 60
+//
+// Style guide: no styleguide reference
+
+.v-nav {
+  --icon-color: var(--v-nav-color);
+  --icon-size: #{rem-calc(16)};
+  position: fixed;
+  width: 60px;
+  height: 100vh;
+  left: 0px;
+  top: 0px;
+  background: var(--v-nav-bg, var(--brand-color));
+  border-right: 1px solid rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: $z-index-sticky-header;
+
+  @at-root .simpl-header + & {
+    height: calc(100vh - var(--site-nav-height));
+    top: var(--site-nav-height);
+    bottom: 0;
+  }
+
+  &-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+
+    &.is-bottom {
+      margin-top: auto;
+    }
+  }
+
+  &-item:first-child {
+    .v-nav-link {
+      margin-top: rem-calc(16);
+    }
+  }
+
+  &-link {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 6px 6px 0;
+    padding: rem-calc(12) rem-calc(8) rem-calc(10);
+    color: var(--v-nav-color);
+    font-size: rem-calc(11);
+    line-height: 1.2;
+    text-decoration: none;
+    border-radius: 4px;
+
+    &:not([href]) {
+      opacity: 0.3;
+      cursor: default;
+    }
+
+    &.is-highlighted {
+      --icon-color: var(--alert-color-tint2);
+      color: var(--alert-color-tint2);
+    }
+
+    &[href]:not([aria-current="page"]):hover {
+      background: rgba(1255, 255, 255, 0.05);
+    }
+
+    &[aria-current="page"] {
+      --icon-color: var(--v-nav-active-color, var(--tint));
+      background: var(--v-nav-active-bg);
+      color: var(--v-nav-active-color, var(--tint));
+      box-shadow: var(--base-shadow);
+
+      @at-root .theme-alt & {
+        background: var(--v-nav-active-bg-alt, var(--v-nav-active-bg));
+      }
+    }
+  }
+
+  &-text {
+    display: block;
+    text-align: center;
+    margin-top: rem-calc(8);
+  }
+
+  &-logo {
+    padding: rem-calc(9) rem-calc(12) rem-calc(10);
+    display: block;
+  }
+
+  &-content {
+    padding-left: 60px;
+  }
+
+  @include breakpoint($nav-breakpoint) {
+    --icon-size: #{rem-calc(24)};
+    width: 80px;
+
+    &-content {
+      padding-left: 80px;
+    }
+  }
+}

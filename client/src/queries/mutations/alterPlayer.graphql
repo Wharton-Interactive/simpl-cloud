@@ -1,0 +1,9 @@
+mutation AlterPlayer($playerId: ID!, $active: Boolean!) {
+  alterPlayer(playerId: $playerId, active: $active) {
+    id
+    session
+    name
+    email
+    inactive
+  }
+}

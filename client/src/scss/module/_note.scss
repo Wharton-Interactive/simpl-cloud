@@ -1,0 +1,191 @@
+// Alerts and Notifications
+//
+// Style guide: notification
+//
+// Weight: 23
+//
+
+// Inline notification dialogs
+//
+// This component is used for block-level, inline notifications. It can be used
+// as a block-level form error message, or various levels of notification
+// throughout the system. It can take a single line of text or
+// HTML. This component also supports a close icon.
+//
+// .is-thin - Reduces padding
+// .is-sticky - adds position:sticky and positions it at the top of the container.
+// .is-sticky.is-at-bottom - adds position:sticky and positions it at the bottom of the container.
+// .is-flex - adds `display: flex`, for use in single-action notifications.
+// .is-feature - increases font size and adds extra padding.
+// .theme-caution-color -  Indicate something important.
+// .theme-alert-color -  Indicate an error.
+// .theme-success-color -  Indicate a successful action.
+// .theme-info-color -  Indicate a neutral state
+// .knockout - Darker background with lighter text
+// .theme-caution-color.knockout -  Indicate something important with knockout text.
+// .theme-alert-color.knockout -  Indicate an error with knockout text.
+// .theme-success-color.knockout -  Indicate a successful action with knockout text.
+// .theme-info-color.knockout -  Indicate a neutral state with knockout text.
+//
+// Markup: ../../styleguide/src/components/note.hbs
+//
+// Weight: 1
+//
+// Style guide: notification.inline
+
+.note {
+  --icon-color: var(--theme-color, var(--text-color));
+  --icon-size: #{rem-calc(26)};
+  display: flex;
+  align-items: center;
+  margin-bottom: rem-calc(10);
+  padding: rem-calc(10);
+  border: 1px solid
+    var(
+      --theme-color,
+      var(--note-default-border-color, var(--card-border-color-default))
+    );
+  border-radius: var(--global-radius);
+  background: var(
+    --theme-color-alpha,
+    var(--theme-color-tint5, var(--note-default-bg-color, var(--card-bg)))
+  );
+  font-size: var(--font-size-small);
+  color: var(--note-default-color, var(--text-color));
+
+  &-content {
+    @include bottomless;
+  }
+
+  .icon,
+  .icon-wrap {
+    margin-right: rem-calc(10);
+  }
+
+  .icon-wrap .icon {
+    margin-right: 0;
+  }
+
+  .close-button .icon {
+    margin: 0;
+  }
+
+  .note-content {
+    align-self: center;
+    margin-right: 10px;
+  }
+
+  .action-callout {
+    margin-left: rem-calc(10);
+  }
+
+  .button {
+    --icon-color: currentColor;
+    margin-left: auto;
+    min-width: 104px;
+  }
+
+  a:not(.button) {
+    color: var(--note-default-color, var(--text-color));
+  }
+
+  &.knockout {
+    --icon-color: var(--theme-text-color, var(--knockout-color));
+    background: var(--theme-color, var(--brand-color));
+    color: var(--theme-text-color, var(--knockout-color));
+
+    a:not(.button) {
+      color: var(--theme-text-color, var(--knockout-color));
+    }
+
+    &,
+    & p,
+    & li {
+      color: var(--theme-text-color, var(--knockout-color));
+    }
+  }
+
+  &.has-close-button {
+    padding-right: rem-calc(30);
+  }
+
+  &.is-flex .note-content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    > * {
+      margin: 0;
+    }
+    .action-link {
+      flex: 1 1 auto;
+    }
+  }
+
+  &.is-feature {
+    font-size: rem-calc(20);
+
+    p {
+      margin-bottom: 0.5em;
+    }
+
+    .feature-details {
+      font-size: var(--font-size-small);
+    }
+  }
+
+  &.is-thin {
+    padding: rem-calc(2) rem-calc(10);
+  }
+
+  &.is-sticky {
+    position: sticky;
+    top: 0;
+    z-index: $z-index-above-links;
+  }
+
+  &.is-sticky.is-at-bottom {
+    top: auto;
+    bottom: 0;
+  }
+
+  & + & {
+    margin-bottom: rem-calc(10);
+  }
+
+  // special case to fix wrapping on team page
+  &.button-and-time {
+    .note-content {
+      display: grid;
+      grid-template-columns: 1fr minmax(#{rem-calc(80)}, min-content);
+      grid-template-areas:
+        'text text'
+        'time button';
+      width: 100%;
+    }
+
+    .note-text {
+      grid-area: text;
+    }
+
+    .feature-details {
+      grid-area: time;
+    }
+
+    .button-wrap {
+      grid-area: button;
+    }
+
+    .button {
+      white-space: nowrap;
+    }
+  }
+
+  @include breakpoint($smedium) {
+    &.button-and-time .note-content {
+      grid-template-areas:
+        'text button'
+        'time button';
+    }
+  }
+}

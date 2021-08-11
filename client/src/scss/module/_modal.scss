@@ -1,0 +1,260 @@
+// Modal Dialog
+//
+// This modal dialog uses the native `<dialog>` element with a
+// [polyfill](https://www.npmjs.com/package/dialog-polyfill). The CSS provided
+// is a modified version of the CSS in the polyfill package, so there is no
+// need to include the polyfill CSS via NPM.
+//
+// To open and close the dialog, toggle the "open" attribute on the dialog
+// element, so it will look like this when open:
+//
+// ```
+// <dialog class="modal" open>...</dialog>
+// ```
+//
+// When using the dialog and polyfill approach, use the following javascript
+// to toggle the modal:
+//
+// * `.showModal()` opens the modal with a backdrop.
+// * `.show()` opens the modal without the backdrop.
+// * `.close()` closes the modal.
+//
+// Markup: ../../styleguide/src/components/modal-example.hbs
+//
+// Weight: 25
+//
+// Style guide: modal
+
+:root {
+  --modal-width: #{rem-calc(600)};
+  --modal-max-height: 100vh;
+  --modal-border-width: 1px;
+  --modal-border-color: var(--theme-color, var(--card-border-color-default));
+  --modal-border-radius: var(--global-radius);
+  --modal-header-border-radius: var(--modal-border-radius) var(--modal-border-radius) 0
+    0;
+  --modal-footer-border-radius: 0 var(--global-radius) var(--global-radius) 0;
+  --modal-bg-opacity: 0.4;
+  --footer-height: #{rem-calc(80)};
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $z-index-above-overlays;
+  display: block;
+  margin: auto;
+  padding: 0;
+  width: 100%;
+  max-width: var(--modal-width);
+  height: 100%;
+  max-height: var(--modal-max-height);
+  border: 0 none;
+  border-radius: 0;
+  background: var(--modal-bg);
+  color: var(--text-color);
+
+  &::backdrop {
+    // native backdrop selector
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(color(brand-color), 0.4); // CSS vars don't work here.
+  }
+
+  + .backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: $z-index-overlays;
+    background: var(--theme-color, var(--brand-color));
+    opacity: var(--modal-bg-opacity);
+  }
+
+  &:not([open]) {
+    display: none;
+  }
+
+  .scroll-wrap {
+    padding: rem-calc(40) rem-calc(50);
+    height: 100%;
+    max-height: calc(var(--modal-max-height) - (var(--modal-border-width) * 2));
+    overflow: auto;
+    -webkit-overflow-scrolling: touch; // sass-lint:disable-line no-misspelled-properties no-vendor-prefixes
+    scrollbar-width: thin;
+  }
+
+  .close-button {
+    position: fixed;
+    top: rem-calc(18);
+    right: rem-calc(18);
+    z-index: $z-index-above-overlays;
+  }
+
+  .modal-heading {
+    justify-content: center;
+    margin-bottom: 2rem;
+    font-size: rem-calc(24);
+    color: var(--primary-heading-color);
+  }
+
+  .button-wrap {
+    padding-bottom: 0;
+  }
+
+  .has-edit-icon {
+    position: relative;
+
+    .icon-button {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      z-index: $z-index-above-links;
+    }
+
+    &:hover {
+      .icon-button {
+        --icon-color: var(--knockout-color);
+        background-color: var(--success-color);
+      }
+    }
+  }
+
+  &.small .modal-heading {
+    font-size: rem-calc(18);
+  }
+
+  table {
+    --avatar-size: #{rem-calc(40)};
+  }
+
+  &-header {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: rem-calc(-40) rem-calc(-40) rem-calc(20) rem-calc(-40);
+    padding-top: rem-calc(60);
+    padding-bottom: rem-calc(20);
+    background: var(--modal-header-bg);
+
+    .help-text {
+      width: 100%;
+      text-align: center;
+    }
+
+    .field {
+      margin-bottom: 0;
+    }
+  }
+
+  &-heading,
+  .page-heading {
+    --icon-size: #{rem-calc(20)};
+    font-family: var(--modal-heading-font-family, var(--global-font-family));
+    display: flex;
+    align-items: center;
+
+    .icon {
+      margin-right: 8px;
+    }
+  }
+
+  &-header-small {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 0 var(--global-margin) 0;
+
+    .page-heading,
+    .page-subheading,
+    .page-subheading-2 {
+      margin: 0;
+    }
+
+    .icon-wrap {
+      margin-right: rem-calc(10);
+    }
+
+    .time-alert {
+      margin-left: auto;
+    }
+
+    &.stack-content {
+      flex-direction: column;
+      align-items: flex-start;
+      padding-bottom: 0;
+    }
+  }
+
+
+  &-header,
+  &-footer,
+  .scroll-wrap {
+    padding-right: rem-calc(40);
+    padding-left: rem-calc(20);
+  }
+
+  .page-subheading {
+    margin: 1em 0 0 0;
+    font-size: rem-calc(22);
+  }
+
+  @include breakpoint($smedium) {
+    --modal-max-height: 94vh;
+    top: 50%;
+    bottom: auto;
+    height: -moz-fit-content;
+    height: fit-content;
+    border: var(--modal-border-width) solid var(--modal-border-color);
+    border-radius: var(--modal-border-radius);
+    transform: translateY(-50%);
+
+    .scroll-wrap {
+      height: auto;
+    }
+
+    &-header {
+      border-radius: var(--modal-header-border-radius);
+    }
+
+    &-footer {
+      border-radius: var(--modal-footer-border-radius);
+    }
+  }
+
+  @include breakpoint($medium) {
+    &-header,
+    &-footer,
+    .scroll-wrap {
+      padding-left: rem-calc(40);
+    }
+
+    &-heading,
+    .page-heading {
+      --icon-size: #{rem-calc(32)};
+    }
+
+    &.large {
+      --modal-width: #{rem-calc(900)};
+    }
+
+    &.large-pad .scroll-wrap {
+      padding: rem-calc(60);
+    }
+
+    &.small {
+      --modal-width: #{rem-calc(400)};
+    }
+
+    &.player-profile {
+      --avatar-size: #{rem-calc(140)};
+    }
+  }
+}

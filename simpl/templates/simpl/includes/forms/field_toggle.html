@@ -1,0 +1,10 @@
+{% load includecontents %}
+
+{% includecontents "simpl/includes/forms/field.html" %}
+{% contents class %}{{ contents.super }} toggle{% endcontents %}
+{% includecontents "simpl/includes/forms/toggle.html" %}
+{% contents help_text %} <strong>Customer Heterogeneity</strong> controls the extent
+to which different types of customers react differently.
+{% endcontents %}
+{% endincludecontents %}
+{% endincludecontents %}

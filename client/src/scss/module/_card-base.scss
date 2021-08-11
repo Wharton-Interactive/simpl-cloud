@@ -1,0 +1,435 @@
+// Cards
+//
+// This is the base component for cards.
+//
+// Weight: 22
+//
+// Style guide: cards
+
+// Note: Card variables are in base/project-theme.scss
+
+.card {
+  position: relative;
+  padding: var(--card-padding, #{rem-calc(10)});
+  border: 1px solid
+    var(
+      --card-border-color-force,
+      var(--theme-color-tint3, var(--card-border-color-default))
+    );
+  border-width: var(--card-border-width, 1px);
+  border-radius: var(--card-radius);
+  background: var(--card-bg);
+  box-shadow: var(--card-shadow-default, none);
+
+  &.priority {
+    border-color: var(--theme-color, var(--text-color));
+  }
+
+  &.fill {
+    --card-bg-shade: var(--theme-color-tint5, var(--card-bg-shade2));
+    --card-bg: var(--theme-color-alpha, var(--card-bg-shade));
+    --card-border-color: var(--theme-color-tint3, var(--text-color));
+
+    .card-heading,
+    .button {
+      color: var(--theme-color-shade);
+    }
+  }
+
+  &-padding {
+    // card padding with none of the theming
+    position: relative;
+    padding: rem-calc(10);
+  }
+
+  &-thumbnail {
+    max-height: rem-calc(180);
+    display: block;
+    margin: 0 auto;
+  }
+
+  &-button-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-set {
+    .card {
+      margin-bottom: rem-calc(10);
+    }
+  }
+
+  &-numbered {
+    margin-left: 40px;
+    margin-bottom: 40px;
+    border-top-left-radius: 0;
+  }
+
+  &-numbered-indent {
+    margin-left: 40px;
+  }
+
+  &-number {
+    position: absolute;
+    top: 0;
+    left: -40px;
+    padding: 10px;
+    width: 40px;
+    border-radius: var(--global-radius-tl) 0 0 var(--global-radius-bl);
+    font-size: rem-calc(20);
+    text-align: center;
+    font-weight: var(--global-weight-semibold);
+    background: var(--card-bg);
+    color: var(--text-color-subdued);
+    z-index: -1;
+
+    @at-root .glow-shadow & {
+      box-shadow: var(--glow-shadow);
+    }
+  }
+
+  &-offset-button {
+    position: absolute;
+    right: -10px;
+    top: -10px;
+  }
+
+  &-html-content {
+    --heading-margin-default: 0.5rem 0;
+    font-size: rem-calc(14);
+  }
+
+  .darken {
+    margin: 0 rem-calc(-10) rem-calc(-10);
+    padding: rem-calc(10) rem-calc(20);
+    border-top: 1px solid var(--card-bg-shade2);
+    background: var(--card-bg-shade);
+  }
+
+  &.is-unread {
+    --card-bg: var(--card-bg-unread, var(--unread-tint1));
+    --card-bg-shade: var(--unread-tint2);
+    position: relative;
+
+    .card-heading:before {
+      @include square(12px);
+      display: inline-block;
+      margin: 0 rem-calc(4) rem-calc(2) 0;
+      border-radius: 50%;
+      background-color: var(--unread-color);
+      vertical-align: middle;
+      content: '';
+    }
+
+    &:before {
+      position: absolute;
+      top: -1px;
+      right: -1px;
+      left: -1px;
+      height: var(--unread-border-top-height, 0);
+      background: var(--unread-top-border-bg, none);
+      border-radius: var(--global-radius-tl) var(--global-radius-tr) 0 0;
+      content: '';
+    }
+  }
+
+  &.is-inactive {
+    &.has-shadow-on-hover:hover {
+      box-shadow: none;
+    }
+
+    > * {
+      opacity: 0.8;
+    }
+  }
+
+  &[class*='theme'] {
+    padding-top: var(--card-with-theme-padding-top, var(--card-padding, #{rem-calc(10)}));
+    border-width: var(--card-with-theme-border-width, 1px);
+    &:before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background-image: var(--card-top-stripe-bg-image, none);
+      background-color: var(--theme-color, var(--brand-color-tint5));
+      border-radius: var(--card-top-stripe-radius, 0);
+      content: var(--card-with-theme-top-stripe, unset);
+    }
+
+    &.theme-low {
+      padding-top: rem-calc(10);
+
+      &:before {
+        content: none;
+      }
+    }
+
+    &.no-h-pad {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+
+  td.ellipsis,
+  td.ellipsis-two-lines,
+  td.ellipsis-three-lines {
+    max-width: rem-calc(110);
+  }
+
+  &.icon-card {
+    margin-top: calc((var(--icon-size) / 2) + #{rem-calc(10)} + 2px);
+    text-align: center;
+
+    .card-header {
+      --icon-size: #{rem-calc(60)};
+      flex-direction: column;
+      align-items: center;
+      margin: calc((var(--icon-size) / -2) - #{rem-calc(10)}) 0 0;
+
+      .icon-wrap {
+        margin-bottom: var(--global-margin);
+      }
+
+      .icon {
+        margin: 0;
+      }
+    }
+
+    .card-footer {
+      justify-content: center;
+    }
+  }
+
+  &-header {
+    --icon-size: #{rem-calc(24)};
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 rem-calc(10) 0;
+
+    + .card-details {
+      margin-top: 0;
+    }
+
+    .icon {
+      margin-left: rem-calc(10);
+    }
+  }
+
+  &-header-details {
+    flex: 1 1 100%;
+  }
+
+  &-heading {
+    grid-area: heading;
+    font-size: var(--card-heading-size, var(--font-size-base));
+
+    &.feature-size {
+      font-size: rem-calc(24);
+    }
+
+    a {
+      text-decoration: none;
+      color: var(--info-color-shade);
+
+      &:hover {
+        color: var(--brand-color);
+      }
+    }
+
+    @at-root .theme-brand-light & {
+      color: var(--theme-color);
+    }
+  }
+
+  &-heading,
+  &-var-label,
+  &-time {
+    color: var(--card-heading-default-color, var(--text-color-highlight2, var(--theme-color-shade, var(--text-color))));
+    text-transform: var(--card-text-transform, none);
+    font-family: var(--card-heading-font-family, var(--global-font-family));
+  }
+
+  &-subheading {
+    margin-bottom: rem-calc(10);
+    font-size: rem-calc(12);
+    text-transform: uppercase;
+    color: var(--theme-color, var(--text-color));
+  }
+
+  &-time {
+    font-size: var(--font-size-small);
+    white-space: nowrap;
+    opacity: 0.8;
+  }
+
+  &-list .card {
+    margin-bottom: rem-calc(10);
+  }
+
+  .well {
+    padding: rem-calc(10);
+    border: 0 none;
+    border-radius: var(--global-radius);
+  }
+
+  .button-wrap {
+    padding-bottom: 0;
+  }
+
+  &.has-shadow {
+    box-shadow: var(--card-shadow);
+  }
+
+  &.has-shadow-on-hover:hover {
+    box-shadow: var(--card-shadow);
+  }
+
+  &.heavy-shadow {
+    box-shadow: 0 0 0 8px var(--success-color-tint3);
+  }
+
+  &.glow-shadow {
+    box-shadow: var(--glow-shadow);
+    border: 0 none;
+  }
+
+  &.is-centered {
+    margin: 0 auto;
+    max-width: 600px;
+  }
+
+  &-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: rem-calc(10) 0;
+
+    .icon {
+      margin-left: auto;
+    }
+  }
+
+  &-content.has-actions {
+    display: flex;
+
+    .card-actions {
+      display: flex;
+      flex-direction: column;
+      margin-left: auto;
+
+      .button + .button {
+        margin-top: rem-calc(6);
+      }
+    }
+  }
+
+  &-media,
+  &-media .video-wrap {
+    margin-bottom: rem-calc(10);
+  }
+
+  &-footer {
+    --icon-size: #{rem-calc(18)};
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding: rem-calc(10) 0;
+    font-size: var(--font-size-small);
+
+    &-tag {
+      display: flex;
+      align-items: center;
+      font-weight: var(--global-weight-semibold);
+
+      .tag-link {
+        @include reverse-link-decoration;
+      }
+
+      .icon {
+        margin-right: rem-calc(6);
+
+        &.circles_1 {
+          width: rem-calc(14);
+        }
+        &.circles_2 {
+          width: rem-calc(22);
+        }
+        &.circles_3 {
+          width: rem-calc(30);
+        }
+        &.circles_4 {
+          width: rem-calc(40);
+        }
+      }
+    }
+  }
+
+  &[data-card-flag] {
+    &:after {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: var(--card-flag-width, auto);
+      border-radius: var(--card-flag-radius, 0 0 0 var(--global-radius-bl));
+      padding: 4px 16px;
+      font-size: rem-calc(14);
+      color: var(--card-flag-color, var(--text-color));
+      text-align: center;
+      background: var(--card-flag-bg-color, var(--caution-color-tint));
+      font-weight: var(--global-weight-semibold);
+      content: attr(data-card-flag);
+    }
+  }
+
+  @include breakpoint($smedium) {
+    &-list .card {
+      margin-bottom: rem-calc(30);
+
+      .card {
+        // nested cards
+        margin-bottom: rem-calc(10);
+      }
+    }
+
+    &.large {
+      padding: rem-calc(20);
+    }
+
+    // Increase padding for full-width cards
+    &.feature-card {
+      padding: rem-calc(30);
+
+      .card-header {
+        align-items: flex-start;
+        margin: 0 0 rem-calc(10);
+
+        + .card-media {
+          margin-top: rem-calc(20);
+        }
+      }
+
+      .card-heading {
+        font-size: rem-calc(28);
+        font-family: var(--heading-font-family);
+      }
+
+      .card-footer {
+        padding-bottom: 0;
+      }
+
+      .darken {
+        margin: 0 rem-calc(-30) rem-calc(-30);
+        padding: rem-calc(30);
+      }
+    }
+
+    .card-media,
+    .card-media .video-wrap {
+      margin-bottom: rem-calc(20);
+    }
+  }
+}

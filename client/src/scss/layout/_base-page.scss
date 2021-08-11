@@ -1,0 +1,94 @@
+// Base page layout
+//
+// This layout is the standard wrapper for object list views and object detail
+// views. The desktop sidebar action list and metadata area will fold down into
+// the footer navigation on mobile.
+//
+// Markup: ../../styleguide/src/components/base-page.hbs
+//
+// chromeless: true
+//
+// full: true
+//
+// Weight: 50
+//
+// Style guide: base-page
+
+.page {
+  margin-top: var(--page-margin-top-mobile, 0);
+
+  &-header {
+    margin-bottom: rem-calc(20);
+    padding-top: var(--page-header-padding-top-lg, #{rem-calc(30)});
+    background: var(--header-bg, transparent);
+    border-bottom: 1px solid var(--card-border-color-default);
+  }
+
+  &-header-description {
+    max-width: 74ch;
+    padding-right: 2.5rem;
+  }
+
+  &-heading {
+    margin: 0.5em 0 0.75em;
+    color: var(--primary-heading-color);
+    font-family: var(--heading-font-family);
+
+    &.has-field {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+  }
+
+  &-subheading {
+    margin: 0.5em 0 0.75em;
+    font-size: rem-calc(28);
+    color: var(--primary-heading-color);
+  }
+
+  &-subheading-2 {
+    margin: 0.5em 0 0.75em;
+    font-size: var(--font-size-small);
+    text-transform: uppercase;
+    color: var(--primary-heading-color);
+  }
+
+  &-section {
+    & + & {
+      padding-top: 36px;
+    }
+  }
+
+  @include breakpoint($nav-breakpoint) {
+    margin-top: var(--page-margin-top-desktop, 0);
+
+    &-heading {
+      margin: 0.15em 0 0.25em;
+    }
+
+    &-actions {
+      margin-top: rem-calc(40);
+
+      &.has-metadata-at-top {
+        margin-top: rem-calc(20);
+
+        .page-metadata {
+          padding-top: 0;
+          padding-bottom: rem-calc(20);
+        }
+
+        .notification-flag {
+          margin-top: rem-calc(8);
+        }
+      }
+    }
+
+    &-section {
+      & + & {
+        padding-top: 56px;
+      }
+    }
+  }
+}

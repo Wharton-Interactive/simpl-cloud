@@ -1,0 +1,20 @@
+<header class="simpl-header has-todos">
+  <div class="simpl-header-title-wrap">
+    <svg class="wharton-shield-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 478.7 535.8046">
+      <path d="M0,0V239.2C0,433.4,212,535,239.2,535.8S478.7,433.4,478.7,239.2V0Z" fill="#fcfcfc" />
+      <path d="M23.6,157.1V25.8H454.8V157H23.6Z" fill="#a90533" />
+      <path
+        d="M239.8,157.3,47.2,341.6a307.7306,307.7306,0,0,0,67.2,90.5L239.8,301.7l124.9,129A306.2144,306.2144,0,0,0,432.1,340Zm-101,215.9a42.1239,42.1239,0,0,1-42.4-41.9l-.3-.5a42.5,42.5,0,1,1,42.7,42.4ZM240,283.3a42.45,42.45,0,1,1,42.4-42.5A42.5072,42.5072,0,0,1,240,283.3Zm103.8,89.9h-.6a42.1019,42.1019,0,1,1,.6,0Z"
+        fill="#144984" />
+    </svg>
+    <div>
+      <p class="simpl-header-title">{% firstof run.game.name game_name %}</p>
+      <p class="simpl-header-subtitle">{{ run }}: {% if run.multiplayer %}Tournament{% else %}Practice{% endif %} Mode</p>
+    </div>
+  </div>
+  <div>
+    <p class="simpl-header-mini-nav">
+      <a class="simpl-header-link" href="{{ simpl_logout_url }}">Log out</a>
+    </p>
+  </div>
+</header>

@@ -1,0 +1,9 @@
+{% if contents %}
+<aside class="todo-aside" data-active="config">
+  <h2 class="todo-heading">{{ contents.title }}</h2>
+  <p class="todo-info">{% if contents.info %}{{ contents.info }}{% else %}{% endif %}</p>
+  <ul class="todo-list">
+    {{ contents }}
+  </ul>
+</aside>
+{% endif %}

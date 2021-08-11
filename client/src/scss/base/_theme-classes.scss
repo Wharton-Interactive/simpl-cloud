@@ -1,0 +1,89 @@
+// Theme classes
+//
+// Theme classes are generated using a combination of the SCSS color map in
+// `colors.scss` and a mixin in `themes.scss` to build a collection of CSS
+// variables. Here is an example of the compiled CSS:
+//
+// ```
+// .theme-success-color {
+//    --theme-color: var(--success-color);
+//    --theme-text-color: var(--knockout-color);
+//    --theme-color-tint1: var(--success-color-tint1);
+//    --theme-color-tint2: var(--success-color-tint2);
+//    --theme-color-tint3: var(--success-color-tint3);
+//    --theme-color-tint4: var(--success-color-tint4);
+//    --theme-color-tint: var(--success-color-tint);
+//    --theme-color-shade: var(--success-color-shade);
+//  }
+// ```
+//
+// CSS variable themes are used throughout the system. For example:
+// `background-color: var(--theme-color, var(--brand-color))`. `--theme-color`
+// is the CSS variable defined in a `.theme-*` class on the element itself or
+// in the parent cascade. The second value is the default fallback for when no
+// theme is present. (Do not set a root-level `--theme-color` so all of these
+// continue to work properly.)
+//
+// There is a variable on themes for text colors. `--theme-text-color` is either
+// the default text color or the knockout color. That is selected with a SCSS
+// function that tests the lightness of the base color. Here is an example of
+// how that is used:
+//
+// ```
+// table td, table th {
+//   background-color: var(--theme-color, var(--brand-color));
+//   color: var(--theme-text-color, var(--text-color));
+// }
+// ```
+//
+// All of the colors swatch rows above have one of the theme classes applied to
+// the parent element, so you can see all of the available color variations in
+// themes.
+//
+// <div class="note theme-info-color">
+//   <div class="note-content">
+//    <strong>Note:</strong> Not all themes have all of the tints to avoid the
+//     use of overlapping greys. These theme classes can be applied to buttons
+//     and tables at the component level.
+//   </div>
+// </div>
+//
+// .theme-brand-color      - brand-color
+// .theme-info-color       - info-color
+// .theme-success-color    - success-color
+// .theme-caution-color    - caution-color
+// .theme-alert-color      - alert-color
+//
+// Weight: 2
+//
+// Style guide: colors.themes
+//
+// Markup: ../../styleguide/src/components/themes.hbs
+
+// build CSS variables from SCSS Sourcemaps
+@mixin theme-classes($color-map) {
+  @each $name, $map in $color-map {
+    .theme-#{$name} {
+      --theme-color: var(--#{$name});
+      @each $varient, $hex in $map {
+        @if $varient == 'base' {
+          // use lightness to set text color
+          --theme-debug-#{$name}: #{lightness($hex)};
+          @if lightness($hex) >
+            50% or
+            $name ==
+            'success-color' or
+            $name ==
+            'caution-color'
+          {
+            --theme-text-color: var(--theme-#{$name}-text-color, var(--text-color));
+          } @else {
+            --theme-text-color: var(--theme-#{$name}-text-color, var(--tint));
+          }
+        } @else {
+          --theme-color-#{$varient}: var(--#{$name}-#{$varient});
+        }
+      }
+    }
+  }
+}

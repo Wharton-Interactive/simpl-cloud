@@ -1,0 +1,719 @@
+// Educator-led admin interface
+//
+// This layout lives in the admin, designed for Educators to build out the timing
+// structure of games. For the time being, this is desktop-only.
+//
+// Markup: ../../styleguide/src/components/educator.hbs
+//
+// chromeless: true
+//
+// full: true
+//
+// Weight: 60
+//
+// Style guide: educator
+
+:root {
+  --edu-header-height: var(--site-nav-height);
+  --game-header-bg: var(--brand-color);
+}
+
+.edu-header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 80px;
+  height: var(--edu-header-height);
+  background: var(--body-bg-color);
+  z-index: $z-index-sticky-header;
+  border-bottom: 1px solid var(--brand-color-tint4);
+
+  &-title,
+  &-subtitle,
+  &-aside-text {
+    margin: 0;
+  }
+
+  &-title {
+    font-size: var(--font-size-small);
+    color: var(--text-color-subdued);
+    font-weight: var(--global-weight-semibold);
+  }
+
+  &-aside-text {
+    text-transform: uppercase;
+    font-weight: var(--global-weight-semibold);
+  }
+
+  .walkthrough-grid {
+    height: 100%;
+  }
+}
+
+.is-below-edu-header {
+  padding-top: var(--edu-header-height);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.v-nav-page-layout {
+  padding-top: var(--edu-header-height);
+  height: 100vh;
+  display: grid;
+  grid-gap: 0;
+  grid-template-rows: min-content minmax(0, 1fr) min-content;
+
+
+  // .page-header,
+  // .copyright-text {
+  //   flex: 0 0 auto;
+  // }
+  //
+  // .edu-has-v-nav {
+  //
+  // }
+}
+
+
+.edu-pad-bleed-right {
+  margin-right: rem-calc(-20);
+
+  &.table-scroll {
+    max-width: none;
+  }
+}
+
+.edu-r-pad,
+.edu-l-pad,
+.edu-h-pad {
+  padding-right: rem-calc(20);
+  padding-left: rem-calc(20);
+}
+
+.edu-has-v-nav {
+  position: relative;
+  padding-right: rem-calc(20);
+
+  .v-nav {
+    position: absolute;
+    top: -1.25rem;
+    // 100% plus header margin-bottom plus footer height
+    height: calc(100% + 1.25rem + 50px);
+  }
+}
+
+
+@include breakpoint($nav-breakpoint) {
+  .edu-h-pad {
+    padding-right: rem-calc(40);
+    padding-left: rem-calc(40);
+
+    &.clamp-w-large {
+      max-width: 1100px;
+    }
+
+    &.has-todo-aside {
+      padding-right: calc(var(--todo-aside-width) + #{rem-calc(40)});
+    }
+  }
+
+  .edu-has-v-nav {
+    padding-right: calc(var(--todo-aside-width) + #{rem-calc(40)});
+    padding-left: 120px;
+  }
+
+  .edu-pad-bleed-right {
+    margin-right: rem-calc(-40);
+  }
+
+  .edu-r-pad {
+    padding-right: rem-calc(40);
+    padding-left: 0;
+  }
+
+  .edu-l-pad {
+    padding-left: rem-calc(40);
+    padding-right: 0;
+  }
+}
+
+.walkthrough {
+  &-grid {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  &-main {
+    grid-area: main;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: var(--global-margin);
+  }
+
+  &-aside {
+    grid-area: aside;
+
+    &.is-shade {
+      background: var(--brand-color-tint4);
+    }
+  }
+
+  &-heading {
+    font-weight: var(--global-weight-semibold);
+    margin-bottom: 0;
+    font-size: rem-calc(16);
+  }
+
+  &-help-heading {
+    --icon-size: #{rem-calc(20)};
+    display: flex;
+    align-items: center;
+    font-weight: var(--global-weight-semibold);
+    margin-bottom: rem-calc(8);
+
+    .icon {
+      margin-right: rem-calc(6);
+    }
+  }
+
+  &-subheading,
+  &-help-text {
+    font-size: var(--font-size-small);
+  }
+
+  &-help-heading,
+  &-help-text {
+    max-width: 480px;
+  }
+
+  &-fieldset {
+    margin-bottom: rem-calc(60);
+  }
+
+  &-subdued-heading {
+    font-weight: var(--global-weight-semibold);
+    font-size: rem-calc(14);
+    color: var(--text-color-subdued);
+  }
+
+  &-chapter-heading {
+    font-weight: var(--global-weight-semibold);
+    margin-bottom: 1rem;
+    font-size: rem-calc(20);
+  }
+
+  .is-v-centered {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .is-h-centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    @include bottomless;
+  }
+
+  @include breakpoint($nav-breakpoint) {
+    &-grid {
+      display: grid;
+      grid-gap: 0 rem-calc(30);
+      grid-template-columns: 5fr 4fr;
+      grid-template-areas: "main aside";
+    }
+  }
+}
+
+.event-triggers {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 340px;
+
+  > * {
+    margin: 0;
+  }
+}
+
+.synchronized-chapter-card {
+  padding: 0;
+
+  .walkthrough-aside,
+  .walkthrough-main {
+    padding: rem-calc(20);
+
+    &.pb-0 {
+      padding-bottom: 0;
+    }
+  }
+}
+
+.synchronized-chapter-item {
+  &.is-selected {
+    // padding: rem-calc(20) rem-calc(40);
+    margin-left: -10px;
+    margin-right: -10px;
+    box-shadow: var(--base-shadow);
+    background: var(--card-bg);
+    border-radius: var(--global-radius);
+    border: 1px solid var(--card-border-color-default);
+  }
+
+  .walkthrough-aside {
+    background: var(--info-color-alpha-7);
+  }
+}
+
+.edu-header-actions {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  input {
+    min-width: 240px;
+  }
+
+  .button-wrap {
+    flex: 0 0 auto;
+    flex-wrap: nowrap;
+  }
+}
+
+.player {
+  &-col {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: visible;
+    padding-bottom: rem-calc(20);
+    margin: 0 -16px;
+
+    .status-flag {
+      display: inline-flex;
+      padding: 2px 8px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: var(--global-radius);
+      font-size: rem-calc(14);
+      font-weight: var(--global-weight-normal);
+
+      &.is-finished {
+        background: var(--success-color-shade);
+        color: var(--tint);
+      }
+
+      &.is-player {
+        color: var(--text-color);
+        background: var(--info-color-alpha);
+      }
+    }
+
+    .walkthrough-help-heading:first-child {
+      margin-top: rem-calc(60);
+    }
+  }
+
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    min-height: 40px;
+
+    p {
+      margin: 0;
+    }
+
+    .button {
+      margin-right: 6px;
+    }
+
+    a {
+      color: var(--alert-color);
+      text-decoration: none;
+      font-size: var(--font-size-small);
+      font-weight: var(--global-weight-semibold);
+
+      &:hover {
+        color: var(--alert-color-shade);
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &-card {
+    padding: 0;
+
+    & + * {
+      margin-top: 2rem;
+    }
+
+    &.is-inactive-player {
+      .avatar-detail {
+        opacity: 0.5;
+      }
+    }
+  }
+
+  &-card-heading {
+    flex: 1 1 100%;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px;
+    color: var(--knockout-color);
+    font-size: rem-calc(18);
+    margin: 0;
+  }
+
+  &-card-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 0 auto;
+    white-space: nowrap;
+  }
+
+  &-card-summary,
+  &-email {
+    font-size: var(--font-size-small);
+  }
+
+  &-item {
+    --avatar-size: #{rem-calc(36)};
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: rem-calc(8);
+    border-bottom: 1px solid var(--card-border-color-default);
+
+    .field {
+      margin: 0;
+    }
+
+    &.no-checkbox,
+    &.no-checkbox:not(.is-selected):not(.is-header):hover {
+      background-color: transparent;
+
+      .avatar:before {
+        content: none;
+      }
+    }
+
+    &.is-selected {
+      background-color: var(--info-color-tint5);
+
+      .avatar:before {
+        position: absolute;
+        top: -1px;
+        right: -1px;
+        bottom: -1px;
+        left: -1px;
+        background-image: svg-url(
+          '<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><circle cx="18" cy="18" r="18" fill="#9EC2E3" /><path fill="#fff" d="M11.5 11.5h13v13.772h-13z"/><path d="M13 18.555l4.118 3.5 5.882-9" stroke="#2e373f" stroke-width="3" stroke-linejoin="round"/></svg>'
+        );
+        content: "";
+      }
+    }
+
+    &:not(.is-selected):not(.is-header):hover {
+      background-color: var(--info-color-tint5);
+
+      .avatar:before {
+        position: absolute;
+        top: -1px;
+        right: -1px;
+        bottom: -1px;
+        left: -1px;
+        background-image: svg-url(
+          '<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><circle cx="18" cy="18" r="18" fill="#9EC2E3"/><path fill="#fff" d="M11.5 11.5h13v13.772h-13z"/></svg>'
+        );
+        content: "";
+      }
+    }
+
+    .avatar-detail-meta {
+      font-weight: var(--global-weight-semibold);
+      font-size: var(--font-size-small);
+    }
+
+    &.is-header {
+      color: var(--knockout-color);
+      background-color: var(--game-header-bg);
+      border-radius: var(--global-radius-tl) var(--global-radius-tr) 0 0;
+      display: flex;
+      gap: 1rem;
+      min-height: 64px;
+
+      .button {
+        flex: 1 0 auto;
+        white-space: nowrap;
+      }
+
+      .start-button {
+        background: var(--tint);
+        color: var(--game-header-bg);
+        min-height: 34px;
+
+        &:not([disabled]):hover {
+          color: var(--tint);
+          border-color: var(--tint);
+          background: trans;
+        }
+      }
+    }
+
+    @at-root .player-list & {
+      grid-template-columns: 1fr 3fr rem-calc(96);
+    }
+  }
+
+  &-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex: 1 0 auto;
+  }
+
+  @include breakpoint($nav-breakpoint) {
+    &-grid {
+      display: grid;
+      grid-gap: 0 rem-calc(60);
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      height: 100%;
+    }
+
+    &-col {
+      padding-bottom: 0;
+    }
+
+    &-item {
+      padding-right: rem-calc(16);
+
+      &.is-header {
+        padding: rem-calc(16);
+      }
+    }
+  }
+
+  @include breakpoint($small-only) {
+    &-item {
+      .button {
+        padding-left: rem-calc(4);
+        padding-right: rem-calc(4);
+        margin-left: rem-calc(8);
+      }
+    }
+  }
+}
+
+.team-scroll {
+  overflow: auto;
+  padding: 0 16px 60px;
+  height: 100%;
+  -webkit-mask-image: svg-url(
+    '<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 1572" preserveAspectRatio="none"><path d="M379.566 1571.15H0V-.001h379.566V1571.15z" fill="url(#paint0_linear)"/><defs><linearGradient id="paint0_linear" x1="189.783" y1="3.501" x2="189.783" y2="1571" gradientUnits="userSpaceOnUse"><stop stop-opacity="0"/><stop offset=".035"/><stop offset=".955"/><stop offset="1" stop-opacity="0"/></linearGradient></defs></svg>'
+  );
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-image: svg-url(
+    '<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 1572" preserveAspectRatio="none"><path d="M379.566 1571.15H0V-.001h379.566V1571.15z" fill="url(#paint0_linear)"/><defs><linearGradient id="paint0_linear" x1="189.783" y1="3.501" x2="189.783" y2="1571" gradientUnits="userSpaceOnUse"><stop stop-opacity="0"/><stop offset=".035"/><stop offset=".955"/><stop offset="1" stop-opacity="0"/></linearGradient></defs></svg>'
+  );
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+
+  > *:first-child {
+    margin-top: 16px;
+  }
+
+  @at-root .modal-is-open & {
+    mask-image: none;
+  }
+}
+
+.settings-button,
+.toggle-button {
+  --icon-size: #{rem-calc(20)};
+  appearance: none;
+  border: 0 none;
+  background: transparent;
+  color: var(--knockout-color);
+  padding: 0;
+  margin: 0;
+  border-right: 1px solid var(--tint-alpha-30);
+  display: flex;
+  align-items: center;
+}
+
+.settings-button {
+  padding: 0;
+
+  &:before {
+    right: 2px;
+  }
+
+  &:after {
+    content: none;
+  }
+}
+
+.toggle-button {
+  --icon-size: #{rem-calc(20)};
+  border-right: 0 none;
+
+  &.is-expanded {
+    transform: rotate(180deg);
+  }
+}
+
+.player-toggle {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+
+  li:not(:last-child) {
+    &:after {
+      color: var(--text-color-subdued);
+      content: "/";
+      display: inline-block;
+      margin: 0 8px;
+    }
+  }
+
+  a {
+    display: inline-block;
+    border-radius: var(--global-radius);
+
+    &[aria-selected="true"] {
+      background: var(--info-color-shade);
+      color: var(--knockout-color);
+      padding: 0 8px;
+    }
+  }
+}
+
+.all-players-managed {
+  --icon-color: var(--info-color-tint2);
+  --icon-size: 64px;
+  background-color: var(--tint);
+  padding: rem-calc(60) rem-calc(20);
+  border-radius: var(--global-radius);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 26px;
+
+  .icon {
+    margin-bottom: 1rem;
+  }
+}
+
+.chart-filters {
+  max-width: 600px;
+}
+
+
+// Educator-led review
+//
+//
+// Markup: ../../styleguide/src/components/educator-review.hbs
+//
+// chromeless: true
+//
+// full: true
+//
+// Weight: 61
+//
+// Style guide: educator.review
+
+// Educator-led configure events
+//
+//
+// Markup: ../../styleguide/src/components/educator-events.hbs
+//
+// chromeless: true
+//
+// full: true
+//
+// Weight: 62
+//
+// Style guide: educator.events
+
+// Educator-led Leaderboard
+//
+//
+// Markup: ../../styleguide/src/components/educator-leaderboard.hbs
+//
+// chromeless: true
+//
+// full: true
+//
+// Weight: 63
+//
+// Style guide: educator.leaderboard
+
+// Educator-led Players
+//
+// Markup: ../../styleguide/src/components/educator-players.hbs
+//
+// chromeless: true
+//
+// full: true
+//
+// Weight: 64
+//
+// Style guide: educator.players
+
+// Educator-led Progress
+//
+// Markup: ../../styleguide/src/components/educator-progress.hbs
+//
+// chromeless: true
+//
+// full: true
+//
+// Weight: 65
+//
+// Style guide: educator.progress
+
+// Educator-led Reports
+//
+// Markup: ../../styleguide/src/components/educator-reports.hbs
+//
+// chromeless: true
+//
+// full: true
+//
+// Weight: 66
+//
+// Style guide: educator.reports
+
+// Educator-led Timing
+//
+// Markup: ../../styleguide/src/components/educator-timing.hbs
+//
+// chromeless: true
+//
+// full: true
+//
+// Weight: 66
+//
+// Style guide: educator.timing
+
+
+.filtered-charts {
+  margin: 2rem 0;
+
+  @include breakpoint($nav-breakpoint) {
+    display: grid;
+    grid-gap: 3rem;
+    grid-template-columns: 1fr 1fr;
+  }
+}

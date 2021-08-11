@@ -1,0 +1,185 @@
+// Utility colors for mixing.
+$white: #fff;
+$black: #000;
+
+$wi-red: #9c2136;
+$wi-blue: #2b66b2;
+$wi-light-blue: #71bbff;
+$wi-teal: #71bbff;
+$wi-green: #00c968;
+$wi-gold: #f59e0b;
+$text-color: #2e373f;
+$body-bg: #f9fafb;
+
+$brand-color: $wi-blue;
+
+$info-color: $wi-blue;
+$success-color: $wi-green;
+$caution-color: $wi-gold;
+$alert-color: $wi-red;
+
+// Adjust temperature of tints and shades globally by making
+// these non-white or black.
+$tint: $white;
+$shade: #042441;
+$knockout-color: $white;
+
+:root {
+  --theme-alert-color-text-color: var(--tint);
+  --scrollbar-color: rgba(0, 0, 0, 0.2);
+  --scrollbar-bg: var(--body-bg-color);
+  // sizing
+  --global-margin: #{rem-calc(20)};
+
+  //chrome
+  --global-radius: 3px;
+  --global-radius-tl: var(--global-radius);
+  --global-radius-tr: var(--global-radius);
+  --global-radius-br: var(--global-radius);
+  --global-radius-bl: var(--global-radius);
+
+  --base-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --feature-shadow: 0 2px 3px 0 #{rgba($info-color, 0.15)},
+    0 2px 14px 0 #{rgba($info-color, 0.08)};
+  --glow-shadow: 0 10px 15px -3px #{rgba($success-color, 0.17)},
+    0 4px 6px -2px #{rgba($success-color, 0.08)};
+  --heavy-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2),
+    0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  --brand-gradient-start: linear-gradient(90deg, #{$wi-red} 0, #{$wi-blue} 0);
+  --brand-gradient: linear-gradient(
+    90deg,
+    #{$wi-red} 18.26%,
+    #{$wi-blue} 81.94%
+  );
+  --brand-gradient-2: linear-gradient(
+    90deg,
+    #{$shade} 18.26%,
+    #{$wi-blue} 81.94%
+  );
+
+  // type
+  --global-font-family: "Lato", sans-serif;
+  --global-weight-semibold: 700;
+  --global-weight-normal: 400;
+  --font-size-base: #{rem-calc(16)};
+  --font-size-small: #{rem-calc(14)};
+
+  --code-font-family: Menlo, "Ubuntu Mono", "Lucida Console", "Courier New",
+    Courier, monospace;
+
+  // layout colors
+  --body-bg-color: #{$body-bg};
+  --body-bg-shade: #{mix($shade, $body-bg, 5%)};
+  --body-bg-shade2: #{mix($shade, $body-bg, 15%)};
+  --body-bg-shade-half: #{mix($shade, $body-bg, 2%)};
+  --body-bg-tint: #{mix($tint, $body-bg, 50%)};
+  --body-bg-image: linear-gradient(to bottom, #f9fafb, #ffffff);
+  --body-bg-image-size: 100% 100%;
+  --body-bg-image-attachment: fixed, fixed;
+  --body-bg-image-repeat: no-repeat;
+
+  --header-bg: #{$white};
+  --sidebar-background: var(--card-bg);
+  --sidebar-link-hover-bg: var(--body-bg-shade-half);
+
+  --stat-card-bg: var(--caution-color-tint5);
+  --stat-card-bg-alt1: var(--success-color-tint5);
+  --stat-card-bg-alt2: var(--info-color-tint5);
+  --stat-card-color: var(--link-color);
+  --stat-card-radius: var(--global-radius);
+
+  // nav
+  --site-nav-background: linear-gradient(90deg, #0c66b8, #042441);
+  --site-nav-background-alt: var(--site-nav-background);
+
+  --site-nav-link-color: var(--knockout-color);
+  --site-nav-link-color-hover: var(--alert-color);
+  --site-nav-link-hover-bg-color: transparent;
+  --site-nav-text-transform: none;
+  --site-nav-letter-spacing: 0;
+  --site-nav-font-size: #{rem-calc(14)};
+  --site-nav-font-size-xl: var(--site-nav-font-size);
+  --site-nav-font-size-xxl: var(--site-nav-font-size);
+  --site-nav-font-weight: var(--global-weight-semibold);
+  --site-nav-logo-color: var(--site-nav-link-color);
+  --site-nav-link-current-bg: var(--brand-color-tint5);
+  --site-nav-link-current-color: var(--site-nav-link-color-hover);
+  --site-nav-height: #{rem-calc(64)};
+  --site-nav-height-open: #{rem-calc(100)};
+  --site-nav-mobile-nav-background: var(--brand-color-tint1);
+  --site-nav-mobile-nav-thin-height: #{rem-calc(30)};
+  --site-nav-border-bottom: 1px solid var(--card-border-color-default);
+  --site-nav-button-border: 1px solid var(--card-border-color-default);
+  --subnav-background: var(--brand-color-tint5);
+  --v-nav-bg: rgba(242, 242, 242, 50%);
+  --v-nav-color: var(--text-color);
+  --v-nav-active-color: var(--v-nav-color);
+  --v-nav-active-bg: #fff;
+  --v-nav-active-bg-alt: var(--v-nav-active-bg);
+
+  // wells
+  --well-bg: var(--body-bg-shade);
+  --well-bg-shade: var(--body-bg-shade2);
+
+  --action-list-border-color: var(--body-bg-shade-half);
+
+  --action-list-link-hover-bg: var(--success-color-tint4);
+
+  --todo-aside: #fff;
+
+  // type
+  --link-color: var(--brand-color);
+  --primary-heading-color: var(--text-color);
+  --heading-color: var(--primary-heading-color);
+
+  --link-color-tint: #{mix($tint, #042441, 70%)};
+  --knockout-color: #{$knockout-color};
+
+  // state colors
+  --unread-color: var(--alert-color);
+  --unread-tint1: var(--alert-color-tint5);
+  --unread-tint2: var(--alert-color-tint4);
+  --unread-bg-color: var(--card-bg);
+  --selected-color: var(--brand-color);
+  --selected-bg-color: var(--info-color-tint5);
+  --leader-color: var(--brand-color);
+  --unread-border-top-height: 5px;
+  --unread-top-border-bg: var(--brand-gradient);
+
+  // cards
+  --card-bg: var(--knockout-color);
+  --card-bg-shade: var(--body-bg-shade-half);
+  --card-bg-shade2: var(--body-bg-shade-half);
+  --card-bg-unread: var(--card-bg);
+  --card-border-color-default: var(--body-bg-shade-half);
+  --card-shadow-default: var(--base-shadow);
+  --card-radius: var(--global-radius);
+  --card-unread-border-top: 4px solid var(--unread-color);
+
+  // modals
+  --modal-bg: var(--card-bg);
+  --modal-header-bg: var(--brand-color-tint5);
+  --modal-shade-bg: var(--body-bg-color);
+
+  // dropdowns
+  --dropdown-bg: var(--knockout-color);
+  --dropdown-border-color: var(--card-border-color-default);
+  --dropdown-hover-color: var(--card-bg-shade);
+  --dropdown-hover-bg: var(--success-color-tint4);
+
+  // chat
+  --compose-footer-color: #ecf0f3; // to match BG gradient
+  --sidebar-link-hover-bg: var(--success-color-tint4);
+
+  // carousel
+  // --carousel-arrow-img: url(#{$sprite-path}#arrow_right);
+  // --carousel-arrow-border: 0 none;
+  --carousel-arrow-bg-color-hover: var(--body-bg-shade-half);
+  // --carousel-arrow-color: var(--brand-color);
+
+  // button
+  --button-transition: background-image 0.25s ease-out,
+    box-shadow 0.25s ease-out, border-color 0.25s ease-out, color 0.25s ease-out,
+    background-color 0.25s ease-out, background-position 0.25s ease-out,
+    transform 0.25s ease-out;
+}

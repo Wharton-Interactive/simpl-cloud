@@ -1,0 +1,671 @@
+// Buttons
+//
+// These button classes can be added to buttons, inputs, or links. Without a
+// theme class applied, the default uses `var(--brand-color-tint1)` as the
+// background.
+//
+// *Note:* `info-color` is the default button style, so a `.theme-info-color`
+// class would be redundant.
+//
+// .hollow    - This is the hollow variation of the default button.
+// .knockout - For use on dark backgrounds.
+// .small     - This is the small size variation of the default button.
+// .large     - This is the large size variation of the default button.
+// .theme-success-color - Success Color
+// .theme-success-color.hollow - Success Color Hollow
+// .theme-alert-color - Alert Color
+// .theme-alert-color.hollow - Alert Color Hollow
+// .theme-alert-color.knockout - Alert Color Knockout
+// .theme-brand-color - Brand Color
+// .theme-brand-color.hollow - Brand Color Hollow
+// .alert-on-hover - This variation adds alert styles on hover.
+// .success-on-hover - This variation adds success styles on hover.
+// This can be combined with other themes.
+// .theme-brand-color.subdued - Reduce opacity by default, return opacity on hover.
+// .no-border - Hollow version of buttons with no border. Completely themable.
+// :hover     - Highlight the button when hovered.
+// :disabled  - Make the button change appearance to reflect it being disabled.
+// :active    - "Press" the button down when clicked.
+//
+// Markup: ../../styleguide/src/components/button.hbs
+//
+// Weight: 3
+//
+// Style guide: buttons
+
+.button {
+  --icon-size: #{rem-calc(20)};
+  appearance: none;
+  display: inline-flex;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+
+  margin: 0;
+  padding: var(--button-padding, #{0 rem-calc(20)});
+
+  width: auto;
+  min-height: var(--button-min-height, #{rem-calc(40)});
+
+  border: var(--button-border, 1px solid transparent);
+  border-bottom-width: var(--button-border-bottom-width, 1px);
+  border-radius: var(--button-radius, var(--global-radius));
+  background-color: var(
+    --theme-color,
+    var(--button-bg-default-color, var(--info-color))
+  );
+  background-image: var(--button-bg-image, none);
+  background-size: 105% 105%;
+  background-repeat: no-repeat;
+  background-position: var(
+    --button-initial-bg-position,
+    0 calc(var(--button-min-height, #{rem-calc(40)}) * 1.3)
+  );
+  box-shadow: var(--button-box-shadow, none);
+
+  font-size: var(--button-font-size, #{rem-calc(12)});
+  font-family: var(--button-font-family, var(--global-font-family));
+  line-height: 1.1;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: top;
+  color: var(--theme-text-color, var(--button-color-default, var(--knockout-color)));
+  text-transform: var(--button-text-transform, normal);
+  text-shadow: var(--button-text-shadow, none);
+  letter-spacing: var(--button-letter-spacing, normal);
+
+  transition: var(--button-transition, none);
+
+  cursor: pointer;
+
+  &:not(:disabled):hover,
+  &:not(:disabled):focus {
+    background-color: var(
+      --button-bg-default-color-hover,
+      var(--button-bg-default-color, transparent)
+    );
+    background-image: var(--button-bg-image-hover, none);
+    box-shadow: var(--button-box-shadow-hover, none);
+    border-color: var(--theme-color, var(--button-bg-default-color, var(--info-color)));
+    background-position: 0 0;
+    color: var(
+      --button-color-hover-force,
+      var(--theme-color, var(--button-bg-default-color, var(--info-color)))
+    );
+  }
+
+  &:disabled,
+  &.is-disabled {
+    @include disabled;
+  }
+
+  &:not(.dropdown-button):active {
+    transform: translateY(1px);
+  }
+
+  &.hollow,
+  &.no-border {
+    border-color: var(--theme-color, var(--button-bg-default-color, var(--info-color-shade)));
+    background-color: var(--button-hollow-bg-color, transparent);
+    color: var(--theme-color, var(--button-hollow-color, var(--info-color-shade)));
+
+    &:not(:disabled):hover,
+    &:not(:disabled):focus {
+      background-color: var(
+        --theme-color,
+        var(--button-bg-default-color, var(--info-color))
+      );
+      color: var(
+        --theme-text-color,
+        var(--button-color-default, var(--knockout-color))
+      );
+    }
+  }
+
+  &.strong {
+    font-weight: var(--global-weight-semibold);
+    font-size: rem-calc(14);
+  }
+
+  &.no-border {
+    padding-right: 0;
+    padding-left: 0;
+    min-width: 0;
+    border-width: 0;
+    background-color: transparent;
+    background-image: none;
+    text-align: left;
+    color: var(--theme-color, var(--text-color));
+    box-shadow: none;
+
+    &:not(:disabled):hover,
+    &:not(:disabled):focus {
+      background-image: none;
+      background-color: transparent;
+      text-decoration: underline;
+      color: var(--theme-color-shade, var(--text-color));
+      box-shadow: none;
+    }
+  }
+
+  &.knockout {
+    border: var(--button-border, 1px solid var(--knockout-color));
+    background-color: transparent;
+    font-weight: var(--global-weight-semibold);
+    color: var(--knockout-button-color, var(--knockout-color));
+
+    &:not(:disabled):hover,
+    &:not(:disabled):focus {
+      background-color: var(--knockout-button-color, var(--knockout-color));
+    }
+  }
+
+  &.small {
+    --icon-size: #{rem-calc(12)};
+    padding: 0 16px;
+    min-width: 0;
+    min-height: rem-calc(30);
+    font-size: rem-calc(12);
+  }
+
+  &.large {
+    min-height: rem-calc(50);
+    font-size: rem-calc(16);
+  }
+
+  &.full-width {
+    display: flex;
+  }
+
+  &.alert-on-hover {
+    &:not(:disabled):hover {
+      border-color: var(--alert-color);
+      background-color: var(--alert-color-tint3);
+      color: var(--alert-color-shade);
+      box-shadow: var(--button-alert-on-hover-box-shadow, none);
+    }
+  }
+
+  &.success-on-hover {
+    &:not(:disabled):hover {
+      border-color: var(--success-color);
+      background-color: var(--success-color-tint3);
+      color: var(--success-color-shade);
+      box-shadow: var(--button-success-on-hover-box-shadow, none);
+    }
+  }
+
+  &.has-ghost-icon {
+    padding: 0 8px;
+
+    &:before {
+      display: inline-flex;
+      margin: 0 4px 0 0;
+      width: 20px;
+      height: 20px;
+      background-color: var(--theme-color, var(--button-hollow-color, var(--info-color-shade)));
+      mask-image: svg-url('<svg viewBox="0 0 140 140" height="140" width="140" xmlns="http://www.w3.org/2000/svg"><g transform="matrix(5.833333333333333,0,0,5.833333333333333,0,0)"><path d="M12,0A9.01,9.01,0,0,0,3,9V20.5A3.386,3.386,0,0,0,6.25,24a3.142,3.142,0,0,0,2.4-1.144.5.5,0,0,1,.753-.012,3.493,3.493,0,0,0,5.192,0,.5.5,0,0,1,.753.012A3.142,3.142,0,0,0,17.75,24,3.386,3.386,0,0,0,21,20.5V9A9.01,9.01,0,0,0,12,0ZM10.5,11.75a1.75,1.75,0,0,1-3.5,0V9.25a1.75,1.75,0,0,1,3.5,0Zm6.5,0a1.75,1.75,0,0,1-3.5,0V9.25a1.75,1.75,0,0,1,3.5,0Z" fill="#000000" stroke="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="0"></path></g></svg>');
+      mask-position: center left;
+      mask-repeat: no-repeat;
+      mask-size: 100% 100%;
+      transition: var(--button-transition, none);
+      content: '';
+    }
+
+    &:hover:before {
+      background-color: var(--theme-text-color, var(--button-color-default, var(--knockout-color)));
+    }
+  }
+
+  .quantity {
+    font-weight: var(--global-weight-normal);
+    color: var(--theme-text-color, var(--knockout-color));
+  }
+
+  &.hollow .quantity {
+    color: var(--theme-color, var(--info-color));
+  }
+
+  &.card-button {
+    --icon-size: #{rem-calc(32)};
+    flex-direction: column;
+
+    .icon {
+      margin-bottom: rem-calc(10);
+    }
+  }
+
+  @include breakpoint($medium) {
+    width: auto;
+    min-width: rem-calc(100);
+    max-width: rem-calc(360);
+  }
+}
+
+.button:focus,
+button:focus,
+input[type='submit']:focus,
+input[type='file']:focus + .file-label-button {
+  box-shadow: var(--focus-shadow);
+  outline: none;
+}
+
+// Buttons with icons
+//
+// It's possible to attach an SVG icon to a button.
+//
+// .hollow    - This is the hollow variation of the default button.
+// .theme-success-color   - All base theme colors can be applied with the following classes.
+// .theme-info-color.hollow - Sky Blue Hollow
+// .theme-brand-color.hollow.large.append-plus - Brand color hollow, large, with an appended 'plus' symbol
+//
+// Markup: ../../styleguide/src/components/button_icons.hbs
+//
+// Weight: 2
+//
+// Style guide: buttons.icons
+
+.button:not(.icon-button) .icon,
+.button:not(.icon-button) .icon-wrap {
+  flex: 0 0 auto;
+  margin-right: 6px;
+
+  &.inside-button {
+    --icon-size: #{rem-calc(16)};
+    margin: 0 6px 0 10px;
+  }
+}
+
+.button:not(.icon-button) .icon-wrap {
+  .icon {
+    margin-right: 0;
+  }
+}
+
+.button.no-border .icon {
+  margin-left: 0;
+}
+
+.button.icon-button {
+  padding: 0;
+  min-width: 0;
+  border: none;
+
+  &:not(.circle) {
+    --icon-size: #{rem-calc(15)};
+    --icon-color: var(--theme-color, var(--info-color));
+    background-color: transparent;
+    background-image: none;
+    box-shadow: none;
+
+    &:not(:disabled):hover,
+    &:not(:disabled):focus {
+      --icon-color: var(--theme-color-shade, var(--info-color-shade));
+      background-color: transparent;
+    }
+  }
+
+  &.circle {
+    --icon-size: #{rem-calc(18)};
+    @include square(30px);
+    min-height: 0;
+    border-radius: 50%;
+    box-shadow: none;
+
+    &.large {
+      --icon-size: #{rem-calc(24)};
+      @include square(36px);
+    }
+  }
+
+  // &.append-plus {
+  //   position: relative;
+  //   --icon-color: var(--text-color);
+  //   color: var(--text-color);
+  //
+  //   &:after {
+  //     @include square(14px);
+  //     position: absolute;
+  //     right: -2px;
+  //     bottom: -2px;
+  //     border: 2px solid var(--append-plus-color, white);
+  //     border-radius: 50%;
+  //     background-color: var(--icon-color);
+  //     background-image: url('#{$sprite-path}#plus_white');
+  //     background-position: center center;
+  //     background-size: 80% 80%;
+  //     content: '';
+  //   }
+  //
+  //   &:hover {
+  //     --icon-color: var(--theme-color, var(--text-color));
+  //     background-color: transparent;
+  //   }
+  //
+  //   svg {
+  //     transition: fill 0.25s ease-out;
+  //   }
+  // }
+
+  &.subdued {
+    opacity: 0.7;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+// Close button
+//
+// Attach a close button to an element to close its direct parent.
+//
+// Markup: ../../styleguide/src/components/close_button.hbs
+//
+// Weight: 3
+//
+// Style guide: buttons.close
+
+.has-close-button,
+.has-help-button {
+  position: relative;
+
+  .close-button,
+  .help-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: $z-index-above-links;
+  }
+}
+
+.close-button,
+.help-button {
+  --icon-size: #{rem-calc(8)};
+  --icon-color: var(--close-button-color, var(--knockout-color));
+  @include square(rem-calc(20));
+  appearance: none;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--close-button-bg-color, var(--text-color));
+  font-weight: var(--global-weight-semibold);
+  color: var(--close-button-color, var(--knockout-color));
+  cursor: pointer;
+  box-shadow: none;
+
+  &:hover {
+    opacity: 0.8;
+    box-shadow: none;
+  }
+
+  &:after {
+    @include square(rem-calc(40));
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    content: '';
+  }
+
+  &.inverse {
+    background-color: var(--close-button-color, var(--knockout-color));
+    --icon-color: var(--close-button-bg-color, var(--text-color));
+    color: var(--close-button-bg-color, var(--text-color));
+  }
+
+  &.hollow {
+    border: 2px solid var(--theme-color, var(--button-bg-default-color, var(--info-color)));
+    color: var(--theme-color, var(--button-bg-default-color, var(--info-color)));
+    background-color: var(--knockout-color);
+    @include square(rem-calc(32));
+
+    &:hover {
+      background-color: var(--theme-color, var(--button-bg-default-color, var(--info-color)));
+      color: var(--knockout-color);
+    }
+  }
+}
+
+// Add button
+//
+// Attach a close button to an element to close its direct parent.
+//
+// Markup: ../../styleguide/src/components/add_button.hbs
+//
+// Weight: 4
+//
+// Style guide: buttons.add
+
+.add-button {
+  --icon-color: var(--text-color);
+  --icon-size: #{rem-calc(8)};
+  @include square(rem-calc(24));
+  appearance: none;
+  position: relative;
+  padding: 0;
+  border: 1px solid var(--card-border-color-default);
+  border-radius: 4px;
+  background-color: transparent;
+  font: 0/0 a;
+  color: transparent;
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--success-color);
+    background-color: var(--success-color-tint);
+  }
+
+  &:after {
+    position: absolute;
+    top: -8px;
+    right: -4px;
+    bottom: -8px;
+    left: -8px;
+    display: block;
+    content: '';
+  }
+}
+
+// Button Wrapper element
+//
+// The `.button-wrap` class can be applied to a wrapper around a group of
+// buttons or inline fields. It applies a flexbox context with `justify-content: flex-start;`,
+// so the default layout is to justify buttons to the left. Modifier classes
+// can be added to change various layout properties.
+//
+// In addition to the modifier classes that can be added to the `.button-wrap`
+// element, `.push-right`, `.push-left`, and `.last-on-mobile` classes can be
+// added to buttons to break items away from the defaults.
+//
+// *In most cases*, the preferred combination is `.button-wrap.align-full`, with
+// the primary action ("Save" or "Submit", for example) being listed first so
+// it appears on the left, with the optional secondary action ("Cancel") appearing
+// on the right. There are exceptions to this rule, so the utility classes below
+// can be used to create various combinations.
+//
+// .align-end     - Justify buttons to the right
+// .align-full  - Justify buttons to the left
+// .align-center - Justify buttons to the center
+// .tall - Add extra height
+// .feature-color - Highlight the actions with additional color
+// .field-max-width.align-full - Add a max width equal to the max-width of a form field
+// .reverse-on-desktop.align-full - This is useful when a primary action is first on mobile, and on the right on desktop.
+//
+// Markup: ../../styleguide/src/components/button-wrap.hbs
+//
+// Weight: 5
+//
+// Style guide: buttons.form-actions
+
+.button-wrap {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: rem-calc(10) 0;
+
+  &.align-end {
+    justify-content: flex-end;
+  }
+
+  &.align-full {
+    justify-content: space-between;
+  }
+
+  &.align-center {
+    justify-content: center;
+  }
+
+  &.stack {
+    flex-direction: column;
+
+    .button + .button {
+      margin-top: rem-calc(10);
+    }
+  }
+
+  &.field-max-width {
+    max-width: var(--max-field-width);
+  }
+
+  &.tall {
+    padding-top: rem-calc(30);
+    padding-bottom: rem-calc(30);
+  }
+
+  &.feature-color {
+    background: var(--success-color-tint5);
+    margin-top: rem-calc(36);
+    padding-right: rem-calc(30);
+    padding-left: rem-calc(30);
+
+  }
+
+  > * {
+    margin-right: var(--button-wrap-margin, #{rem-calc(10)});
+    margin-bottom: 0;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  > .field {
+    margin-right: rem-calc(30);
+  }
+
+  .checkbox label {
+    margin-bottom: 0;
+
+    &:before {
+      margin-top: 3px;
+    }
+  }
+
+  .button-help-text {
+    margin: auto rem-calc(10) auto 0;
+    font-size: var(--font-size-small);
+    font-style: italic;
+  }
+
+  .push-right {
+    margin-left: auto;
+  }
+
+  .push-left {
+    margin-right: auto;
+  }
+
+  @include breakpoint($small-only) {
+    > .has-dropdown {
+      margin-right: 0;
+      width: 100%;
+    }
+
+    &.inline-on-small {
+      > .button:not(.no-border),
+      > .has-dropdown {
+        margin-right: inherit;
+        width: auto;
+      }
+
+      > *,
+      > *:not(:last-child) {
+        margin-bottom: 0;
+      }
+    }
+
+    .last-on-mobile {
+      order: 100;
+      margin-top: rem-calc(10);
+    }
+  }
+
+  @include breakpoint($smedium) {
+    &.reverse-on-desktop {
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+
+      &.align-full {
+        justify-content: space-between;
+      }
+
+      &.align-center {
+        justify-content: center;
+      }
+
+      &.align-end {
+        justify-content: flex-start;
+      }
+    }
+  }
+}
+
+.back-button {
+  -webkit-appearance: none;
+  appearance: none;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  color: var(--info-color);
+}
+
+// .download-hover {
+//   position: relative;
+//   margin-bottom: rem-calc(16);
+//   display: block;
+//
+//   img {
+//     display: block;
+//     margin: 0 auto;
+//   }
+//
+//   &:after {
+//     display: block;
+//     width: 32px;
+//     height: 32px;
+//     position: absolute;
+//     bottom: 10px;
+//     right: 10px;
+//     background-color: var(--text-color);
+//     mask-image: url('#{$sprite-path}#download_alt');
+//     mask-position: center left;
+//     mask-repeat: no-repeat;
+//     mask-size: 100% 100%;
+//     content: '';
+//   }
+//
+//   &:hover:after {
+//     background-color: var(--success-color);
+//   }
+// }

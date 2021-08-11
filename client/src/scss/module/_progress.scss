@@ -1,0 +1,112 @@
+:root {
+  --team-heading-w: 230px;
+  --header-label-w: 60px;
+  --period-w: 42px;
+  --period-h: 50px;
+}
+
+.progress-grid {
+  width: calc(100% + 20px);
+  overflow: auto;
+
+  @include breakpoint($nav-breakpoint) {
+    width: auto;
+    max-width: 100%;
+  }
+}
+
+.pg-header {
+  display: flex;
+  padding-left: var(--team-heading-w);
+  font-size: rem-calc(12);
+}
+.pg-header-label {
+  flex: 0 0 auto;
+  width: var(--header-label-w);
+  text-transform: uppercase;
+}
+
+.pg-period {
+  flex: 0 0 auto;
+  text-align: center;
+  width: var(--period-w);
+}
+
+.pg-team {
+  display: flex;
+  align-items: center;
+  margin-bottom: rem-calc(8);
+
+  &-heading {
+    flex: 0 0 auto;
+    font-size: rem-calc(16);
+    width: var(--team-heading-w);
+    padding-right: 0.5rem;
+  }
+
+  &-progress-list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 var(--header-label-w);
+    background: var(--tint);
+  }
+
+  &-progress-item {
+    width: var(--period-w);
+    height: var(--period-h);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:after {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: var(--info-color);
+      opacity: 0.1;
+      content: '';
+    }
+
+    &.is-complete {
+      &:after {
+        opacity: 1;
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    &.is-current {
+      background: var(--info-color-tint5);
+      border-bottom: 2px solid var(--info-color);
+
+      &:after {
+        opacity: 1;
+        width: 16px;
+        height: 16px;
+      }
+
+      &:before {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 1;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: 2px solid var(--tint);
+        background: var(--info-color);
+        content: '';
+      }
+    }
+  }
+
+  &-count {
+    font-size: rem-calc(14);
+    font-weight: normal;
+    margin: 4px 0 0 0;
+    display: block;
+  }
+}

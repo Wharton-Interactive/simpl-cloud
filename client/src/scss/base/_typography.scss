@@ -1,0 +1,262 @@
+// Typography
+//
+// The font stack used throughout the system is `'Source Sans pro', sans-serif`. Currently
+// there are two weights, `400` and `700`, though more can be added via the
+// Google Font embed in `.fonts.scss` if needed.
+// [The Google Font type specimen can be found here](https://fonts.google.com/specimen/Lato).
+//
+// The default color for all type is `light-chambray`. If a
+// [theme class](/section-colors.html#kssref-colors-themes) is applied to a
+// component, depending on the lightness of the theme, the default color may be
+// changed to white.
+//
+// Markup: ../../styleguide/src/components/typography.html
+//
+// chromeless: true
+//
+// Weight: 1
+//
+// Style guide: typography
+
+body {
+  background-color: var(--body-bg-color);
+  font-family: var(--global-font-family);
+  line-height: 1.5;
+  color: var(--text-color);
+
+  background-image: var(--body-bg-image, none);
+  background-size: var(--body-bg-image-size, auto);
+  background-attachment: var(--body-bg-image-attachment, scroll);
+  background-repeat: var(--body-bg-image-repeat, repeat);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-weight: var(--global-weight-semibold);
+  line-height: 1.2;
+  color: var(--heading-color);
+  font-family: var(--heading-font-family, var(--global-font-family));
+
+  small {
+    margin-left: 6px;
+  }
+}
+
+small[class*='theme-'] {
+  color: var(--theme-color);
+}
+
+p,
+ul,
+ol {
+  margin: 0 0 1em 0;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol {
+  &[class*='theme-'] {
+    color: var(--theme-color);
+  }
+}
+
+ul,
+ol {
+  padding-left: 20px;
+}
+
+hr {
+  margin: 1em 0;
+  border: 0;
+  border-top: 1px solid var(--body-bg-shade2);
+}
+
+@mixin type-sizes($multiplier: 1) {
+  body,
+  .body-size {
+    font-size: calc(var(--font-size-normal) * #{$multiplier});
+  }
+
+  h1 {
+    font-size: rem-calc(36, $multiplier);
+  }
+
+  h2 {
+    font-size: rem-calc(32, $multiplier);
+  }
+
+  h3 {
+    font-size: rem-calc(30, $multiplier);
+  }
+
+  h4 {
+    font-size: rem-calc(26, $multiplier);
+  }
+
+  h5 {
+    font-size: rem-calc(24, $multiplier);
+  }
+
+  h6 {
+    font-size: rem-calc(20, $multiplier);
+  }
+}
+
+@include type-sizes(0.85);
+
+// additional mobile overrides of the mixin above
+h1 {
+  margin: 0;
+  font-size: rem-calc(22);
+}
+
+@include breakpoint($large) {
+  @include type-sizes(1);
+}
+
+a {
+  color: var(--link-color);
+
+  &:focus {
+    box-shadow: var(--focus-shadow);
+    outline: none;
+  }
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.small {
+  font-size: var(--font-size-small);
+}
+
+.subdued {
+  opacity: 0.7;
+}
+
+blockquote {
+  margin-left: 0;
+  padding-left: var(--global-margin);
+  border-left: 2px solid var(--text-color);
+}
+
+// Typography utility classes
+//
+// The following classes can be used to adjust the style and spacing of any text.
+//
+// .subdued - This class applies `opacity: 0.7`
+// .small - This class applies the global variable `font-size: var(--font-size-small)`
+// .mt - Adds the `var(--global-margin)` to the top of the element
+// .mt-2 - Adds `margin-top: calc(var(--global-margin) * 2)`
+// .mb - Adds `margin-bottom: var(--global-margin)`
+// .pad-right - Adds `padding-right: var(--global-margin)`
+// .text-right - Align text to the right
+// .text-center - Align text to the center
+// .float-right - Useful for images in long-form text, the element is floated to the right and reasonable margins are added.
+// .theme-important - Theme classes can be added directly to any text element to change the color.
+// .theme-critical - Apply critical color to any text.
+//
+// Markup: ../../styleguide/src/components/typography-utilities.hbs
+//
+// Weight: 2
+//
+// Style guide: typography.utilities
+
+// Horizontal rule with title
+//
+// This component is used when a heading should be displayed as a horizontal rule.
+// Any level of heading can be used, and this component is themeable.
+//
+// .theme-info-color - This component will accept theme classes.
+// .theme-success-color - theme-success-color
+//
+// Markup: ../../styleguide/src/components/hr_with_title.hbs
+//
+// Weight: 3
+//
+// Style guide: typography.hr-title
+
+.hr-with-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0;
+  font-size: var(--font-size-normal);
+  text-transform: uppercase;
+  color: var(--theme-color, var(--text-color));
+
+  &:before,
+  &:after {
+    display: block;
+    flex: 1 1 auto;
+    margin-right: rem-calc(10);
+    height: 1px;
+    background-color: var(--theme-color, var(--text-color));
+    opacity: 0.4;
+    content: '';
+  }
+
+  &:after {
+    margin-right: 0;
+    margin-left: rem-calc(10);
+  }
+
+  a {
+    color: var(--theme-color, var(--text-color));
+  }
+}
+
+button.hr-with-title {
+  appearance: none;
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-weight: var(--global-weight-semibold);
+  text-decoration: underline;
+  color: var(--theme-color, var(--text-color));
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+code,
+pre {
+  &:not(:empty) {
+    padding: 2px 4px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+    background-color: rgba($caution-color, 0.075);
+    font-family: var(--code-font-family);
+    font-size: 0.8rem;
+    color: inherit;
+  }
+}
+
+.no-bullets {
+  list-style: none;
+  padding-left: 0;
+}
+
+.ace_gutter,
+.ace_layer {
+  min-width: 62px !important;
+}
+
+.ace_scroller {
+  left: 62px !important;
+}

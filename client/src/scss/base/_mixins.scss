@@ -1,0 +1,164 @@
+@use "sass:math";
+
+// Think in pixels, but use rems. Takes a whole number.
+@function rem-calc($size, $multiplier: 1) {
+  $remSize: math.div($size, 16) * $multiplier;
+  @return #{$remSize}rem;
+}
+
+// Sets dimensions for a square (equal width x height) object.
+@mixin square($size) {
+  width: $size;
+  height: $size;
+}
+
+/// Removes trailing space at the bottom of elements.
+@mixin bottomless {
+  & > *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+@mixin disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+@mixin sr-only {
+  position: absolute;
+  left: -1000px;
+  padding: 0;
+  width: 1px;
+  height: 1px;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+// used for full-screen mobile nav
+@mixin full-screen-fixed {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: $z-index-overlays;
+  height: 100vh;
+}
+
+@mixin reverse-link-decoration {
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+@mixin expand-this-link {
+  &:after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: $z-index-abs-links;
+    content: "";
+  }
+  &:focus {
+    box-shadow: none;
+  }
+
+  &:focus:after {
+    box-shadow: var(--focus-shadow);
+  }
+}
+
+// clamp text at two lines. Webkit-only, from an old spec. But other browsers
+// simply don't get ellipsis, so the graceful degradation is acceptable.
+@mixin clamplines($lines: 2) {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+}
+
+// function to retrieve color from $colors map ie. `color(base, primary)`
+@function color($name, $variant: "base") {
+  $color: null;
+
+  // Get the variants on the map
+  $color-variants: map-get($colors, $name);
+
+  // if there are variants, use them:
+  @if $color-variants {
+    $color: map-get($color-variants, $variant);
+  }
+
+  @return $color;
+}
+
+// @each $name, $map in $colors {
+//   base stuff {}
+//
+//     @each $varient, $hex in $map {
+//       @if $varient != "base" {
+
+// build CSS variables from SCSS Sourcemaps
+@mixin cssvars($map-name: $colors) {
+  // each item in size map
+  @each $key1, $val1 in $map-name {
+    // maps require a second loop
+    @if type-of($val1) == "map" {
+      @each $key2, $val2 in $val1 {
+        @if $key2 == "base" {
+          --#{$key1}: #{$val2};
+        } @else {
+          --#{$key1}-#{$key2}: #{$val2};
+        }
+      }
+    } @else {
+      // top-level colors
+      --#{$key1}: #{$val1};
+    }
+  }
+}
+
+// Function to create an optimized svg url
+// Source: http://codepen.io/jakob-e/pen/doMoML
+// Explained: https://codepen.io/tigt/post/optimizing-svgs-in-data-uris
+@function svg-url($svg) {
+  //  Chunk up string in order to avoid
+  //  "stack level too deep" error
+  $encoded: "";
+  $slice: 2000;
+  $index: 0;
+  $loops: ceil(math.div(str-length($svg), $slice));
+
+  @for $i from 1 through $loops {
+    $chunk: str-slice($svg, $index, $index + $slice - 1);
+    // Encode (may need a few extra replacements)
+    $chunk: str-replace($chunk, '"', "'");
+    $chunk: str-replace($chunk, "<", "%3C");
+    $chunk: str-replace($chunk, ">", "%3E");
+    $chunk: str-replace($chunk, "&", "%26");
+    $chunk: str-replace($chunk, "#", "%23");
+    $encoded: #{$encoded}#{$chunk};
+    $index: $index + $slice;
+  }
+
+  @return url("data:image/svg+xml;charset=utf8,#{$encoded}");
+}
+
+//  Helper function to replace characters in a string
+@function str-replace($string, $search, $replace: "") {
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace +
+      str-replace(
+        str-slice($string, $index + str-length($search)),
+        $search,
+        $replace
+      );
+  }
+  @return $string;
+}

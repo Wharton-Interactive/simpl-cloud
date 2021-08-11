@@ -1,0 +1,255 @@
+// Toggles
+//
+// Toggles are used to convey boolean status of a field. While they won't always
+// replace checkboxes, they can be used in special cases. Toggles are slightly
+// larger on smaller screens where touch interaction is more common.
+//
+// NOTE: Toggles are not as clear as checkboxes, so we should use these sparingly.
+//
+// .no-value-label   - Hide the Yes/No label to the right of the toggle
+// .inline-block   - Place the toggle directly next to the label
+// .large-toggle   - Use this class to increase the size of the toggles everwhere. This is currently the same as the default mobile size.
+// .align-with-input - This adds top margin to be used when a toggle is horizontally aligned with a text input field.
+// .priority-label - Increase the text size of the label to indicate a higher priority
+// .short-label - Applies a min-width in order to align a group of toggles with short labels.
+// .error     - This is applied to `.field` to indiciate a field error.
+// .has-focus - This is applied to `.field` to indicate a :focus state.
+// .theme-info-color   - All base theme colors can be applied with the following classes.
+// .theme-success-color - Success Color
+// .theme-caution-color - Caution Color
+// .theme-brand-light - Brand Light Color
+// .theme-brand-color - Light Chambray
+//
+// Markup: ../../styleguide/src/components/field_toggle.hbs
+//
+// Weight: 6
+//
+// Style guide: forms.toggles
+
+:root {
+  --switch-size: 48px;
+  --toggle-bg-color: #{mix($tint, $text-color, 60%)};
+  --toggle-value-color: var(--text-color);
+  --toggle-value-font-size: 14px;
+  --v-toggle-adjust: 6px;
+  --v-toggle-value-width: 80px;
+}
+
+.field-row {
+  --v-toggle-adjust: 1px;
+}
+.toggle {
+  position: relative;
+
+  label {
+    position: relative;
+    display: block;
+    margin: 0;
+    padding: 0;
+    padding-right: calc(var(--switch-size) + var(--v-toggle-value-width) + 8px);
+    cursor: pointer;
+    font-weight: var(--global-weight-semibold);
+
+    // switch background, unchecked state
+    &:before {
+      position: absolute;
+      top: var(--v-toggle-adjust);
+      right: var(--v-toggle-value-width);
+      display: block;
+      width: var(--switch-size);
+      height: calc(var(--switch-size) / 2);
+      border-radius: calc(var(--switch-size) / 2);
+      background: var(--toggle-bg-color);
+      font-size: var(--toggle-value-font-size);
+      line-height: calc(var(--switch-size) / 2);
+      text-align: right;
+      content: attr(data-unchecked);
+    }
+  }
+
+  // toggle, unchecked state
+  label:after {
+    position: absolute;
+    top: calc(var(--v-toggle-adjust) + 2px);
+    right: calc(var(--v-toggle-value-width) + 2px + (var(--switch-size) / 2));
+    width: calc(var(--switch-size) / 2 - 4px);
+    height: calc(var(--switch-size) / 2 - 4px);
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
+    border-radius: calc(var(--switch-size) / 2 - 4px);
+    background: #fff;
+    content: '';
+    transition: 0.1s;
+  }
+
+  label:active:after {
+    width: calc(var(--switch-size) / 2);
+    transform: translateX(4px);
+  }
+
+  [type='checkbox'],
+  [type='radio'] {
+    position: absolute;
+    left: -9999px;
+
+    &:checked + label:before {
+      // background, checked state
+      background: var(--theme-color, var(--success-color));
+    }
+
+    & + label .values:before {
+      position: absolute;
+      top: var(--v-toggle-adjust);
+      width: calc(var(--v-toggle-value-width) - 10px);
+      right: 0;
+      line-height: calc(var(--switch-size) / 2);
+      font-size: var(--toggle-value-font-size);
+      font-weight: var(--global-weight-semibold);
+      text-transform: none;
+      color: var(--toggle-value-color);
+      content: attr(data-unchecked);
+    }
+
+    &:checked + label .values:before {
+      content: attr(data-checked);
+    }
+
+    // toggle, checked state
+    &:checked + label:after {
+      right: calc(var(--v-toggle-value-width) + 2px);
+    }
+
+    &:checked + label:active:after {
+      transform: translateX(0);
+    }
+
+    &:disabled + label {
+      &:before,
+      &:after {
+        opacity: 0.3;
+      }
+    }
+  }
+
+  &.disabled {
+    label,
+    .help-text {
+      opacity: 1;
+    }
+  }
+
+  &.no-value-label {
+    --v-toggle-value-width: 0.01px;
+    label:before {
+      right: 0;
+    }
+
+    label:after {
+      right: calc((var(--switch-size) / 2 - 4px) + 6px);
+    }
+
+    [type='checkbox'],
+    [type='radio'] {
+      &:checked + label:after {
+        right: 2px;
+      }
+    }
+
+    .values {
+      display: none;
+    }
+  }
+
+  &.inline-block {
+    label {
+      display: inline-block;
+    }
+  }
+
+  &.align-with-input {
+    label {
+      margin-top: rem-calc(37);
+    }
+  }
+
+  &.short-label {
+    --max-field-width: none;
+
+    label {
+      display: inline-block;
+      width: rem-calc(180);
+    }
+  }
+
+  &.priority-label {
+    --v-toggle-adjust: 6px;
+
+    label {
+      min-width: rem-calc(260);
+      font-size: rem-calc(18);
+      color: var(--primary-heading-color);
+      font-weight: var(--global-weight-semibold);
+    }
+  }
+
+  &.large-toggle {
+    --switch-size: 46px;
+  }
+
+  .help-text {
+    font-style: normal;
+    display: inline-block;
+    margin: var(--v-toggle-adjust) 0 0 0;
+    vertical-align: top;
+    padding-right: calc(var(--switch-size) + var(--v-toggle-value-width) + 8px);
+  }
+}
+
+.inline-toggles {
+  --v-toggle-adjust: 1px;
+  display: flex;
+  gap: 0 3rem;
+
+  .toggle [type=checkbox],
+  .toggle [type=radio] {
+    & + label .values:before {
+      top: auto;
+      bottom: 2px;
+      right: auto;
+      left: calc(var(--switch-size) + 10px);
+      font-weight: var(--global-weight-normal);
+    }
+
+    &:checked + label:after {
+      right: auto;
+      left: calc(var(--switch-size) /2 + 1px);
+    }
+
+    + label:active:after {
+      transform: translateX(0);
+    }
+
+    &:checked + label:active:after {
+      transform: translateX(-4px);
+    }
+  }
+
+
+  .toggle.priority-label label {
+    padding-right: 0;
+    padding-bottom: calc((var(--switch-size) / 2) + .5rem);
+    min-width: 0;
+
+    &:before {
+      top: auto;
+      bottom: 0;
+      left: 0;
+      height: calc(var(--switch-size) / 2);
+    }
+
+    &:after {
+      top: auto;
+      left: 2px;
+      bottom: 2px;
+    }
+  }
+}

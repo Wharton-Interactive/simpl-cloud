@@ -1,0 +1,18 @@
+mutation UpdateBalancing($run: ID!, $teams: [TeamInput!], $deleteTeams: [ID!]) {
+  balanceTeams(runId: $run, teams: $teams, deleteTeams: $deleteTeams) {
+    sessions
+    players {
+      id
+      session
+      name
+      email
+      inactive
+    }
+    teams {
+      id
+      session
+      name
+      players
+    }
+  }
+}

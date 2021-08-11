@@ -1,0 +1,23 @@
+.well {
+  @include bottomless;
+  margin-bottom: var(--global-margin);
+  padding: var(--global-margin);
+  border-radius: var(--global-radius);
+  background: var(--well-bg);
+
+  + .well {
+    margin-top: calc(var(--global-margin) / 2);
+  }
+
+  &.page-bg {
+    --well-bg: var(--body-bg-color);
+    border: 1px solid var(--card-border-color-default);
+  }
+}
+
+.well-headline {
+  margin-bottom: var(--global-margin);
+  font-size: rem-calc(20);
+  font-weight: var(--global-weight-bold);
+  color: var(--primary-heading-color);
+}

@@ -1,0 +1,115 @@
+<header class="page-header edu-h-pad has-todo-aside">
+  <ol class="game-stage-list">
+    <li class="game-stage-item">
+      <a
+        class="
+          game-stage-link {% if run.status == run.STATUS.SETUP %}is-this-step{% endif %}
+
+          {% if run.status > run.STATUS.SETUP %}is-complete{% endif %}
+          "
+        {% if run.status >= run.STATUS.PLAY %}
+        disabled
+        {% else %}
+        href="{% url 'simpl.players' run.id %}"
+        {% endif %}>
+        <span>Configure</span>
+      </a>
+    </li>
+    {% if not run.continuous %}
+    <li class="game-stage-item">
+      <a
+        class="
+          game-stage-link {% if run.status == run.STATUS.PREPARE %}is-this-step{% endif %}
+          "
+        href="#">
+        <span>Players Prepare</span>
+      </a>
+    </li>
+    {% endif %}
+    <li class="game-stage-item">
+      <a
+        class="
+          game-stage-link {% if run.status == run.STATUS.PLAY  and not run.ended %}is-this-step{% endif %}
+          "
+        href="{% if run.status < run.STATUS.PLAY %}{% url 'simpl.start' run.id %}{% else %}{% url 'simpl.players' run.id %}{% endif %}">
+        <span>Play</span>
+      </a>
+    </li>
+    {% if not run.continuous %}
+    <li class="game-stage-item">
+      <a
+        class="
+          game-stage-link {% if run.status == run.STATUS.DEBRIEF %}is-this-step{% endif %}
+          "
+        {% if run.status < run.STATUS.PLAY %}disabled{% endif %}
+        href="#">
+        <span>Player Reports</span>
+      </a>
+    </li>
+    {% endif %}
+    <li class="game-stage-item">
+      <a
+        class="
+          game-stage-link {% if run.ended %}is-this-step{% endif %}
+          "
+        {% if run.status < run.STATUS.PLAY %}
+        disabled
+        {% else %}
+        href="{% url 'simpl.end' run.id %}"
+        {% endif %}
+      >
+        <span>Complete</span>
+      </a>
+    </li>
+  </ol>
+
+  {% comment %}
+  <h1 class="page-heading{% if contents.after %} has-field{% endif %}">{{ contents }} {{ contents.after }}</h1>
+  <p class="page-header-description">{{ contents.description }}</p>
+  {% endcomment %}
+
+  <h1 class="page-heading{% if contents.after %} has-field{% endif %}">
+    {% if run.status == run.STATUS.SETUP %}
+    Configure
+    {% elif run.status == run.STATUS.PREPARE %}
+    Players Prepare
+    {% elif run.status == run.STATUS.PLAY and not run.ended %}
+    The Game is in Play
+    {% elif run.status == run.STATUS.DEBRIEF %}
+    Player Reports
+    {% elif run.ended %}
+    The Game is Finished
+    {% else %}
+    Run Status is not set
+    {% endif %}
+  </h1>
+  <p class="page-header-description">
+    {% if run.status == run.STATUS.SETUP %}
+    In configuration mode, players may join, and the instructor may make
+     players active or inactive. Players may not play until the instructor
+     selects <strong>Start Game</strong>.
+
+    {% elif run.status == run.STATUS.PREPARE %}
+    TODO: Prepare state copy.
+
+    {% elif run.status == run.STATUS.PLAY and not run.ended %}
+    Players are currently playing the game. To complete this game and prevent
+    further player progress, select <strong>End Game</strong>.
+
+    {% elif run.status == run.STATUS.DEBRIEF %}
+    TODO: Debrief copy
+
+    {% elif run.status == run.STATUS.COMPLETE %}
+    The Game has concluded, so players can no longer continue.
+    {% else %}
+    {% endif %}
+  </p>
+
+  {% block messages %}
+  {% for message in messages %}
+  <div class="note theme-{% if message.tags == 'error' %}alert{% else %}{{ message.tags }}{% endif %}-color mt">
+    <div class="note-content">{{ message }}</div>
+  </div>
+  {% endfor %}
+  {% endblock messages %}
+</header>

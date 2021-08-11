@@ -1,0 +1,159 @@
+// Colors
+//
+// Colors are stored in a nested SCSS map and then converted to root-level
+// CSS variables with a SCSS mixin. The first option in the swatches below shows
+// the CSS variable. Use these whenever possible to allow for access to the
+// theme overrides. Sometimes using SCSS variables directly is required, such
+// as when adding colors to css-inline SVGs. In those cases, use the `color()`
+// function, which will print the hex value in the compiled CSS.
+//
+// Note that each base color contains several numbered tints (`tint1`, etc),
+// one base `tint` and one shade. The base `tint` and `shade` are
+// manually-selected values used in theme classes.
+//
+// <div class="note theme-info-color">
+//   <div class="note-content">
+//     <strong>Note:</strong> In this site theme, many of the tints for the brand
+//     colors appear very similar. For the sake of consistency when building
+//     new CSS components, it's best to use the semantic variable names found in
+//     <code>project-theme.scss</code>. The more those variables are used
+//     correctly, the easier it will be to change the global site theme
+//     for future projects.
+//   </div>
+// </div>
+//
+// Click on any of the values below to copy the color text to your clipboard.
+//
+// brand-color      - brand-color
+// info-color       - info-color
+// success-color    - success-color
+// caution-color    - caution-color
+// alert-color      - alert-color
+// text-color       - text-color, and `$shade`. This is used to mix shades, and is also the default text color.
+// tint             - body-bg, and `$tint`. This is used to mix tints, and is applied to the background of the page.
+//
+// Markup: ../../styleguide/src/components/colors.hbs
+//
+// Weight: 2
+//
+// Style guide: colors
+
+$colors: (
+  brand-color: (
+    base: $brand-color,
+    tint1: mix($tint, $brand-color, 20%),
+    tint2: mix($tint, $brand-color, 40%),
+    tint3: mix($tint, $brand-color, 60%),
+    tint4: mix($tint, $brand-color, 80%),
+    tint5: mix($tint, $brand-color, 90%),
+    tint: mix($tint, $brand-color, 20%),
+    alpha: rgba($brand-color, 20%),
+    alpha-shade: rgba(mix($shade, $brand-color, 40%), 40%),
+    shade: mix($black, $brand-color, 30%),
+    spin: adjust-hue($brand-color, 5deg),
+  ),
+  info-color: (
+    base: $info-color,
+    tint1: mix($tint, $info-color, 20%),
+    tint2: mix($tint, $info-color, 40%),
+    tint3: mix($tint, $info-color, 60%),
+    tint4: mix($tint, $info-color, 80%),
+    tint5: mix($tint, $info-color, 90%),
+    tint6: mix($tint, $info-color, 95%),
+    tint7: mix($tint, $info-color, 97%),
+    tint8: mix($tint, $info-color, 98%),
+    tint: mix($tint, $info-color, 60%),
+    alpha: rgba($info-color, 20%),
+    alpha-40: rgba($info-color, 40%),
+    shade: mix($shade, $info-color, 20%),
+    alpha-shade: rgba(mix($shade, $info-color, 40%), 40%),
+    spin: adjust-hue($info-color, 5deg),
+  ),
+  success-color: (
+    base: $success-color,
+    tint1: mix($tint, $success-color, 20%),
+    tint2: mix($tint, $success-color, 40%),
+    tint3: mix($tint, $success-color, 60%),
+    tint4: mix($tint, $success-color, 80%),
+    tint5: mix($tint, $success-color, 90%),
+    tint: mix($tint, $success-color, 60%),
+    alpha: rgba($success-color, 20%),
+    alpha-shade: rgba(mix($shade, $success-color, 40%), 40%),
+    shade: mix($shade, $success-color, 40%),
+    spin: adjust-hue($success-color, 5deg),
+  ),
+  caution-color: (
+    base: $caution-color,
+    tint1: mix($tint, $caution-color, 20%),
+    tint2: mix($tint, $caution-color, 40%),
+    tint3: mix($tint, $caution-color, 60%),
+    tint4: mix($tint, $caution-color, 80%),
+    tint5: mix($tint, $caution-color, 90%),
+    tint: mix($tint, $caution-color, 60%),
+    alpha: rgba($caution-color, 20%),
+    alpha-shade: rgba(mix($shade, $caution-color, 40%), 40%),
+    shade: mix($shade, $caution-color, 20%),
+    spin: adjust-hue($caution-color, 5deg),
+  ),
+  alert-color: (
+    base: $alert-color,
+    tint1: mix($tint, $alert-color, 20%),
+    tint2: mix($tint, $alert-color, 40%),
+    tint3: mix($tint, $alert-color, 60%),
+    tint4: mix($tint, $alert-color, 80%),
+    tint5: mix($tint, $alert-color, 90%),
+    tint: mix($tint, $alert-color, 80%),
+    alpha: rgba($alert-color, 20%),
+    alpha-shade: rgba(mix($shade, $alert-color, 40%), 40%),
+    shade: mix($shade, $alert-color, 40%),
+    spin: adjust-hue($alert-color, 5deg),
+  ),
+  text-color: (
+    base: $text-color,
+    alpha: rgba($text-color, 90%),
+    subdued: rgba($text-color, 0.7),
+  ),
+  tint: (
+    base: $tint,
+  ),
+  normal: (
+    base: $info-color,
+    tint1: mix($tint, $info-color, 20%),
+    tint2: mix($tint, $info-color, 40%),
+    tint3: mix($tint, $info-color, 60%),
+    tint4: mix($tint, $info-color, 80%),
+    tint5: mix($tint, $info-color, 90%),
+    tint: mix($tint, $info-color, 60%),
+    alpha: rgba($info-color, 20%),
+    alpha-shade: rgba(mix($shade, $info-color, 40%), 40%),
+    shade: mix($shade, $info-color, 20%),
+  ),
+  important: (
+    base: $caution-color,
+    tint1: mix($tint, $caution-color, 20%),
+    tint2: mix($tint, $caution-color, 40%),
+    tint3: mix($tint, $caution-color, 60%),
+    tint4: mix($tint, $caution-color, 80%),
+    tint5: mix($tint, $caution-color, 90%),
+    tint: mix($tint, $caution-color, 60%),
+    alpha: rgba($caution-color, 20%),
+    alpha-shade: rgba(mix($shade, $caution-color, 40%), 40%),
+    shade: mix($shade, $caution-color, 20%),
+  ),
+  critical: (
+    base: $alert-color,
+    tint1: mix($tint, $alert-color, 20%),
+    tint2: mix($tint, $alert-color, 40%),
+    tint3: mix($tint, $alert-color, 60%),
+    tint4: mix($tint, $alert-color, 80%),
+    tint5: mix($tint, $alert-color, 90%),
+    tint: mix($tint, $alert-color, 80%),
+    alpha: rgba($alert-color, 20%),
+    alpha-shade: rgba(mix($shade, $alert-color, 40%), 40%),
+    shade: mix($shade, $alert-color, 40%),
+  ),
+);
+
+:root {
+  @include cssvars($colors);
+}

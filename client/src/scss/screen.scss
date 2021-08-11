@@ -1,0 +1,54 @@
+@use "sass:math";
+
+$asset-path: "/static/";
+// $sprite-path: "#{$asset-path}sprite.svg";
+
+$theme-asset-path: "/static/admin-theme/";
+
+@import "breakpoint-sass/stylesheets/breakpoint";
+@import "breakpoint-sass/stylesheets/breakpoint";
+@import 'tippy.js/dist/tippy.css';
+@import 'tippy.js/themes/light';
+
+
+@import "base/fonts";
+@import "base/mixins";
+
+@import "base/project-theme";
+
+:root {
+  --field-border-color: #ddd;
+  --mobile-sub-nav-expanded-bg: #fff;
+}
+
+@import "base/colors";
+
+@import "base/theme-classes";
+@include theme-classes($colors);
+
+@import "base/variables";
+@import "base/utilities";
+
+@import "base/normalize";
+@import "base/typography";
+@import "base/forms";
+@import "base/buttons";
+@import "base/tables";
+
+@import "module/avatar";
+@import "module/avatar-details";
+@import "module/card-base";
+@import "module/dropdowns";
+@import "module/icons";
+@import "module/game-stages";
+@import "module/modal";
+@import "module/note";
+@import "module/progress";
+@import "module/simpl-header";
+@import "module/toggles";
+@import "module/vertical-nav";
+@import "module/wells";
+
+@import "layout/base-page";
+@import "layout/educator";
+@import "layout/todo-aside";
