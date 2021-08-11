@@ -1,3 +1,4 @@
 include LICENSE
 prune client
-graft simpl
+recursive-include simpl/templates *.html
+graft simpl/static
