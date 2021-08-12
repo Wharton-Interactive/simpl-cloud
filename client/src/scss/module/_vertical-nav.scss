@@ -15,21 +15,17 @@
   --icon-size: #{rem-calc(16)};
   position: fixed;
   width: 60px;
-  height: 100vh;
+  height: calc(100vh - var(--site-nav-height));
+  top: var(--site-nav-height);
   left: 0px;
-  top: 0px;
+  bottom: 0;
+
   background: var(--v-nav-bg, var(--brand-color));
   border-right: 1px solid rgba(0,0,0,0.05);
   display: flex;
   flex-direction: column;
   align-items: center;
   z-index: $z-index-sticky-header;
-
-  @at-root .simpl-header + & {
-    height: calc(100vh - var(--site-nav-height));
-    top: var(--site-nav-height);
-    bottom: 0;
-  }
 
   &-list {
     list-style: none;

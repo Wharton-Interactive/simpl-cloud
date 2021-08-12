@@ -78,7 +78,9 @@ $knockout-color: $white;
   --body-bg-image-attachment: fixed, fixed;
   --body-bg-image-repeat: no-repeat;
 
-  --header-bg: #{$white};
+  --header-bg: transparent;
+  --header-border-bottom: 0 none;
+  --page-header-padding-left: 120px;
   --sidebar-background: var(--card-bg);
   --sidebar-link-hover-bg: var(--body-bg-shade-half);
 

@@ -1,24 +1,37 @@
 {% extends "simpl/base.html" %}
 {% load includecontents %}
 
+{% block arrows %}
+{% include 'simpl/includes/status-arrows.html' %}
+{% endblock arrows %}
+
+{% block heading %}The {% if not run.multiplayer and not run.continuous %}Practice{% endif %} Game is in Setup Mode{% endblock %}
+
 {% block content_inner %}
-<div class="page-header-description">
-  <form class="well" action="{{ action|default:'.' }}" method="post">
-    {% csrf_token %}
-    <h2 class="page-subheading">Start {% if not run.multiplayer and not run.continuous %}Practice{% endif %} Game</h2>
+{{ block.super }}
+<form class="prose" action="{{ action|default:'.' }}" method="post">
+  {% csrf_token %}
+  <p>While configuring, players will be able to join the lobby in preparation to
+    play. They’ll receive an email to set up an account if they haven’t.
+    <a href="{% url 'simpl.players' run.id %}">Review players to ensure the
+    class is ready</a>. When you’re ready for play to begin, select
+    <strong>Begin {% if not run.multiplayer and not run.continuous %}Practice{% endif %}
+    Game</strong> below.
+  </p>
 
-    <p class="large">When you start the game, players will be able to begin gameplay.</p>
+  <p>
+    {% if run.continuous %}
+    Game instances will be automatically created for new players added after
+    this run is started.
+    {% else %}
+    Players added after this run is started will need to be manually assigned
+    to new teams.
+    {% endif %}
+  </p>
 
-    <p>
-      {% if run.continuous %}
-      Game instances will be automatically created for new players added after this run is started.
-      {% else %}
-      Players added after this run is started will need to be manually assigned to new teams.
-      {% endif %}
-    </p>
-    <div class="button-wrap">
-      <button type="submit" class="button large" {% if not ready %} disabled{% endif %}>Start {% if not run.multiplayer and not run.continuous %}Practice{% endif %} Game</button>
-    </div>
-  </form>
-</div>
+
+  <div class="button-wrap">
+    <button type="submit" class="button large" {% if not ready %} disabled{% endif %}>Begin {% if not run.multiplayer and not run.continuous %}Practice{% endif %} Game</button>
+  </div>
+</form>
 {% endblock %}

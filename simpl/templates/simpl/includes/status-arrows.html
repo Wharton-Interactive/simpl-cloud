@@ -1,0 +1,101 @@
+<ol class="game-stage-list">
+  <li class="game-stage-item">
+    <span
+      class="
+        game-stage-link {% if run.status == run.STATUS.SETUP %}is-this-step{% endif %}
+
+        {% if run.status > run.STATUS.SETUP %}is-complete{% endif %}
+        "
+      {% if run.status >= run.STATUS.PLAY %}
+      disabled
+      {% endif %}>
+      <span>Setup</span>
+    </span>
+  </li>
+  {% if not run.continuous %}
+  <li class="game-stage-item">
+    <span
+      class="
+        game-stage-link {% if run.status == run.STATUS.PREPARE %}is-this-step{% endif %}
+        "
+      >
+      <span>Players Prepare</span>
+    </span>
+  </li>
+  {% endif %}
+  <li class="game-stage-item">
+    <span
+      class="
+        game-stage-link {% if run.status == run.STATUS.PLAY  and not run.ended %}is-this-step{% endif %}
+        "
+      >
+      <span>Play</span>
+    </span>
+  </li>
+  {% if not run.continuous %}
+  <li class="game-stage-item">
+    <span
+      class="
+        game-stage-link {% if run.status == run.STATUS.DEBRIEF %}is-this-step{% endif %}
+        "
+      {% if run.status < run.STATUS.PLAY %}disabled{% endif %}
+      >
+      <span>Player Reports</span>
+    </span>
+  </li>
+  {% endif %}
+  <li class="game-stage-item">
+    <span
+      class="
+        game-stage-link {% if run.ended %}is-this-step{% endif %}
+        "
+      {% if run.status < run.STATUS.PLAY %}
+      disabled
+      {% endif %}
+    >
+      <span>Complete</span>
+    </span>
+  </li>
+</ol>
+
+
+
+{% comment %}
+game state conditionals:
+
+{% if run.status == run.STATUS.SETUP %}
+Configure
+{% elif run.status == run.STATUS.PREPARE %}
+Players Prepare
+{% elif run.status == run.STATUS.PLAY and not run.ended %}
+The Game is in Play
+{% elif run.status == run.STATUS.DEBRIEF %}
+Player Reports
+{% elif run.ended %}
+The Game is Finished
+{% else %}
+Run Status is not set
+{% endif %}
+
+
+copy that we may need:
+{% if run.status == run.STATUS.SETUP %}
+In configuration mode, players may join, and the instructor may make
+ players active or inactive. Players may not play until the instructor
+ selects <strong>Start Game</strong>.
+
+{% elif run.status == run.STATUS.PREPARE %}
+TODO: Prepare state copy.
+
+{% elif run.status == run.STATUS.PLAY and not run.ended %}
+Players are currently playing the game. To complete this game and prevent
+further player progress, select <strong>End Game</strong>.
+
+{% elif run.status == run.STATUS.DEBRIEF %}
+TODO: Debrief copy
+
+{% elif run.status == run.STATUS.COMPLETE %}
+The Game has concluded, so players can no longer continue.
+{% else %}
+{% endif %}
+{% endcomment %}

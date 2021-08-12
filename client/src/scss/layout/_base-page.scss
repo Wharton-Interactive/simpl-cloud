@@ -20,8 +20,9 @@
   &-header {
     margin-bottom: rem-calc(20);
     padding-top: var(--page-header-padding-top-lg, #{rem-calc(30)});
+    padding-left: var(--page-header-padding-left, 0);
     background: var(--header-bg, transparent);
-    border-bottom: 1px solid var(--card-border-color-default);
+    border-bottom: var(--header-border-bottom, 1px solid var(--card-border-color-default));
   }
 
   &-header-description {

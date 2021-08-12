@@ -63,16 +63,6 @@
   display: grid;
   grid-gap: 0;
   grid-template-rows: min-content minmax(0, 1fr) min-content;
-
-
-  // .page-header,
-  // .copyright-text {
-  //   flex: 0 0 auto;
-  // }
-  //
-  // .edu-has-v-nav {
-  //
-  // }
 }
 
 
@@ -94,13 +84,6 @@
 .edu-has-v-nav {
   position: relative;
   padding-right: rem-calc(20);
-
-  .v-nav {
-    position: absolute;
-    top: -1.25rem;
-    // 100% plus header margin-bottom plus footer height
-    height: calc(100% + 1.25rem + 50px);
-  }
 }
 
 
@@ -119,7 +102,7 @@
   }
 
   .edu-has-v-nav {
-    padding-right: calc(var(--todo-aside-width) + #{rem-calc(40)});
+    padding-right: #{rem-calc(40)};
     padding-left: 120px;
   }
 

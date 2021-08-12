@@ -153,6 +153,10 @@ blockquote {
   border-left: 2px solid var(--text-color);
 }
 
+.prose {
+  max-width: 65ch;
+}
+
 // Typography utility classes
 //
 // The following classes can be used to adjust the style and spacing of any text.
