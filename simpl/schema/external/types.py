@@ -1,8 +1,7 @@
 import graphene
-from django.conf import settings
+from django import http
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-from django.utils.module_loading import import_string
 from graphene_django import DjangoObjectType
 from simpl import get_game_experience_model, get_instance_model, get_run_model, models
 
@@ -12,9 +11,22 @@ User = get_user_model()
 Instance = get_instance_model()
 GameExperience = get_game_experience_model()
 Run = get_run_model()
-get_game_play_url = import_string(
-    getattr(settings, "SIMPL_GET_GAME_PLAY_URL", "simpl.get_game_play_url")
-)
+
+
+def build_url(url: str, user=None, request: http.HttpRequest = None):
+    if url and user:
+        social = user.socialaccount_set.first()
+        if social:
+            if "?" in url:
+                url, query = url.split("?", 1)[1]
+            else:
+                query = ""
+            qd = http.QueryDict(query, mutable=True)
+            qd["provider"] = social.provider
+            url = f"{url}?{qd.urlencode()}"
+    if request:
+        url = request.build_absolute_uri(url)
+    return url
 
 
 class RunStatus(graphene.Enum):
@@ -86,8 +98,7 @@ class SimplRun(DjangoObjectType):
     @staticmethod
     def resolve_management_url(obj, info):
         url = reverse("simpl", kwargs={"pk": obj.id})
-        info.context.META
-        return info.context.build_absolute_uri(url)
+        return build_url(url, request=info.context)
 
     @staticmethod
     def resolve_players(obj, info):
@@ -120,7 +131,7 @@ class SimplUserInstance(graphene.ObjectType):
     # Actually based on a Character model instance.
     name = graphene.String()
     status = graphene.Field(InstanceStatus)
-    url = graphene.String()
+    url = graphene.Field(graphene.String, deprecation_reason="Use SimplUserRun.url")
     player_name = graphene.String()
     player_complete = graphene.Boolean()
 
@@ -131,12 +142,6 @@ class SimplUserInstance(graphene.ObjectType):
     @staticmethod
     def resolve_status(obj, info):
         obj.instance.status
-
-    @staticmethod
-    def resolve_url(obj, info):
-        url = get_game_play_url(user=obj.user, instance=obj.instance)
-        if url:
-            return info.context.build_absolute_uri(url)
 
     @staticmethod
     def resolve_player_name(obj, info):
@@ -178,10 +183,9 @@ class SimplUserRun(graphene.ObjectType):
         return obj.character
 
     @staticmethod
-    def resolve_url(obj, info):
-        url = get_game_play_url(user=obj.user, run=obj.run)
-        if url:
-            return info.context.build_absolute_uri(url)
+    def resolve_url(obj: models.Player, info):
+        url = obj.get_play_url()
+        return build_url(url, user=obj.user, request=info.context)
 
 
 class SimplUser(graphene.ObjectType):

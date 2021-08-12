@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import enum
 import uuid
-from typing import List, TYPE_CHECKING, Optional, Tuple
+from typing import TYPE_CHECKING, List, Optional, Tuple
 
 import faker
 from django.apps import apps
@@ -10,6 +10,7 @@ from django.db import models, transaction
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.functional import cached_property
+from django.utils.module_loading import import_string
 
 from simpl.conf import settings
 from simpl.utils.models import DataMixin
@@ -145,8 +146,7 @@ class BaseRun(DataMixin, models.Model):
     def completed(self):
         return self.status == self.STATUS.COMPLETE
 
-    @property
-    def game_play_url(self):
+    def get_play_url(self):
         return ""
 
     @cached_property
@@ -205,7 +205,9 @@ class BaseRun(DataMixin, models.Model):
         )
 
     def create_singleplayer_instance(self, player: BasePlayer) -> BaseInstance:
-        instance = get_instance_model()._default_manager.create(run=self, game=self.game)
+        instance = get_instance_model()._default_manager.create(
+            run=self, game=self.game
+        )
         self.add_player_to_instance(player, instance)
         return instance
 
@@ -307,7 +309,7 @@ class BaseInstance(DataMixin, models.Model):
         self.player_set.delete()
 
     @property
-    def game_play_url(self):
+    def get_play_url(self):
         return ""
 
 
@@ -429,6 +431,16 @@ class BasePlayer(models.Model):
         if self.character:
             return str(self.character)
         return "<Player>"
+
+    def get_play_url(self) -> str:
+        custom_play_url = getattr(settings, "SIMPL_GET_PLAY_URL", None)
+        if custom_play_url:
+            return import_string(custom_play_url)(self)
+        if self.character and self.character.instance:
+            return self.character.instance.get_play_url()
+        elif self.run:
+            return self.run.get_play_url()
+        return ""
 
 
 class Player(BasePlayer):

@@ -94,6 +94,17 @@ object so they can be assigned to a game Instances. A lobby can be marked as
 You can use ``Run.prepare`` to create new game ``Instance`` objects or manually
 create these.
 
+Game play URL
+~~~~~~~~~~~~~
+
+The API uses a customizable url endpoint for players. You can specify this by
+using a custom ``Player`` model and overriding ``Player.get_play_url``.
+
+Alternatively, you can specify a ``SIMPL_GET_PLAY_URL`` in your settings as a
+dotted path to a function that receives a player instance and returns the
+correct url.
+
+
 Run status
 --------------
 

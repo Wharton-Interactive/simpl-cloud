@@ -36,16 +36,3 @@ def get_player_model():
 
 def get_run_model():
     return _get_model("RUN")
-
-
-def get_game_play_url(user=None, run=None, instance=None):
-    url = ""
-    if instance:
-        url = instance.game_play_url
-    elif run:
-        url = run.game_play_url
-    if url and user:
-        social = user.socialaccount_set.first()
-        if social:
-            url += f"?provider={social.provider}"
-    return url
