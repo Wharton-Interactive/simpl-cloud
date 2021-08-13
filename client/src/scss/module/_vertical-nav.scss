@@ -14,33 +14,26 @@
   --icon-color: var(--v-nav-color);
   --icon-size: #{rem-calc(16)};
   position: fixed;
-  width: 60px;
-  height: calc(100vh - var(--site-nav-height));
-  top: var(--site-nav-height);
-  left: 0px;
+  left: 0;
+  right: 0;
   bottom: 0;
-
-  background: var(--v-nav-bg, var(--brand-color));
-  border-right: 1px solid rgba(0,0,0,0.05);
+  height: 64px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   z-index: $z-index-sticky-header;
+  background: var(--v-nav-bg, var(--brand-color));
+  border-top: 1px solid rgba(0,0,0,0.05);
 
   &-list {
     list-style: none;
     margin: 0;
     padding: 0;
     width: 100%;
+    display: flex;
+    justify-content: center;
 
     &.is-bottom {
       margin-top: auto;
-    }
-  }
-
-  &-item:first-child {
-    .v-nav-link {
-      margin-top: rem-calc(16);
     }
   }
 
@@ -49,8 +42,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 6px 6px 0;
-    padding: rem-calc(12) rem-calc(8) rem-calc(10);
+    margin: 0 6px;
+    padding: rem-calc(8);
     color: var(--v-nav-color);
     font-size: rem-calc(11);
     line-height: 1.2;
@@ -100,10 +93,30 @@
 
   @include breakpoint($nav-breakpoint) {
     --icon-size: #{rem-calc(24)};
+    height: calc(100vh - var(--site-nav-height));
     width: 80px;
+    top: var(--site-nav-height);
+    left: 0px;
+    border-right: 1px solid rgba(0,0,0,0.05);
+    flex-direction: column;
+
+    &-list {
+      flex-direction: column;
+    }
+
+    &-item:first-child {
+      .v-nav-link {
+        margin-top: rem-calc(16);
+      }
+    }
 
     &-content {
       padding-left: 80px;
+    }
+
+    &-link {
+      margin: 6px 6px 0;
+      padding: rem-calc(12) rem-calc(8) rem-calc(10);
     }
   }
 }

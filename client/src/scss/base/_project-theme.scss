@@ -80,7 +80,6 @@ $knockout-color: $white;
 
   --header-bg: transparent;
   --header-border-bottom: 0 none;
-  --page-header-padding-left: 120px;
   --sidebar-background: var(--card-bg);
   --sidebar-link-hover-bg: var(--body-bg-shade-half);
 
@@ -113,7 +112,7 @@ $knockout-color: $white;
   --site-nav-border-bottom: 1px solid var(--card-border-color-default);
   --site-nav-button-border: 1px solid var(--card-border-color-default);
   --subnav-background: var(--brand-color-tint5);
-  --v-nav-bg: rgba(242, 242, 242, 50%);
+  --v-nav-bg: #F5F5F6;
   --v-nav-color: var(--text-color);
   --v-nav-active-color: var(--v-nav-color);
   --v-nav-active-bg: #fff;
