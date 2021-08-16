@@ -10,6 +10,7 @@ if TYPE_CHECKING:
 def start_continuous_singleplayer(instance: BasePlayer, **kwargs):
     if (
         not instance.character
+        and instance.user
         and not instance.inactive
         and instance.ready
         and instance.run.status == instance.run.STATUS.PLAY
