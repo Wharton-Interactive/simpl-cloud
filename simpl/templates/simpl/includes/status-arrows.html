@@ -47,7 +47,7 @@
   <li class="game-stage-item">
     <span
       class="
-        game-stage-link {% if run.ended %}is-this-step{% endif %}
+        game-stage-link {% if run.status == run.STATUS.PLAY and run.ended %}is-this-step{% endif %}
         "
       {% if run.status < run.STATUS.PLAY %}
       disabled

@@ -174,6 +174,7 @@ class DebriefView(SimplMixin, DetailView):
 
 class EndGameplayView(SimplMixin, DetailView):
     template_name = "simpl/run_end_gameplay.html"
+    simpl_name = "end"
 
     def post(self, request, *args, **kwargs):
         if not self.run.ended:
