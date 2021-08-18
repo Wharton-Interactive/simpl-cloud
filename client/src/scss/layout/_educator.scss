@@ -272,9 +272,8 @@
 
 .player {
   &-col {
+    overflow: hidden;
     height: 100%;
-    overflow-y: auto;
-    overflow-x: visible;
     padding-bottom: rem-calc(20);
     margin: 0 -16px;
 
@@ -308,6 +307,7 @@
     align-items: center;
     flex-wrap: wrap;
     min-height: 40px;
+    padding: 0 16px;
 
     p {
       margin: 0;
@@ -701,4 +701,17 @@
     grid-gap: 3rem;
     grid-template-columns: 1fr 1fr;
   }
+}
+
+.reports-max-width {
+  max-width: 1170px;
+
+  @at-root :fullscreen & {
+    max-width: none;
+    height: 100%;
+  }
+}
+
+:fullscreen {
+  background: var(--body-bg-color);
 }

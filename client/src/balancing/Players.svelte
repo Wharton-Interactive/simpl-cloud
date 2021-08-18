@@ -14,7 +14,6 @@
 </script>
 
 <div class="player-col">
-  <div class="team-scroll">
   <div class="player-header">
     <p class="walkthrough-chapter-heading">
       {#if !inactive}
@@ -54,6 +53,7 @@
       </li>
     </ul>
   </div>
+  <div class="team-scroll">
     {#if !inactive}
       <div
         class="card player-card glow-shadow tab-pane"

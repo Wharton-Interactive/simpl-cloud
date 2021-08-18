@@ -1,21 +1,19 @@
 {% extends "simpl/base.html" %}
 
-{% block left_nav %}{% endblock %}
-{% block footer_classes %}{% endblock %}
+{% block heading %}{% if run.ended %}Restart {% else %}End{% endif %} Gameplay{% endblock %}
 
-{% block main_wrap_classes %}is-below-edu-header{% endblock %}
-{% block content_wrap_classes %}edu-h-pad has-todo-aside{% endblock %}
-{% block wizard_end_button_classes %}is-disabled{% endblock %}
+{% block arrows %}
+{% include 'simpl/includes/status-arrows.html' %}
+{% endblock arrows %}
+
 
 {% block content_inner %}
 {{ block.super }}
-<div class="page-header-description">
-  <form class="well" action="." method="post">
+  <form class="prose" action="." method="post">
     {% csrf_token %}
     {% if redirect_to %}<input type="hidden" value="{{ redirect_to }}" name="redirect_to" />{% endif %}
-    <h2 class="page-subheading">{% if run.ended %}Restart {% else %}End{% endif %} Gameplay</h2>
-
     <p class="large">When you start the game, players will be able to begin gameplay.</p>
+
 
     <p>
       {% if not run.ended %}
@@ -34,5 +32,4 @@
       </button>
     </div>
   </form>
-</div>
 {% endblock %}
