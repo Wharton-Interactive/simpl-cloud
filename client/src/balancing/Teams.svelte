@@ -71,6 +71,7 @@
 
 <div class="player-col">
   {#if !readOnly}
+    <div class="team-scroll">
     <div class="player-header">
       <p class="walkthrough-chapter-heading">Teams ({teams.length})</p>
 
@@ -140,7 +141,6 @@
         Add Team
       </button>
     </div>
-    <div class="team-scroll">
       {#each teams as team (team.id)}
         <div
           class="card player-card glow-shadow team-card"

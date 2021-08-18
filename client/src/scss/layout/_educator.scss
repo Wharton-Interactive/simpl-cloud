@@ -372,6 +372,7 @@
     --avatar-size: #{rem-calc(36)};
     display: flex;
     justify-content: space-between;
+    gap: 0.5rem;
     align-items: center;
     padding: rem-calc(8);
     border-bottom: 1px solid var(--card-border-color-default);

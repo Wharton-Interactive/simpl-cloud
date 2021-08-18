@@ -15,10 +15,13 @@
   justify-content: flex-start;
   align-items: center;
   width: 100%;
+  min-width: 0;
 
   &-meta {
     margin: 0;
     padding-left: rem-calc(10);
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     .tag-list {
       margin: 5px 0 0 0;
@@ -33,6 +36,8 @@
     display: block;
     font-weight: var(--global-weight-normal);
     opacity: 0.8;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .avatar {

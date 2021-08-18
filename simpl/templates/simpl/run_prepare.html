@@ -1,0 +1,53 @@
+{% extends "simpl/base.html" %}
+{% load includecontents %}
+
+{% block arrows %}
+{% include 'simpl/includes/status-arrows.html' %}
+{% endblock arrows %}
+
+{% block heading %}
+{% if run.status == run.STATUS.PREPARE %}
+Players Preparing
+{% else %}
+Players Prepare
+{% endif %}
+{% endblock %}
+
+{% block content_inner %}
+{{ block.super }}
+
+<form class="prose" action="{{ action|default:'.' }}" method="post">
+  {% csrf_token %}
+  {% if run.multiplayer and run.status == run.STATUS.PREPARE %}
+  <p>Players are currently in Players Prepare. Game instructions and supporting
+    materials have been made available. If you revert Players Prepare, instructions
+    and materials will be hidden.</p>
+  {% else %}
+  <p>This phase allows players to review key materials and information on how to play the game.</p>
+  {% endif %}
+
+  <div class="note theme-caution-color">
+    <svg class="icon" viewBox="0 0 17.646 17.711" xmlns="http://www.w3.org/2000/svg">
+      <path fill="none" stroke="currentColor"
+        d="M16.772 7.856L9.856.939a1.358 1.358 0 00-2 0L.939 7.856a1.358 1.358 0 000 2l6.917 6.916a1.359 1.359 0 002 0l6.916-6.916a1.525 1.525 0 000-2z"
+        stroke-miterlimit="10" />
+      <path fill="currentColor" d="M7.989 11.356h1.667v1.667H7.989zm0-6.667h1.667v5H7.989z" />
+    </svg>
+    <div class="note-content">
+      <strong>Note:</strong> Players cannot make game decisions until you Start Game.
+    </div>
+  </div>
+
+
+  <div class="button-wrap">
+    {% if run.status == run.STATUS.PREPARE %}
+    <button class="button large theme-alert-color">Revert Players Prepare</button>
+    {% if simpl_nav.prepare.next_url %}
+    <a href="{{ simpl_nav.prepare.next_url }}" class="button large">Next Step</a>
+    {% endif %}
+    {% else %}
+    <p><button class="button large">Begin Players Prepare</button></p>
+    {% endif %}
+  </div>
+</form>
+{% endblock %}
