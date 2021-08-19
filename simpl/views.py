@@ -88,6 +88,15 @@ class InitialView(SingleObjectMixin, RedirectView):
         return list(data.values())[0].url
 
 
+class StatusView(SimplMixin, DetailView):
+    simpl_name = "status"
+
+    def get_context_data(self, **kwargs):
+        kwargs["configured"] = True
+        kwargs["next_item"] = nav.get_next_item(self.run, self.simpl_name)
+        return super().get_context_data(**kwargs)
+
+
 class ConfigView(SimplMixin, DetailView):
     simpl_name = "config"
 

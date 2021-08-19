@@ -13,6 +13,7 @@ urlpatterns = [
         name="simpl-api",
     ),
     path("<int:pk>/", views.InitialView.as_view(), name="simpl"),
+    path("<int:pk>/status/", views.StatusView.as_view(), name="simpl.status"),
     path("<int:pk>/configure/", views.ConfigView.as_view(), name="simpl.config"),
     path("<int:pk>/team/", views.TeamView.as_view(), name="simpl.team"),
     path("<int:pk>/players/", views.PlayersView.as_view(), name="simpl.players"),

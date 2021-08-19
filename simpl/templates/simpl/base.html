@@ -43,6 +43,7 @@
       <nav class="v-nav">
         <ul class="v-nav-list">
           {% for nav_key, item in simpl_nav.items %}
+          {% if not item.hidden %}
           <li class="v-nav-item">
             <a {% if item.status != NAV_DISABLED %}href="{{ item.url }}" {% endif %}class="v-nav-link"
               {% if nav_key == simpl_current_nav %}aria-current="page" {% endif %}>
@@ -50,6 +51,7 @@
               <span class="v-nav-text">{{ item.name }}</span>
             </a>
           </li>
+          {% endif %}
           {% endfor %}
         </ul>
       </nav>

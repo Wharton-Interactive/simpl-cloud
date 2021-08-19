@@ -26,6 +26,7 @@ class NavItem:
     hint: str = ""
     url: str = None
     next_url: str = None
+    hidden: bool = False
 
 
 NavType = NewType("NavType", Dict[str, NavItem])
@@ -74,25 +75,29 @@ def get_nav(run: Run):
     return nav_func(run)
 
 
-def get_next_url(run: Run, current_name: str):
-    available_urls = dict(
-        (key, item.url)
+def get_next_item(run: Run, current_name: str):
+    available_items = dict(
+        (key, item)
         for key, item in get_nav(run).items()
         if item.status != NavStatus.DISABLED and item.url
     )
-    url_names = list(available_urls)
+    item_names = list(available_items)
     next_name = None
     try:
-        current_index = url_names.index(current_name)
+        current_index = item_names.index(current_name)
     except ValueError:
-        # Fall back to the first available url.
-        return list(available_urls.values())[0]
+        # Fall back to the first available item.
+        return list(available_items.values())[0]
     if current_index != -1:
         if is_configuring(run):
             # Get the next item
             try:
-                next_name = url_names[current_index + 1]
-                return available_urls[next_name]
+                next_name = item_names[current_index + 1]
+                return available_items[next_name]
             except IndexError:
                 pass
-        return available_urls[current_name]
+        return available_items[current_name]
+
+
+def get_next_url(run: Run, current_name: str):
+    return get_next_item(run, current_name).url

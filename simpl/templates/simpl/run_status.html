@@ -1,0 +1,18 @@
+{% extends "simpl/base.html" %}
+{% load includecontents %}
+
+{% block heading %}Game Status{% endblock %}
+
+{% block arrows %}
+{% include 'simpl/includes/status-arrows.html' %}
+{% endblock arrows %}
+
+{% block content_inner %}
+{{ block.super }}
+<div class="prose">
+<p>The game is in <strong>{{ run.get_status_display }}</strong> mode. You can review your setup and advance to the next step.</p>
+<p>
+  <a href="{{ next_item.url }}" class="button large">{{ next_item.name }}</a>
+</p>
+</div>
+{% endblock %}
