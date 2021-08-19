@@ -6,9 +6,7 @@
 
         {% if run.status > run.STATUS.SETUP %}is-complete{% endif %}
         "
-      {% if run.status >= run.STATUS.PLAY %}
-      disabled
-      {% endif %}>
+    >
       <span>Setup</span>
     </span>
   </li>
@@ -17,6 +15,7 @@
     <span
       class="
         game-stage-link {% if run.status == run.STATUS.PREPARE %}is-this-step{% endif %}
+        {% if run.status > run.STATUS.PREPARE %}is-complete{% endif %}
         "
       >
       <span>Players Prepare</span>
@@ -27,6 +26,7 @@
     <span
       class="
         game-stage-link {% if run.status == run.STATUS.PLAY  and not run.ended %}is-this-step{% endif %}
+        {% if run.status > run.STATUS.PLAY %}is-complete{% endif %}
         "
       >
       <span>Play</span>
@@ -37,8 +37,8 @@
     <span
       class="
         game-stage-link {% if run.status == run.STATUS.DEBRIEF %}is-this-step{% endif %}
+        {% if run.status > run.STATUS.DEBRIEF %}is-complete{% endif %}
         "
-      {% if run.status < run.STATUS.PLAY %}disabled{% endif %}
       >
       <span>Player Reports</span>
     </span>
@@ -47,11 +47,9 @@
   <li class="game-stage-item">
     <span
       class="
-        game-stage-link {% if run.status == run.STATUS.PLAY and run.ended %}is-this-step{% endif %}
+        game-stage-link {% if run.status == run.STATUS.COMPLETE %}is-this-step{% endif %}
+        {% if run.status > run.STATUS.COMPLETE %}is-complete{% endif %}
         "
-      {% if run.status < run.STATUS.PLAY %}
-      disabled
-      {% endif %}
     >
       <span>Complete</span>
     </span>

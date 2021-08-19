@@ -38,9 +38,9 @@ Hide Player Reports
 {% endif %}
 
 
-<form method="POST" action="." class="button-wrap">
+<form method="POST" action="." class="button-wrap align-full">
   {% csrf_token %}
-  <input type="hidden" value="{% firstof redirect_to request.url %}" name="redirect_to" />
+  {% if redirect_to %}<input type="hidden" value="{{ redirect_to }}" name="redirect_to" />{% endif %}
   <button type="submit" class="button large {% if run.status != run.STATUS.PLAY %}theme-alert-color{% endif %}">
     {% if run.status == run.STATUS.PLAY %}
     Publish Player Reports
@@ -48,6 +48,8 @@ Hide Player Reports
     Hide Player Reports
     {% endif %}
   </button>
+
+  <a class="button no-border large" href="#">Rewind to Play mode</a>
 </form>
 </div>
 {% endblock %}
