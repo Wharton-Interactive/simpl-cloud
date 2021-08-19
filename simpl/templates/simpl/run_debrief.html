@@ -27,7 +27,7 @@ Hide Player Reports
   </svg>
   <div class="note-content">
     <strong>Note:</strong> If the game is still in play, some players may be making decisions.
-    Select End Game to end the gameplay for all players.
+    Advance to <strong>End Game</strong> to end the gameplay for all players.
   </div>
 </div>
 {% else %}
@@ -49,7 +49,10 @@ Hide Player Reports
     {% endif %}
   </button>
 
-  <a class="button no-border large" href="#">Rewind to Play mode</a>
+  {% if run.status == run.STATUS.PLAY %}
+  <a class="button no-border large" href="#">Rewind to Players Prepare</a>
+  {% endif %}
+
 </form>
 </div>
 {% endblock %}
