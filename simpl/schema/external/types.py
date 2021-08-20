@@ -109,7 +109,7 @@ class SimplRun(DjangoObjectType):
     @staticmethod
     def resolve_players_unassigned(obj, info):
         users = User.objects.filter(player__run=obj, player__character=None)
-        return utils.get_social_ids(*users)
+        return utils.get_auth0_ids(*users)
 
     @staticmethod
     def resolve_player_count(obj, info):
