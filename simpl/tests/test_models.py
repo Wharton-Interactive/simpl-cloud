@@ -1,3 +1,4 @@
+import ipdb
 from simpl.models import BaseRun
 from django.test import TestCase
 from django.apps import apps
@@ -108,13 +109,13 @@ class RunTest(TestCase):
 
     def test_continuous(self):
         run = baker.make(get_run_model(), continuous=True)
-        player = baker.make(get_player_model(), run=run)
+        player = baker.make(get_player_model(), run=run, user__username="p1")
         self.assertEqual(run.instance_set.count(), 0)
 
         run.status = run.STATUS.PLAY
-        player = baker.make(get_player_model(), run=run)
+        run.save()
+        player = baker.make(get_player_model(), run=run, user__username="p2")
         self.assertEqual(run.instance_set.count(), 1)
-        player.refresh_from_db()
         instance = run.instance_set.get()
         self.assertEqual(player.character.instance, instance)
         self.assertEqual(instance.status, instance.STATUS.PLAY)
