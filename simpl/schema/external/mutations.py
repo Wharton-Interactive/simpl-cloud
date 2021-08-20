@@ -36,6 +36,25 @@ class SimplRun(graphene.Mutation):
         return run
 
 
+class SimplClass(graphene.Mutation):
+    """
+    Create or update a Simpl Class.
+    """
+
+    class Arguments:
+        id = graphene.UUID(required=True)
+        name = graphene.String(required=True)
+
+    Output = graphene.UUID
+
+    @staticmethod
+    @simpl_token_required
+    def mutate(root, info, name, id):
+        return models.Class.objects.update_or_create(id=id, defaults=dict(name=name))[
+            0
+        ].id
+
+
 class SimplPlayers(graphene.Mutation):
     """
     Add Players to (or remove Players from) a Run.

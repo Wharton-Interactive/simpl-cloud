@@ -1,12 +1,13 @@
 import json
 from unittest import mock
+import uuid
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 from model_bakery import baker
 from simpl import get_run_model
-from simpl.models import APIToken
+from simpl.models import APIToken, Class
 from simpl.schema import schema
 
 
@@ -88,3 +89,34 @@ class PlayersMutationTestCase(TestCase):
         player2 = run.player_set.get(user__email="tester2@example.com")
         self.assertFalse(player.inactive)
         self.assertTrue(player2.inactive)
+
+
+class ClassMutationTestCase(TestCase):
+    def test_add_class(self):
+        class_id = str(uuid.uuid4())
+        context = FakeContext()
+        context.user = baker.make(get_user_model(), is_superuser=True)
+        result = schema.execute(
+            """mutation ($id: UUID!, $name: String!) {
+                class(id: $id, name: $name)
+            }""",
+            variable_values={"id": class_id, "name": "Test class"},
+            context_value=context,
+        )
+        self.assertEqual(result.data["class"], class_id)
+        self.assertEqual(Class.objects.get().name, "Test class")
+
+    def test_update_class(self):
+        simpl_class = baker.make(Class)
+        context = FakeContext()
+        context.user = baker.make(get_user_model(), is_superuser=True)
+        result = schema.execute(
+            """mutation ($id: UUID!, $name: String!) {
+                class(id: $id, name: $name)
+            }""",
+            variable_values={"id": simpl_class.id.hex, "name": "New name"},
+            context_value=context,
+        )
+        self.assertEqual(result.data["class"], str(simpl_class.id))
+        simpl_class.refresh_from_db()
+        self.assertEqual(Class.objects.get().name, "New name")
