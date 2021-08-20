@@ -63,6 +63,14 @@ class GameExperience(BaseGameExperience):
         swappable = "SIMPL_GAME_EXPERIENCE"
 
 
+class Class(models.Model):
+    id = models.UUIDField(primary_key=True)
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
+
 class BaseRun(DataMixin, models.Model):
     class STATUS(enum.IntEnum):
         SETUP = 0
@@ -83,6 +91,9 @@ class BaseRun(DataMixin, models.Model):
 
     game: Optional[GameExperience] = models.ForeignKey(
         settings.SIMPL_GAME_EXPERIENCE, on_delete=models.CASCADE, blank=True, null=True
+    )
+    simpl_class: Optional[Class] = models.ForeignKey(
+        Class, on_delete=models.SET_NULL, blank=True, null=True
     )
     name = models.CharField(
         max_length=100, help_text="Name of the run, for administration use."
