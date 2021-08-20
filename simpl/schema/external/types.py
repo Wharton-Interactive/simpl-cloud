@@ -117,7 +117,7 @@ class SimplRun(DjangoObjectType):
 
     @staticmethod
     def resolve_managers(obj, info):
-        return utils.get_auth0_ids(obj.managers.all())
+        return utils.get_auth0_ids(*obj.managers.all())
 
     @staticmethod
     def resolve_instances(obj, info):
