@@ -7,7 +7,7 @@ from django.test import TestCase
 from django.urls import reverse
 from model_bakery import baker
 from simpl import get_run_model
-from simpl.models import APIToken, Class
+from simpl.models import APIToken, Class, Run
 from simpl.schema import schema
 
 
@@ -108,6 +108,7 @@ class ClassMutationTestCase(TestCase):
 
     def test_update_class(self):
         simpl_class = baker.make(Class)
+        run = baker.make(Run, simpl_class=simpl_class)
         context = FakeContext()
         context.user = baker.make(get_user_model(), is_superuser=True)
         result = schema.execute(
@@ -120,3 +121,15 @@ class ClassMutationTestCase(TestCase):
         self.assertEqual(result.data["class"], str(simpl_class.id))
         simpl_class.refresh_from_db()
         self.assertEqual(Class.objects.get().name, "New name")
+
+        result = schema.execute(
+            """
+            query ($runId: ID!) {
+                run(id: $runId) {
+                    class
+                }
+            }""",
+            variable_values={"runId": run.id},
+            context_value=context,
+        )
+        self.assertEqual(result.data["run"]["class"], "New name")

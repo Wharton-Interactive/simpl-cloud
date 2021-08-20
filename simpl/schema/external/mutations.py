@@ -18,6 +18,7 @@ class SimplRun(graphene.Mutation):
     class Arguments:
         name = graphene.String(required=True)
         game_id = graphene.Int()
+        class_id = graphene.UUID()
         multiplayer = graphene.Boolean()
         continuous = graphene.Boolean()
 
@@ -25,13 +26,23 @@ class SimplRun(graphene.Mutation):
 
     @staticmethod
     @simpl_token_required
-    def mutate(root, info, name, game_id=None, multiplayer=False, continuous=False):
-        if game_id:
-            game = GameExperience.objects.get(id=game_id)
-        else:
-            game = None
+    def mutate(
+        root,
+        info,
+        name,
+        game_id=None,
+        class_id=None,
+        multiplayer=False,
+        continuous=False,
+    ):
+        game = GameExperience.objects.get(id=game_id) if game_id else None
+        simpl_class = models.Class.objects.get(id=class_id) if class_id else None
         run = Run.objects.create(
-            name=name, game=game, multiplayer=multiplayer, continuous=continuous
+            name=name,
+            game=game,
+            simpl_class=simpl_class,
+            multiplayer=multiplayer,
+            continuous=continuous,
         )
         return run
 

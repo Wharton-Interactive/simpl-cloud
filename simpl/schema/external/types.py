@@ -89,6 +89,7 @@ class SimplRun(DjangoObjectType):
     )
     instances = graphene.List(SimplInstance)
     status = graphene.Field(RunStatus)
+    class_ = graphene.Field(graphene.String, name="class")
 
     class Meta:
         model = Run
@@ -121,6 +122,10 @@ class SimplRun(DjangoObjectType):
     @staticmethod
     def resolve_instances(obj, info):
         return Instance._default_manager.filter(run=obj)
+
+    @staticmethod
+    def resolve_class_(obj, info):
+        return obj.simpl_class.name if obj.simpl_class else ""
 
 
 class SimplUserInstance(graphene.ObjectType):
