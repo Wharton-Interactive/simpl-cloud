@@ -1,9 +1,8 @@
-import ipdb
-from simpl.models import BaseRun
+import uuid
 from django.test import TestCase
 from django.apps import apps
 from model_bakery import baker
-from simpl import get_run_model, get_player_model
+from simpl import get_game_experience_model, get_run_model, get_player_model
 
 
 class RunTest(TestCase):
@@ -119,3 +118,26 @@ class RunTest(TestCase):
         instance = run.instance_set.get()
         self.assertEqual(player.character.instance, instance)
         self.assertEqual(instance.status, instance.STATUS.PLAY)
+
+    def test_version_sorting(self):
+        GameExperience = get_game_experience_model()
+        grouped_id = uuid.uuid4()
+        for version in ["1.9", "1.10-copy", "1.10", "1.10a1", ""]:
+            baker.make(GameExperience, experience_id=grouped_id, version=version)
+        stand_alone_game = baker.make(
+            GameExperience, experience_id=uuid.uuid4(), version="1.5"
+        )
+        non_experience_id_game = baker.make(
+            GameExperience, experience_id=None, version="2"
+        )
+
+        games = GameExperience._default_manager.from_experience_id(grouped_id)
+        self.assertEqual(
+            [game.version for game in games], ["1.10a1", "", "1.10-copy", "1.9", "1.10"]
+        )
+
+        self.assertFalse(games[0].is_latest)
+        self.assertTrue(games[-1].is_latest)
+
+        self.assertTrue(stand_alone_game.is_latest)
+        self.assertTrue(non_experience_id_game.is_latest)

@@ -38,6 +38,8 @@ class BaseGameExperience(models.Model):
         "If unset, this become configurable at the run level.",
     )
 
+    objects = managers.GameExperienceManager()
+
     class Meta:
         abstract = True
         ordering = "-date_created"
@@ -50,6 +52,13 @@ class BaseGameExperience(models.Model):
     @staticmethod
     def new_instance_name():
         return " ".join(fake.words(3)).title()
+
+    @cached_property
+    def is_latest(self):
+        if not self.experience_id:
+            return True
+        games = type(self)._default_manager.from_experience_id(self.experience_id)
+        return self == games[-1] if games else True
 
 
 class GameExperience(BaseGameExperience):
