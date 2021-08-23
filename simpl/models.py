@@ -39,6 +39,7 @@ class BaseGameExperience(models.Model):
     )
 
     objects = managers.GameExperienceManager()
+    _default_manager: managers.GameExperienceManager
 
     class Meta:
         abstract = True
