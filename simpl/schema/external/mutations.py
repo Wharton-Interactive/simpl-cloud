@@ -1,6 +1,7 @@
 from typing import Sequence
 
 import graphene
+import graphql
 from simpl import get_game_experience_model, get_run_model, models
 
 from . import types
@@ -17,7 +18,7 @@ class SimplRun(graphene.Mutation):
 
     class Arguments:
         name = graphene.String(required=True)
-        game_id = graphene.Int()
+        game_id = graphene.UUID()
         class_id = graphene.UUID()
         multiplayer = graphene.Boolean()
         continuous = graphene.Boolean()
@@ -35,7 +36,13 @@ class SimplRun(graphene.Mutation):
         multiplayer=False,
         continuous=False,
     ):
-        game = GameExperience.objects.get(id=game_id) if game_id else None
+        if game_id:
+            games = GameExperience._default_manager.from_experience_id(game_id)
+            if not games:
+                raise graphql.GraphQLError("No game found")
+            game = games[-1]
+        else:
+            game = None
         simpl_class = models.Class.objects.get(id=class_id) if class_id else None
         run = Run.objects.create(
             name=name,

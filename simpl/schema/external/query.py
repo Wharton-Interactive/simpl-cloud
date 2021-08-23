@@ -24,13 +24,12 @@ class Query(graphene.ObjectType):
     runs = graphene.List(
         types.SimplRun,
         statuses=graphene.List(types.RunStatus),
-        game_id=graphene.ID(),
-        description=f"Return all Runs. Can be filtered by game ID or runs in specific statuses.\n\nValid statuses are: {', '.join(RUN_STATUSES)}",
+        game_id=graphene.UUID(),
+        description=f"Return all Runs. Can be filtered by game ID and/or runs in specific statuses.\n\nValid statuses are: {', '.join(RUN_STATUSES)}",
     )
     games = graphene.List(
         types.SimplGame,
-        run_statuses=graphene.List(types.RunStatus),
-        description=f"Return Game Experiences. Can be filtered to only those with runs in specific statuses.\n\nValid statuses are: {', '.join(RUN_STATUSES)}",
+        description=f"Return Game Experiences.",
     )
 
     @staticmethod
@@ -58,13 +57,32 @@ class Query(graphene.ObjectType):
         if statuses:
             runs = runs.filter(status__in=statuses)
         if game_id:
-            runs = runs.filter(game=game_id)
+            runs = runs.filter(game__experience_id=game_id)
         return runs
 
     @staticmethod
     @simpl_token_required
-    def resolve_games(root, info, run_statuses=()):
-        games = GameExperience._default_manager.all()
-        if run_statuses:
-            games = games.filter(run__status__in=run_statuses).distinct()
+    def resolve_games(root, info):
+        games = []
+        current_experience_id = None
+        current_group = []
+        for game in (
+            GameExperience._default_manager.exclude(experience_id=None)
+            .order_by("experience_id")
+            .iterator()
+        ):
+            if game.experience_id != current_experience_id:
+                if current_group:
+                    games.append(
+                        GameExperience._default_manager.sort_games_by_version(
+                            current_group
+                        )[-1]
+                    )
+                    current_group = []
+                current_experience_id = game.experience_id
+            current_group.append(game)
+        if current_group:
+            games.append(
+                GameExperience._default_manager.sort_games_by_version(current_group)[-1]
+            )
         return games

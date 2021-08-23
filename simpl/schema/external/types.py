@@ -221,13 +221,18 @@ class SimplGame(DjangoObjectType):
     A Simpl game experience
     """
 
+    id = graphene.UUID()
     runs = graphene.List(SimplRun)
 
     class Meta:
         model = GameExperience
         skip_registry = True
-        fields = ["id"]
+        fields = ["name"]
 
     @staticmethod
     def resolve_runs(obj, info):
         return obj.run_set.all()
+
+    @staticmethod
+    def resolve_id(obj, info):
+        return obj.experience_id
