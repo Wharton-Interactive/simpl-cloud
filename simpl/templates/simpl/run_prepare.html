@@ -1,6 +1,10 @@
 {% extends "simpl/base.html" %}
 {% load includecontents %}
 
+{% block arrows %}
+{% include 'simpl/includes/status-arrows.html' %}
+{% endblock arrows %}
+
 {% block heading %}
 {% if run.status == run.STATUS.PREPARE %}
 Players Preparing

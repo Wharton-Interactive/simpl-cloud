@@ -8,7 +8,7 @@
 
 
 <div id="loader" data-run="{{ run.pk }}" data-endpoint="{% url 'simpl-api' %}"></div>
-<div id="app" {% if simpl_nav.team.next_url %}data-next-step="{{ simpl_nav.team.next_url }}" {% endif %}></div>
+<div id="app" class="svelte-app-wrap" {% if simpl_nav.team.next_url %}data-next-step="{{ simpl_nav.team.next_url }}" {% endif %}></div>
 
 <script type="module">
   import { initBalancing } from "{% static 'simpl/simpl.es.js' %}";
