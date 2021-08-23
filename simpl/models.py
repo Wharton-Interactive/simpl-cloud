@@ -28,6 +28,7 @@ fake = faker.Faker()
 
 class BaseGameExperience(models.Model):
     name = models.CharField(max_length=100)
+    experience_id = models.UUIDField(db_index=True, blank=True, null=True)
     date_created = models.DateTimeField(editable=False, default=timezone.now)
     version = models.CharField(max_length=20, blank=True)
     continuous = models.BooleanField(
