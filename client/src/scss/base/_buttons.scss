@@ -212,7 +212,9 @@
       content: '';
     }
 
-    &:hover:before {
+    &:hover:before,
+    &:focus:before,
+    &:active:before {
       background-color: var(--theme-text-color, var(--button-color-default, var(--knockout-color)));
     }
   }
