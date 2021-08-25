@@ -111,6 +111,7 @@ class LobbyQuerySet(models.QuerySet):
             ready=Case(
                 When(ready_players__gt=0, unready_players=0, then=Value(True)),
                 default=Value(False),
+                output_field=models.BooleanField(),
             ),
         )
 
