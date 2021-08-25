@@ -398,7 +398,6 @@ class Lobby(models.Model):
     run: BaseRun = models.ForeignKey(settings.SIMPL_RUN, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     date_created = models.DateTimeField(editable=False, default=timezone.now)
-    ready = models.BooleanField(default=False)
 
     objects = managers.LobbyQuerySet.as_manager()
 
@@ -411,6 +410,10 @@ class Lobby(models.Model):
             ...
 
     player_set: Player.PlayerRelatedManager
+
+    @cached_property
+    def ready(self):
+        return Lobby.objects.prepare_ready().get(pk=self.pk).ready
 
 
 class BasePlayer(models.Model):

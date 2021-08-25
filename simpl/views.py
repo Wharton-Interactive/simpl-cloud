@@ -151,7 +151,6 @@ class StartView(SimplMixin, DetailView):
     def post(self, request, *args, **kwargs):
         run = self.run
         if self.ready and run.status in (run.STATUS.SETUP, run.STATUS.PREPARE):
-            run.lobby_set.update(ready=True)
             instances = run.prepare()
             run.start_instances(instances)
             run.status = run.STATUS.PLAY

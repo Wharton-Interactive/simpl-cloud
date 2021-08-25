@@ -1,8 +1,10 @@
 import uuid
-from django.test import TestCase
+
 from django.apps import apps
+from django.test import TestCase
 from model_bakery import baker
-from simpl import get_game_experience_model, get_run_model, get_player_model
+from simpl import get_game_experience_model, get_player_model, get_run_model
+from simpl.models import Lobby
 
 
 class RunTest(TestCase):
@@ -15,10 +17,10 @@ class RunTest(TestCase):
         self.player_inactive = baker.make(Player, run=self.simpl_run, inactive=True)
 
     def make_lobbies(self):
-        lobbies = baker.make("simpl.Lobby", run=self.simpl_run, ready=True, _quantity=2)
+        lobbies = baker.make("simpl.Lobby", run=self.simpl_run, _quantity=2)
         lobbies[0].player_set.add(self.players[0], self.player_inactive)
         lobbies[1].player_set.add(self.players[1], self.players[2])
-        baker.make("simpl.Lobby", run=self.simpl_run, ready=False)
+        baker.make("simpl.Lobby", run=self.simpl_run)
         return lobbies
 
     def test_prepare_multiplayer_run(self):
@@ -141,3 +143,28 @@ class RunTest(TestCase):
 
         self.assertTrue(stand_alone_game.is_latest)
         self.assertTrue(non_experience_id_game.is_latest)
+
+
+class LobbyTestCase(TestCase):
+    def test_ready(self):
+        Player = get_player_model()
+        baker.make(Lobby, name="empty")
+        lobby2 = baker.make(Lobby, name="mixed")
+        baker.make(Player, lobby=lobby2, ready=True, _quantity=2)
+        baker.make(Player, lobby=lobby2, ready=False)
+        lobby3 = baker.make(Lobby, name="ready")
+        baker.make(Player, lobby=lobby3, ready=True, _quantity=2)
+        lobby4 = baker.make(Lobby, name="unready")
+        baker.make(Player, lobby=lobby4, ready=False, _quantity=2)
+        self.assertEqual(set(Lobby.objects.ready()), {lobby3})
+
+    def test_ready_queries(self):
+        lobby = baker.make(Lobby)
+        self.assertNumQueries(1)
+        self.assertFalse(lobby.ready)
+        self.assertNumQueries(2)
+
+        annotated_lobby = Lobby.objects.prepare_ready().get()
+        self.assertNumQueries(3)
+        self.assertFalse(annotated_lobby.ready)
+        self.assertNumQueries(3)
