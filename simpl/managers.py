@@ -115,9 +115,9 @@ class LobbyQuerySet(models.QuerySet):
             ),
         )
 
-    def ready(self):
+    def ready(self, value: bool = True):
         """
         Filter to lobbies with at least one ready player (not yet tied to an
         instance), and no unready players.
         """
-        return self.prepare_ready().filter(ready=True)
+        return self.prepare_ready().filter(ready=value)
