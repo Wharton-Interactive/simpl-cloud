@@ -31,6 +31,12 @@ class BaseGameExperience(models.Model):
     experience_id = models.UUIDField(db_index=True, blank=True, null=True)
     date_created = models.DateTimeField(editable=False, default=timezone.now)
     version = models.CharField(max_length=20, blank=True)
+    multiplayer = models.BooleanField(
+        blank=True,
+        null=True,
+        help_text="Whether multiple players play a single instance of the game. "
+        "If unset, this become configurable at the run level.",
+    )
     continuous = models.BooleanField(
         blank=True,
         null=True,
@@ -113,7 +119,6 @@ class BaseRun(DataMixin, models.Model):
         max_length=100, help_text="Publically visible name of the game."
     )
     date_created = models.DateTimeField(editable=False, default=timezone.now)
-    multiplayer = models.BooleanField(default=True)
     status = models.PositiveSmallIntegerField(choices=STATUSES, default=STATUS.SETUP)
     data: dict = JSONField(editable=False, default=dict, blank=True)
     managers = models.ManyToManyField(
@@ -122,6 +127,7 @@ class BaseRun(DataMixin, models.Model):
         related_name="simpl_run_set",
         related_query_name="simpl_run",
     )
+    multiplayer = models.BooleanField(default=True)
     continuous = models.BooleanField(
         default=False,
         help_text="Automatically add new players to new instances for runs in play.",
@@ -140,9 +146,11 @@ class BaseRun(DataMixin, models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        if not self.pk:
-            if self.game and self.game.continuous is not None:
+        if not self.pk and self.game:
+            if self.game.continuous is not None:
                 self.continuous = self.game.continuous
+            if self.game.multiplayer is not None:
+                self.multiplayer = self.game.multiplayer
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
