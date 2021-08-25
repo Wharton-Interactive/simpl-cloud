@@ -14,7 +14,7 @@ class BalancingPlayer(DjangoObjectType):
 
     class Meta:
         model = Player
-        fields = ["id", "inactive"]
+        fields = ["id", "inactive", "ready"]
 
     @staticmethod
     def resolve_name(obj: Player, info):
@@ -30,6 +30,7 @@ class BalancingTeam(DjangoObjectType):
     name = graphene.String()
     players = graphene.List(graphene.ID)
     session = graphene.String()
+    ready = graphene.Boolean()
 
     class Meta:
         model = models.Lobby
@@ -38,6 +39,10 @@ class BalancingTeam(DjangoObjectType):
     @staticmethod
     def resolve_name(obj: models.Lobby, info):
         return obj.name
+
+    @staticmethod
+    def resolve_ready(obj: models.Lobby, info):
+        return obj.ready
 
     @staticmethod
     def resolve_players(obj: models.Lobby, info):

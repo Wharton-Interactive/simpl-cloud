@@ -37,6 +37,7 @@
         {/if}
       </span>
     </p>
+    <p>{#if player.ready}Ready{:else}Not Ready{/if}</p>
   </div>
 
   {#if !assigned || !readOnly}

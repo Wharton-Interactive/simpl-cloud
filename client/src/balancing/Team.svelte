@@ -25,6 +25,7 @@
     }}
   >
     {team.name}
+    <span>{#if team.ready}Ready{:else}Not Ready{/if}</span>
   </h2>
   {#if selectedElsewhere.length}
     <button

@@ -156,6 +156,9 @@
         availableTeams.unshift(team);
       }
     }
+    $data.teams.forEach(team => {
+      delete team.ready;
+    });
     $data = $data;
     selected = [];
   }}

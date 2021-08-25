@@ -7,12 +7,14 @@ mutation UpdateBalancing($run: ID!, $teams: [TeamInput!], $deleteTeams: [ID!]) {
       name
       email
       inactive
+      ready
     }
     teams {
       id
       session
       name
       players
+      ready
     }
   }
 }

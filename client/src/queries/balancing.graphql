@@ -7,11 +7,13 @@ query Balancing($run: ID!) {
       name
       email
       inactive
+      ready
     }
     teams {
       id
       session
       name
+      ready
       players
     }
   }
