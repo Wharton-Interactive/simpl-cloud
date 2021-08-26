@@ -76,7 +76,7 @@
       }
     }
     return {
-      id: `tmp${Math.random() * 1000000000 + 1000}`,
+      internalId: `tmp${Math.random() * 1000000000 + 1000}`,
       name,
       session: currentSession,
       players: [],

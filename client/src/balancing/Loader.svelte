@@ -43,9 +43,8 @@
     const params = {
       run,
       deleteTeams: dataCopy.teams
-        .filter((team) => !team.id.startsWith("tmp"))
         .map((team) => team.id)
-        .filter((id) => !dataTeamIds.includes(id)),
+        .filter((id) => id && !dataTeamIds.includes(id)),
       teams: $data.teams
         .filter((team) => {
           const copy = dataCopy.teams.find((copy) => copy.id === team.id);
@@ -59,6 +58,7 @@
         .map((team) => ({
           ...team,
           ready: undefined,
+          internalId: undefined,
         })),
     };
     if (params.deleteTeams.length || params.teams.length) {
@@ -67,7 +67,18 @@
       dataCopy = JSON.parse(JSON.stringify($data));
       client.request(mutation, params).then((d) => {
         if (d?.balanceTeams) {
-          $data = d.balanceTeams;
+          const internalIdTeams = $data.teams.filter((team) => team.internalId);
+          $data = {
+            ...d.balanceTeams,
+            teams: d.balanceTeams.teams.map((team) => {
+              var match =
+                internalIdTeams.find((oldTeam) => oldTeam.id === team.id) ||
+                internalIdTeams.find((oldTeam) => oldTeam.name === team.name);
+              if (match) return { ...team, internalId: match.internalId };
+              return team;
+            }),
+          };
+          dataCopy = JSON.parse(JSON.stringify($data));
         }
         saving = false;
       });
