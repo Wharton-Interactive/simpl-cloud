@@ -65,6 +65,18 @@
   grid-template-rows: min-content minmax(0, 1fr) min-content;
 }
 
+.v-nav-flex-layout {
+  padding-top: var(--edu-header-height);
+  padding-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  @include breakpoint($nav-breakpoint) {
+    padding-bottom: 0;
+  }
+}
+
 
 .edu-pad-bleed-right {
   margin-right: rem-calc(-20);

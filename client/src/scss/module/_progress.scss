@@ -69,6 +69,16 @@
       content: '';
     }
 
+    &.task-timeout {
+      svg {
+        fill: var(--text-color);
+      }
+
+      &:after {
+        content: none;
+      }
+    }
+
     &.is-complete {
       &:after {
         opacity: 1;
@@ -101,6 +111,32 @@
         content: '';
       }
     }
+
+    &.task-done_well:after,
+    &.task-done_fail:after,
+    &.task-good:after,
+    &.task-bad:after {
+      opacity: 1;
+      width: 16px;
+      height: 16px;
+      background: var(--info-color);
+      content: '+';
+      line-height: 14px;
+      color: var(--tint);
+      font-weight: var(--global-weight-semibold);
+    }
+
+    &.task-done_fail:after {
+      content: '-';
+    }
+
+    &.task-good:after {
+      background: var(--success-color);
+    }
+
+    &.task-bad:after {
+      background: var(--alert-color-tint1);
+    }
   }
 
   &-count {
@@ -108,5 +144,127 @@
     font-weight: normal;
     margin: 4px 0 0 0;
     display: block;
+  }
+}
+
+.table-scroll.is-progress {
+  max-width: calc(100vw - #{rem-calc(40)});
+
+  @include breakpoint($nav-breakpoint) {
+    max-width: 100%;
+  }
+}
+
+.progress-filters {
+  --tab-wrap-border: 0 none;
+  --tab-margin: 0;
+  --tab-item-padding: 0;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-start;
+  gap: 1rem;
+  border-bottom: 2px solid var(--info-color);
+  margin-bottom: 2rem;
+
+  @include breakpoint($nav-breakpoint) {
+    --tab-item-padding: 0 1.25rem 0 0;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+}
+
+.progress-epic-table {
+  border-spacing: 6px;
+  width: auto;
+  font-size: 1em;
+  margin: 0;
+  border-collapse: inherit;
+
+  thead th {
+    padding: 0;
+  }
+
+  td {
+    background: #fff;
+    padding: 0;
+  }
+
+  tbody > tr,
+  tbody table {
+    height: 48px;
+  }
+  tr table tr {
+    height: 100%;
+  }
+  tr table {
+    border-spacing: 0;
+  }
+  tr table td {
+    min-width: 30px;
+    text-align: center;
+    padding: 0 3px;
+  }
+}
+
+.epic-label {
+  background: #fff;
+  padding: 0.25em 0.5em;
+}
+
+.progress-key {
+  --period-w: 28px;
+  --period-h: 28px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0 0 0.5rem 0;
+  padding: 0;
+  list-style: none;
+
+  &-wrap {
+    display: flex;
+    align-items: center;
+  }
+
+  &-title {
+    font-size: var(--font-size-base);
+    margin-right: 2rem;
+  }
+
+  &-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+}
+
+.task-label {
+  font-size: rem-calc(12);
+}
+
+.progress-loader {
+  position: absolute;
+  right: 0;
+  background: var(--text-color-subdued);
+  color: #fff;
+  letter-spacing: 1px;
+  font-size: 0.7em;
+  padding: 0.2em 0.7em;
+  margin: -1.5rem rem-calc(20) 0 0;
+  border-radius: 0.3em;
+
+  &.listening {
+    background: var(--success-color);
+    opacity: 0.4;
+  }
+  &.disconnected {
+    background: var(--alert-color);
+  }
+
+  @include breakpoint($nav-breakpoint) {
+    margin-right: 2.5rem;
   }
 }
