@@ -56,9 +56,10 @@
             !copy.players.every((id) => team.players.includes(id))
           );
         })
-        .map((team) =>
-          team.id.startsWith("tmp") ? { ...team, id: null } : team
-        ),
+        .map((team) => ({
+          ...team,
+          ready: undefined,
+        })),
     };
     if (params.deleteTeams.length || params.teams.length) {
       console.debug("updating data");
