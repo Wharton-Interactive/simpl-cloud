@@ -64,4 +64,4 @@ class Balancing(DjangoObjectType):
 
     @staticmethod
     def resolve_teams(obj, info):
-        return obj.lobby_set.all()
+        return obj.lobby_set.order_by("-date_created")

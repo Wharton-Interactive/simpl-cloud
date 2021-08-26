@@ -69,8 +69,11 @@
 
   const createTeam = (name) => {
     if (!name) {
-      const existingTeams = $data.teams.length;
-      name = `Team ${existingTeams + 1}`;
+      const existingNames = $data.teams.map((team) => team.name);
+      var i = 0;
+      while (!name || existingNames.includes(name)) {
+        name = `Team ${++i}`;
+      }
     }
     return {
       id: `tmp${Math.random() * 1000000000 + 1000}`,
@@ -156,7 +159,7 @@
         availableTeams.unshift(team);
       }
     }
-    $data.teams.forEach(team => {
+    $data.teams.forEach((team) => {
       delete team.ready;
     });
     $data = $data;
