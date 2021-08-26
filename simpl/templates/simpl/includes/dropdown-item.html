@@ -1,0 +1,14 @@
+<li class="dropdown-item">
+    {% if post %}
+    <form action="{{ url }}" method="post">
+        {% csrf_token %}
+        <button class="dropdown-link">{{ contents }}</button>
+        {{ contents.extra }}
+    </form>
+    {% else %}
+    <a {% if url %}href="{{ url }}" {% endif %}class="dropdown-link">
+        {{ contents }}
+    </a>
+    {{ contents.extra}}
+    {% endif %}
+</li>

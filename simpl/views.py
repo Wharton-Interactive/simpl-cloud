@@ -10,7 +10,7 @@ from django.utils.functional import cached_property
 from django.views.generic import DetailView, RedirectView
 from django.views.generic.detail import SingleObjectMixin
 
-from simpl import conf, get_run_model, nav
+from simpl import conf, get_run_model, get_player_model, nav
 
 from . import models
 
@@ -132,6 +132,16 @@ class PlayersView(SimplMixin, DetailView):
         if len(context.get("simpl_nav", {})) > 1 and context.get("simpl_configuring"):
             context["next_url"] = nav.get_next_url(self.run, self.simpl_name)
         return context
+
+    def post(self, request, **kwargs):
+        Player = get_player_model()
+        deactivate = request.POST.getlist("deactivate")
+        if deactivate:
+            Player.objects.filter(pk__in=deactivate).update(inactive=True)
+        reactivate = request.POST.getlist("reactivate")
+        if reactivate:
+            Player.objects.filter(pk__in=reactivate).update(inactive=False)
+        return redirect(".")
 
 
 class StartView(SimplMixin, DetailView):
