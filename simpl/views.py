@@ -91,7 +91,15 @@ class InitialView(SingleObjectMixin, RedirectView):
 class StatusView(SimplMixin, DetailView):
     simpl_name = "status"
 
+    @cached_property
+    def ready(self):
+        return (
+            self.run.multiplayer is False
+            or not self.run.player_set.unbalanced().exists()
+        )
+
     def get_context_data(self, **kwargs):
+        kwargs["ready"] = self.ready
         kwargs["configured"] = True
         kwargs["next_item"] = nav.get_next_item(self.run, self.simpl_name)
         return super().get_context_data(**kwargs)
