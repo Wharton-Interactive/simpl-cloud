@@ -1,5 +1,7 @@
 {% extends "simpl/base.html" %}
 
+{% block main_wrap_classes %}v-nav-flex-layout{% endblock %}
+
 {% block heading %}{% if run.ended %}Restart {% else %}End{% endif %} Gameplay{% endblock %}
 
 {% block arrows %}
