@@ -76,7 +76,7 @@
       </div>
     {:else}
       <div
-        class="card player-card tab-pane is-inactive"
+        class="card player-card tab-pane is-inactive-player"
         role="tabpanel"
         aria-labelledby="tabby-toggle_active"
       >

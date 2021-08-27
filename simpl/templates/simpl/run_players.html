@@ -64,18 +64,20 @@
       {% endif %}
 
       {% if inactive_players %}
-      <div class="player-header">
+      <div class="player-header is-nested">
         <p class="walkthrough-chapter-heading">Inactive Players</p>
       </div>
       <div class="card player-card glow-shadow team-card is-inactive-player">
         {% for player in inactive_players %}
         {% includecontents "simpl/includes/player.html" %}
+        {% if run.status <= run.STATUS.PREPARE %}
         {% includecontents "simpl/includes/dropdown.html" %}
         {% includecontents "simpl/includes/dropdown-item.html" with post=True %}
         Mark active
         {% contents extra %}<input type="hidden" name="reactivate" value="{{ player.pk }}">{% endcontents %}
         {% endincludecontents %}
         {% endincludecontents %}
+        {% endif %}
         {% endincludecontents %}
         {% endfor %}
       </div>
