@@ -31,11 +31,11 @@
     </div>
     <p class="avatar-detail-meta">
       {player.name}
-      <span class="avatar-detail-desc">
+      <!-- <span class="avatar-detail-desc">
         {#if player.email}{player.email}
         {:else}<em>No email</em>
         {/if}
-      </span>
+      </span> -->
     </p>
     <!-- <p>{#if player.ready}Ready{:else}Not Ready{/if}</p> -->
   </div>

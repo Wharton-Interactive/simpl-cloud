@@ -1,0 +1,34 @@
+<form method="POST" action="{{ action|default:'.' }}" class="prose">
+  {% if run.status == run.STATUS.PLAY %}
+<p>Publishing player reports immediately posts current results to all players.</p>
+<div class="note theme-caution-color">
+  <svg class="icon" viewBox="0 0 17.646 17.711" xmlns="http://www.w3.org/2000/svg">
+    <path fill="none" stroke="currentColor"
+      d="M16.772 7.856L9.856.939a1.358 1.358 0 00-2 0L.939 7.856a1.358 1.358 0 000 2l6.917 6.916a1.359 1.359 0 002 0l6.916-6.916a1.525 1.525 0 000-2z"
+      stroke-miterlimit="10" />
+    <path fill="currentColor" d="M7.989 11.356h1.667v1.667H7.989zm0-6.667h1.667v5H7.989z" />
+  </svg>
+  <div class="note-content">
+    <strong>Note:</strong> If the game is still in play, some players may be making decisions.
+    Advance to <strong>End Game</strong> to end the gameplay for all players.
+  </div>
+</div>
+{% else %}
+<p><strong>Hide Player Reports</strong> hides tournament results from all players. Since results
+  were already published, they may remain visible to players until browsers
+  are refreshed.
+</p>
+{% endif %}
+
+  {% csrf_token %}
+  <div class="button-wrap align-full">
+  {% if redirect_to %}<input type="hidden" value="{{ redirect_to }}" name="redirect_to" />{% endif %}
+  <button type="submit" class="button large {% if run.status != run.STATUS.PLAY %}theme-alert-color{% endif %}">
+    {% if run.status == run.STATUS.PLAY %}
+    Publish Player Reports
+    {% else %}
+    Hide Player Reports
+    {% endif %}
+  </button>
+  </div>
+</form>
