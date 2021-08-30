@@ -188,9 +188,10 @@ class BaseRun(DataMixin, models.Model):
 
     @cached_property
     def ended(self):
+        instances = self.instances.count()
         return (
-            self.instances.filter(date_end__isnull=False).count()
-            == self.instances.count()
+            instances > 0
+            and self.instances.filter(date_end__isnull=False).count() == instances
         )
 
     def prepare(self) -> List[BaseInstance]:
