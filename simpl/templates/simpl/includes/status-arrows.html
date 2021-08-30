@@ -25,8 +25,8 @@
   <li class="game-stage-item">
     <span
       class="
-        game-stage-link {% if run.status == run.STATUS.PLAY  and not run.ended %}is-this-step{% endif %}
-        {% if run.status > run.STATUS.PLAY %}is-complete{% endif %}
+        game-stage-link {% if run.status == run.STATUS.PLAY and not run.ended %}is-this-step{% endif %}
+        {% if run.status > run.STATUS.PLAY or run.ended %}is-complete{% endif %}
         "
       >
       <span>Play</span>
@@ -47,7 +47,7 @@
   <li class="game-stage-item">
     <span
       class="
-        game-stage-link {% if run.status == run.STATUS.COMPLETE %}is-this-step{% endif %}
+        game-stage-link {% if run.status == run.STATUS.COMPLETE or run.ended %}is-this-step{% endif %}
         {% if run.status > run.STATUS.COMPLETE %}is-complete{% endif %}
         "
     >
