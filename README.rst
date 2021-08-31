@@ -163,3 +163,14 @@ abstract models.
 The Character class will need two related abstract models, ``BaseCharacterData``
 and ``BaseCharacterLinked``. This is to make it possible to have character data
 as a template, not linked to a user or instance.
+
+
+Auth0
+=====
+
+If using Auth0 for social authentication, add the following Django settings to
+make sure users are correctly logged out of Auth0 and (optionally) redirected after logout::
+
+
+  ACCOUNT_ADAPTER = "simpl.auth0.Auth0LogoutAdapter"
+  AUTH0_LOGOUT_RETURN_TO = "some.url"
