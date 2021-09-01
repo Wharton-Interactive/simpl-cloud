@@ -1,4 +1,5 @@
 import graphene
+from allauth.socialaccount.models import SocialAccount
 from django import http
 from django.contrib.auth import get_user_model
 from django.urls import reverse
@@ -13,16 +14,16 @@ GameExperience = get_game_experience_model()
 Run = get_run_model()
 
 
-def build_url(url: str, user=None, request: http.HttpRequest = None):
-    if url and user:
-        social = user.socialaccount_set.first()
+def build_url(url: str, user_ids=None, request: http.HttpRequest = None):
+    if url and user_ids:
+        social = SocialAccount.objects.filter(user__in=user_ids).first()
         if social:
             if "?" in url:
                 url, query = url.split("?", 1)[1]
             else:
                 query = ""
             qd = http.QueryDict(query, mutable=True)
-            qd["provider"] = social.provider
+            qd["provider"] = social.provider if social else "auth0"
             url = f"{url}?{qd.urlencode()}"
     if request:
         url = request.build_absolute_uri(url)
@@ -99,7 +100,8 @@ class SimplRun(DjangoObjectType):
     @staticmethod
     def resolve_management_url(obj, info):
         url = reverse("simpl", kwargs={"pk": obj.id})
-        return build_url(url, request=info.context)
+        manager_ids = obj.managers.values_list("id")
+        return build_url(url, user_ids=manager_ids, request=info.context)
 
     @staticmethod
     def resolve_players(obj, info):
@@ -190,7 +192,7 @@ class SimplUserRun(graphene.ObjectType):
     @staticmethod
     def resolve_url(obj: models.Player, info):
         url = obj.get_play_url()
-        return build_url(url, user=obj.user, request=info.context)
+        return build_url(url, user_ids=[obj.user_id], request=info.context)
 
 
 class SimplUser(graphene.ObjectType):
