@@ -85,7 +85,9 @@ class InitialView(SingleObjectMixin, RedirectView):
         data = nav.get_nav(run)
         if not data:
             raise Http404()
-        return list(data.values())[0].url
+        provider = self.request.GET.get("provider", "")
+        url = list(data.values())[0].url
+        return f"{url}?provider={provider}" if provider else url
 
 
 class StatusView(SimplMixin, DetailView):
