@@ -25,7 +25,7 @@ settings::
     SIMPL_INSTANCE = "simpl.Instance"
     SIMPL_CHARACTER = "simpl.Character"
     SIMPL_PLAYER = "simpl.Player"
-    SIMPL_LOGOUT_URL_NAME = "logout"
+    SIMPL_LOGOUT_URL_NAME = "account_logout"
 
 Add the following to your project's URL conf::
 

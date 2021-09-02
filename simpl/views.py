@@ -55,7 +55,9 @@ class SimplMixin(
                 self.simpl_name not in self.nav_data
                 or self.nav_data[self.simpl_name].status == nav.NavStatus.DISABLED
             ):
-                raise Http404()
+                return redirect(reverse(getattr(
+                    conf.settings, "SIMPL_LOGOUT_URL_NAME", "account_logout"
+                )))
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -63,7 +65,7 @@ class SimplMixin(
         kwargs["simpl_configuring"] = nav.is_configuring(self.run)
         kwargs["simpl_nav"] = self.nav_data
         kwargs["simpl_logout_url"] = reverse(
-            getattr(conf.settings, "SIMPL_LOGOUT_URL_NAME", "logout")
+            getattr(conf.settings, "SIMPL_LOGOUT_URL_NAME", "account_logout")
         )
         for status in nav.NavStatus:
             kwargs[f"NAV_{status.name}"] = status
