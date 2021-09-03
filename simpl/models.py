@@ -209,10 +209,7 @@ class BaseRun(DataMixin, models.Model):
             if self.multiplayer:
                 lobby: Lobby
                 for lobby in self.lobby_set.ready():
-                    instance, created = self.get_or_create_multiplayer_instance(lobby)
-                    player: BasePlayer
-                    for player in lobby.player_set.ready():
-                        self.add_player_to_instance(player, instance)
+                    instance, created = self.create_multiplayer_instance_from_lobby(lobby)
                     if created:
                         instances.append(instance)
             else:
@@ -220,6 +217,14 @@ class BaseRun(DataMixin, models.Model):
                     instance = self.create_singleplayer_instance(player)
                     instances.append(instance)
         return instances
+
+    def create_multiplayer_instance_from_lobby(self, lobby):
+        assert lobby.run == self and lobby.ready
+        instance, created = self.get_or_create_multiplayer_instance(lobby)
+        player: BasePlayer
+        for player in lobby.player_set.ready():
+            self.add_player_to_instance(player, instance)
+        return instance, created
 
     def add_player_to_instance(self, player: BasePlayer, instance: BaseInstance):
         player.character = get_character_model().objects.create(
