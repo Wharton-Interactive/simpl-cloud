@@ -5,7 +5,7 @@ from typing import Union
 
 from django.db import models
 from django.db.models import Q
-from django.db.models.expressions import Case, Value, When
+from django.db.models.expressions import Case, Value, When, Exists, OuterRef
 from packaging.version import parse
 
 
@@ -121,3 +121,10 @@ class LobbyQuerySet(models.QuerySet):
         instance), and no unready players.
         """
         return self.prepare_ready().filter(ready=value)
+
+    def started(self, value: bool = True):
+        from simpl import get_player_model
+        Player = get_player_model()
+        return self.alias(started=Exists(
+            Player.objects.filter(lobby=OuterRef("id"), character__isnull=False)
+        )).filter(started=value)
