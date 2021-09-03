@@ -201,6 +201,8 @@ class SimplUser(graphene.ObjectType):
     """
 
     auth0_id = graphene.ID()
+    first_name = graphene.String()
+    last_name = graphene.String()
     runs = graphene.List(SimplUserRun)
 
     @staticmethod
