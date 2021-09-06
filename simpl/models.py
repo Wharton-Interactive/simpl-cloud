@@ -208,8 +208,10 @@ class BaseRun(DataMixin, models.Model):
         with transaction.atomic():
             if self.multiplayer:
                 lobby: Lobby
-                for lobby in self.lobby_set.ready():
-                    instance, created = self.create_multiplayer_instance_from_lobby(lobby)
+                for lobby in self.lobby_set.ready(include_linked=True):
+                    instance, created = self.create_multiplayer_instance_from_lobby(
+                        lobby
+                    )
                     if created:
                         instances.append(instance)
             else:
@@ -236,9 +238,13 @@ class BaseRun(DataMixin, models.Model):
     def get_or_create_multiplayer_instance(
         self, lobby: Lobby
     ) -> Tuple[BaseInstance, bool]:
-        return get_instance_model()._default_manager.get_or_create(
+        instance, created = get_instance_model()._default_manager.get_or_create(
             run=self, game=self.game, name=lobby.name
         )
+        if created:
+            lobby.instance = instance
+            lobby.save()
+        return instance, created
 
     def create_singleplayer_instance(self, player: BasePlayer) -> BaseInstance:
         instance = get_instance_model()._default_manager.create(
@@ -412,6 +418,9 @@ class Lobby(models.Model):
     run: BaseRun = models.ForeignKey(settings.SIMPL_RUN, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     date_created = models.DateTimeField(editable=False, default=timezone.now)
+    instance: Instance = models.ForeignKey(
+        settings.SIMPL_INSTANCE, on_delete=models.SET_NULL, blank=True, null=True
+    )
 
     objects = managers.LobbyQuerySet.as_manager()
 
@@ -426,8 +435,15 @@ class Lobby(models.Model):
     player_set: Player.PlayerRelatedManager
 
     @cached_property
-    def ready(self):
-        return Lobby.objects.prepare_ready().get(pk=self.pk).ready
+    def ready(self) -> Optional[bool]:
+        if self.instance_id:
+            return None  # Not ready because linked to an instance already.
+        obj = Lobby.objects.prepare_ready().get(pk=self.pk)
+        if obj.ready:
+            return True
+        if not obj.player_count:
+            return None  # Not ready because there are no players.
+        return False
 
 
 class BasePlayer(models.Model):

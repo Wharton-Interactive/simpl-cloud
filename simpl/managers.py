@@ -5,7 +5,7 @@ from typing import Union
 
 from django.db import models
 from django.db.models import Q
-from django.db.models.expressions import Case, Value, When, Exists, OuterRef
+from django.db.models.expressions import Case, Value, When
 from packaging.version import parse
 
 
@@ -99,32 +99,38 @@ class LobbyQuerySet(models.QuerySet):
         return getattr(super(), "alias", self.annotate)(*args, **kwargs)
 
     def prepare_ready(self):
-        qs = self.alias(
-            ready_players=models.Count(
-                "player", filter=Q(player__character=None) & Q(player__ready=True)
-            ),
+        qs = self.annotate(player_count=models.Count("player"))
+        qs = qs.alias(
             unready_players=models.Count(
                 "player", filter=Q(player__character=None) & Q(player__ready=False)
             ),
         )
         return qs.annotate(
             ready=Case(
-                When(ready_players__gt=0, unready_players=0, then=Value(True)),
+                When(player_count__gt=0, unready_players=0, then=Value(True)),
+                default=Value(False),
+                output_field=models.BooleanField(),
+            ),
+            not_ready=Case(
+                When(unready_players__gt=0, then=Value(True)),
                 default=Value(False),
                 output_field=models.BooleanField(),
             ),
         )
 
-    def ready(self, value: bool = True):
+    def ready(self, value: bool = True, include_linked: bool = False):
         """
-        Filter to lobbies with at least one ready player (not yet tied to an
-        instance), and no unready players.
-        """
-        return self.prepare_ready().filter(ready=value)
+        Filter to lobbies with at least one ready player, and no unready
+        players.
 
-    def started(self, value: bool = True):
-        from simpl import get_player_model
-        Player = get_player_model()
-        return self.alias(started=Exists(
-            Player.objects.filter(lobby=OuterRef("id"), character__isnull=False)
-        )).filter(started=value)
+        Checking for ``.ready(False)`` is not quite the inverse -- it will only
+        include lobbies with at least one unready player.
+
+        By default, both cases will only include lobbies not yet linked to an
+        instance. Use ``include_linked=True`` to include all lobbies.
+        """
+        qs = self.filter(instance=None) if not include_linked else self.all()
+        qs = qs.prepare_ready()
+        if value:
+            return qs.filter(ready=True)
+        return qs.filter(not_ready=True)
