@@ -1,56 +1,46 @@
 <ol class="game-stage-list">
   <li class="game-stage-item">
-    <span
-      class="
+    <span class="
         game-stage-link {% if run.status == run.STATUS.SETUP %}is-this-step{% endif %}
 
         {% if run.status > run.STATUS.SETUP %}is-complete{% endif %}
-        "
-    >
+        ">
       <span>Setup</span>
     </span>
   </li>
-  {% if not run.continuous %}
+  {% if run.use_status_prepare %}
   <li class="game-stage-item">
-    <span
-      class="
+    <span class="
         game-stage-link {% if run.status == run.STATUS.PREPARE %}is-this-step{% endif %}
         {% if run.status > run.STATUS.PREPARE %}is-complete{% endif %}
-        "
-      >
+        ">
       <span>Players Prepare</span>
     </span>
   </li>
   {% endif %}
   <li class="game-stage-item">
-    <span
-      class="
+    <span class="
         game-stage-link {% if run.status == run.STATUS.PLAY and not run.ended %}is-this-step{% endif %}
         {% if run.status > run.STATUS.PLAY or run.ended %}is-complete{% endif %}
-        "
-      >
+        ">
       <span>Play</span>
     </span>
   </li>
-  {% if not run.continuous %}
+  {% if run.use_status_prepare %}
   <li class="game-stage-item">
-    <span
-      class="
+    <span class="
         game-stage-link {% if run.status == run.STATUS.DEBRIEF %}is-this-step{% endif %}
         {% if run.status > run.STATUS.DEBRIEF %}is-complete{% endif %}
-        "
-      >
+        ">
       <span>Player Reports</span>
     </span>
   </li>
   {% endif %}
   <li class="game-stage-item">
-    <span
-      class="
+    <span class="
         game-stage-link {% if run.status == run.STATUS.COMPLETE or run.ended %}is-this-step{% endif %}
         {% if run.status > run.STATUS.COMPLETE %}is-complete{% endif %}
-        "
-    >
+        ">
       <span>End Game</span>
     </span>
   </li>
@@ -79,8 +69,8 @@ Run Status is not set
 copy that we may need:
 {% if run.status == run.STATUS.SETUP %}
 In configuration mode, players may join, and the instructor may make
- players active or inactive. Players may not play until the instructor
- selects <strong>Start Game</strong>.
+players active or inactive. Players may not play until the instructor
+selects <strong>Start Game</strong>.
 
 {% elif run.status == run.STATUS.PREPARE %}
 TODO: Prepare state copy.

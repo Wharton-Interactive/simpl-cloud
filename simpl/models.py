@@ -268,11 +268,17 @@ class BaseRun(DataMixin, models.Model):
                 started += 1
         return started
 
+    def _get_app_setting(self, key):
+        app_setting = getattr(apps.get_app_config("simpl"), key)
+        if callable(app_setting):
+            app_setting = app_setting(self)
+        return app_setting
+
     @property
     def continuous_configurable(self) -> bool:
         if self.game:
             return self.game.continuous is None
-        return apps.get_app_config("simpl").CONTINUOUS_CONFIGURABLE
+        return self._get_app_setting("CONTINUOUS_CONFIGURABLE")
 
     @property
     def continuous_open(self) -> bool:
@@ -290,6 +296,14 @@ class BaseRun(DataMixin, models.Model):
                 or self.date_continuous_end > timezone.now()
             )
         )
+
+    @property
+    def use_status_prepare(self) -> bool:
+        return self._get_app_setting("USE_STATUS_PREPARE")
+
+    @property
+    def use_status_debrief(self) -> bool:
+        return self._get_app_setting("USE_STATUS_DEBRIEF")
 
 
 class Run(BaseRun, DataMixin, models.Model):

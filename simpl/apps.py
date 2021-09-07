@@ -8,6 +8,8 @@ class SimplConfig(AppConfig):
     default_auto_field = "django.db.models.AutoField"
     name = "simpl"
     CONTINUOUS_CONFIGURABLE = False
+    USE_STATUS_PREPARE = False
+    USE_STATUS_DEBRIEF = False
 
     def ready(self):
         from allauth.socialaccount.models import SocialAccount
