@@ -4,15 +4,20 @@ from allauth.socialaccount.models import SocialAccount
 from django.apps import apps
 from django.test import TestCase
 from model_bakery import baker
-from simpl import get_game_experience_model, get_player_model, get_run_model
-from simpl.models import Lobby
+from simpl import (
+    get_game_experience_model,
+    get_instance_model,
+    get_player_model,
+    get_run_model,
+)
+from simpl.models import Lobby, BaseRun
 from django.contrib.auth import get_user_model
 
 
 class RunTest(TestCase):
     def setUp(self):
         Player = get_player_model()
-        self.simpl_run = baker.make(get_run_model(), game__name="Game")
+        self.simpl_run: BaseRun = baker.make(get_run_model(), game__name="Game")
         self.players = baker.make(
             Player, run=self.simpl_run, user__first_name="Julia", _quantity=3
         )
@@ -42,6 +47,14 @@ class RunTest(TestCase):
             for player in lobby_players:
                 self.assertIn(player.character, characters)
                 self.assertEqual(player.character.user, player.user)
+
+    def test_get_or_create_multiplayer_instance_existing(self):
+        instance = baker.make(get_instance_model(), run=self.simpl_run)
+        lobby = baker.make(Lobby, run=self.simpl_run, instance=instance)
+
+        new_instance, created = self.simpl_run.get_or_create_multiplayer_instance(lobby)
+        self.assertFalse(created)
+        self.assertEqual(instance, new_instance)
 
     def test_prepare_single_player_run(self):
         self.simpl_run.multiplayer = False

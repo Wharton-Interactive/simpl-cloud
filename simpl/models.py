@@ -237,10 +237,14 @@ class BaseRun(DataMixin, models.Model):
         player.save()
 
     def get_or_create_multiplayer_instance(
-        self, lobby: Lobby
+        self, lobby: Lobby, defaults: dict = None
     ) -> Tuple[BaseInstance, bool]:
+        defaults = defaults or {}
+        if not "name" in defaults:
+            defaults["name"] = lobby.name
+        defaults["game"] = self.game
         instance, created = get_instance_model()._default_manager.get_or_create(
-            run=self, game=self.game, name=lobby.name
+            run=self, lobby=lobby, defaults=defaults
         )
         if created:
             lobby.instance = instance
