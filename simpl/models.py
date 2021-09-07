@@ -132,6 +132,7 @@ class BaseRun(DataMixin, models.Model):
         default=False,
         help_text="Automatically add new players to new instances for runs in play.",
     )
+    date_continuous_end = models.DateTimeField(blank=True, null=True)
 
     date_prepare = None
 
@@ -264,10 +265,27 @@ class BaseRun(DataMixin, models.Model):
         return started
 
     @property
-    def continuous_configurable(self):
+    def continuous_configurable(self) -> bool:
         if self.game:
             return self.game.continuous is None
         return apps.get_app_config("simpl").CONTINUOUS_CONFIGURABLE
+
+    @property
+    def continuous_open(self) -> bool:
+        """
+        Whether the run is open for continuous runs.
+
+        The run must be marked as continuous, in Play status, and without a
+        date_continous_end in the past.
+        """
+        return (
+            self.status == self.STATUS.PLAY
+            and self.continuous
+            and (
+                not self.date_continuous_end
+                or self.date_continuous_end > timezone.now()
+            )
+        )
 
 
 class Run(BaseRun, DataMixin, models.Model):

@@ -17,8 +17,7 @@ def start_continuous_singleplayer(instance: BasePlayer, **kwargs):
         and instance.user
         and not instance.inactive
         and instance.ready
-        and instance.run.status == instance.run.STATUS.PLAY
-        and instance.run.continuous
+        and instance.run.continuous_open
     ):
         simpl_instance = instance.run.create_singleplayer_instance(instance)
         instance.run.start_instances([simpl_instance])
