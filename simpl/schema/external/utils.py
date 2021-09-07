@@ -42,18 +42,6 @@ def _get_user_data(auth0_id: str):
         raise ValueError("Auth0 ID is not valid.")
 
 
-def _update_user_name(user, user_data):
-    first_name = user_data.get("given_name")
-    last_name = user_data.get("family_name")
-    if (
-        first_name and last_name
-        and (user.first_name != first_name or user.last_name != last_name)
-    ):
-        user.fist_name = first_name
-        user.last_name = last_name
-        user.save()
-
-
 def get_auth0_users(
     *auth0_ids: List[str], create_users: bool = True, update_user_data: bool = True
 ):
@@ -64,10 +52,8 @@ def get_auth0_users(
             if update_user_data:
                 user_data = _get_user_data(auth0_id)
                 if social_acct.extra_data != user_data:
-                    # If user_data["email"] changed, should the user's email be changed?
                     social_acct.extra_data = user_data
                     social_acct.save()
-                _update_user_name(social_acct.user, user_data)
         except SocialAccount.DoesNotExist:
             user_data = _get_user_data(auth0_id)
             email = user_data["email"]
@@ -80,8 +66,7 @@ def get_auth0_users(
             social_acct = SocialAccount.objects.create(
                 provider="auth0", uid=auth0_id, extra_data=user_data, user=user
             )
-            _update_user_name(social_acct.user, user_data)
-        user = social_acct.user
+        user: UserWithAuth0 = social_acct.user
         user.auth0_id = auth0_id
         users.append(user)
     return users

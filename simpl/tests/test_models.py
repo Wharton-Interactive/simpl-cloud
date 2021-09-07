@@ -1,10 +1,12 @@
 import uuid
+from allauth.socialaccount.models import SocialAccount
 
 from django.apps import apps
 from django.test import TestCase
 from model_bakery import baker
 from simpl import get_game_experience_model, get_player_model, get_run_model
 from simpl.models import Lobby
+from django.contrib.auth import get_user_model
 
 
 class RunTest(TestCase):
@@ -168,3 +170,33 @@ class LobbyTestCase(TestCase):
         self.assertNumQueries(3)
         self.assertFalse(annotated_lobby.ready)
         self.assertNumQueries(3)
+
+
+class SocialAccountTestCase(TestCase):
+    def test_updates_user(self):
+        user = baker.make(get_user_model())
+        SocialAccount.objects.create(
+            extra_data={"first_name": "Bob", "family_name": "Jones"}, user=user
+        )
+        user.refresh_from_db()
+        self.assertEqual(user.first_name, "Bob")
+        self.assertEqual(user.last_name, "Jones")
+
+    def test_updates_user(self):
+        user = baker.make(get_user_model())
+        SocialAccount.objects.create(extra_data={}, user=user)
+        user_refreshed = get_user_model().objects.get()
+        self.assertEqual(user.first_name, user_refreshed.first_name)
+        self.assertEqual(user.last_name, user_refreshed.last_name)
+
+    def test_sets_user_email_if_empty(self):
+        user = baker.make(get_user_model(), email="")
+        SocialAccount.objects.create(extra_data={"email": "new@example.com"}, user=user)
+        user.refresh_from_db()
+        self.assertEqual(user.email, "new@example.com")
+
+    def test_dont_update_user_email(self):
+        user = baker.make(get_user_model(), email="old@example.com")
+        SocialAccount.objects.create(extra_data={"email": "new@example.com"}, user=user)
+        user_refreshed = get_user_model().objects.get()
+        self.assertEqual(user.email, user_refreshed.email)

@@ -10,6 +10,11 @@ class SimplConfig(AppConfig):
     CONTINUOUS_CONFIGURABLE = False
 
     def ready(self):
+        from allauth.socialaccount.models import SocialAccount
+
         post_save.connect(
             receivers.start_continuous_singleplayer, sender=get_player_model()
+        )
+        post_save.connect(
+            receivers.update_user_from_socialaccount, sender=SocialAccount
         )
