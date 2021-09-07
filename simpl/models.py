@@ -189,6 +189,8 @@ class BaseRun(DataMixin, models.Model):
 
     @cached_property
     def ended(self):
+        if self.continuous_open:
+            return False
         instances = self.instances.count()
         return (
             instances > 0
