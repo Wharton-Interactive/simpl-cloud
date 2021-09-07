@@ -205,15 +205,28 @@ class EndGameplayView(SimplMixin, DetailView):
     simpl_name = "end"
 
     def post(self, request, *args, **kwargs):
-        if not self.run.ended:
-            self.run.instances.update(date_end=timezone.now())
-            message = (
-                "The game has ended for all players. "
-                "Select Restart Game to continue gameplay."
-            )
+        running_instances = self.run.instances.exclude(date_start=None).filter(
+            date_end=None
+        )
+        if running_instances:
+            for instance in running_instances:
+                instance.stop()
+            message = "The game has been stopped for all players."
+            if not self.run.continuous_open:
+                self.run.status = (
+                    self.run.STATUS.DEBRIEF
+                    if (
+                        self.run.use_status_debrief
+                        and self.run.status < self.run.STATUS.DEBRIEF
+                    )
+                    else self.run.STATUS.COMPLETE
+                )
+                self.run.save()
         else:
-            self.run.instances.update(date_end=None)
+            for instance in self.run.instances.exclude(date_ended=None):
+                instance.restart()
             message = "The game has been restarted."
+
         messages.success(request, message)
         url = request.POST.get("redirect_to") or nav.get_next_url(
             self.run, self.simpl_name

@@ -2,7 +2,7 @@
 
 {% block main_wrap_classes %}v-nav-flex-layout{% endblock %}
 
-{% block heading %}{% if run.ended %}Restart {% else %}End{% endif %} Gameplay{% endblock %}
+{% block heading %}End Gameplay{% endblock %}
 
 {% block arrows %}
 {% include 'simpl/includes/status-arrows.html' %}
@@ -11,5 +11,5 @@
 
 {% block content_inner %}
 {{ block.super }}
-  {% include 'simpl/includes/form_end.html' %}
+{% include 'simpl/includes/form_end.html' %}
 {% endblock %}

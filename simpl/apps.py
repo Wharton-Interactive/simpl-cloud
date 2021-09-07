@@ -10,6 +10,7 @@ class SimplConfig(AppConfig):
     CONTINUOUS_CONFIGURABLE = False
     USE_STATUS_PREPARE = False
     USE_STATUS_DEBRIEF = False
+    CAN_RESTART_RUN = True
 
     def ready(self):
         from allauth.socialaccount.models import SocialAccount

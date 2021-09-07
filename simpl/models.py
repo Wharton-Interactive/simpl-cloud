@@ -307,6 +307,10 @@ class BaseRun(DataMixin, models.Model):
     def use_status_debrief(self) -> bool:
         return self._get_app_setting("USE_STATUS_DEBRIEF")
 
+    @property
+    def can_restart(self) -> bool:
+        return self._get_app_setting("CAN_RESTART_RUN")
+
 
 class Run(BaseRun, DataMixin, models.Model):
     """
@@ -374,6 +378,14 @@ class BaseInstance(DataMixin, models.Model):
     @property
     def running(self) -> bool:
         return bool(self.date_start and not self.date_end)
+
+    def stop(self):
+        self.date_end = timezone.now()
+        self.save()
+
+    def restart(self):
+        self.date_start = None
+        self.save()
 
     def get_status_display(self):
         if not self.date_start:
