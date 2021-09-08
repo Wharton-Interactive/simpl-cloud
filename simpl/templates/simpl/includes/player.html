@@ -7,12 +7,12 @@
       </div>
     </div>
 
-    <p class="avatar-detail-meta">{{ player }}
-      {% comment %}
-      {% if player.user.email %}
-      <span class="avatar-detail-desc">{{ player.user.email }}</span>
-      {% endif %}
-      {% endcomment %}
+    <p class="avatar-detail-meta">
+    {% if player.user.get_full_name %}
+      {{ player.user.get_full_name }}
+    {% else %}
+      Anonymous Player: {{ player|playerinitials|upper }}
+    {% endif %}
     </p>
   </div>
   {{ contents }}
