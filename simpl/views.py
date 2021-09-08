@@ -118,16 +118,13 @@ class TeamView(SimplMixin, DetailView):
 class PlayersView(SimplMixin, DetailView):
     simpl_name = "players"
 
-    def get_queryset(self):
-        model = get_run_model()
-        return model._default_manager.prefetch_related(
-            "player_set__character__instance",
-            "player_set__user",
-        )
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        players = self.run.player_set.all().active().has_user()
+        players_qs = self.run.player_set.select_related(
+            "user",
+            "character__instance"
+        )
+        players = players_qs.active().has_user()
         if self.run.status >= self.run.STATUS.PLAY:
             players = players.exclude(character__instance=None)
             if self.run.multiplayer:
@@ -137,8 +134,8 @@ class PlayersView(SimplMixin, DetailView):
                     teams[player.character.instance.name].append(player)
                 context["teams"] = teams
         context["players"] = players
-        context["inactive_players"] = self.run.player_set.all().inactive()
-        context["invites"] = self.run.player_set.all().active().has_user(False)
+        context["inactive_players"] = players_qs.inactive()
+        context["invites"] = players_qs.active().has_user(False)
         if len(context.get("simpl_nav", {})) > 1 and context.get("simpl_configuring"):
             context["next_url"] = nav.get_next_url(self.run, self.simpl_name)
         return context
