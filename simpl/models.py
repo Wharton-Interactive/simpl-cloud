@@ -506,6 +506,16 @@ class BasePlayer(models.Model):
             return str(self.character)
         return "<Player>"
 
+    @property
+    def public_name(self):
+        if self.user:
+            name = self.user.get_full_name()
+        else:
+            name = "Anonymous Player"
+            if self.character:
+                name += f": {self.character}"
+        return name
+
     def get_play_url(self) -> str:
         custom_play_url = getattr(settings, "SIMPL_GET_PLAY_URL", None)
         if custom_play_url:
