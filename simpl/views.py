@@ -2,6 +2,7 @@ from typing import ClassVar, Optional
 
 from django.contrib import messages
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
+from django.db.models import Q
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -118,24 +119,57 @@ class TeamView(SimplMixin, DetailView):
 class PlayersView(SimplMixin, DetailView):
     simpl_name = "players"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        players_qs = self.run.player_set.select_related(
-            "user",
-            "character__instance"
+    def get_players_queryset(self):
+        return self.run.player_set.select_related(
+            "user", "character__instance"
         ).order_by("user__first_name", "user__last_name")
-        players = players_qs.active().has_user()
+
+    def filter_players_queryset(self, players_queryset):
+        search = self.request.GET.get("q")
+        if search:
+            players_queryset = players_queryset.filter(
+                Q(user__first_name__icontains=search)
+                | Q(user__last_name__icontains=search)
+            )
+        return players_queryset
+
+    def get_active_players(self, players_queryset):
+        players = players_queryset.active().has_user()
         if self.run.status >= self.run.STATUS.PLAY:
             players = players.exclude(character__instance=None)
-            if self.run.multiplayer:
-                teams = {}
-                for player in players:
-                    teams.setdefault(player.character.instance.name, [])
-                    teams[player.character.instance.name].append(player)
-                context["teams"] = teams
-        context["players"] = players
-        context["inactive_players"] = players_qs.inactive()
-        context["invites"] = players_qs.active().has_user(False)
+        count = players.count()
+        return count, self.filter_players_queryset(players)
+
+    def get_inactive_players(self, players_queryset):
+        players = players_queryset.inactive()
+        return players.count(), self.filter_players_queryset(players)
+
+    def get_invited_players(self, players_queryset):
+        players = players_queryset.active().has_user(False)
+        return players.count(), self.filter_players_queryset(players)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        players_qs = self.get_players_queryset()
+
+        active_count, active_players = self.get_active_players(players_qs)
+        if self.run.multiplayer:
+            teams = {}
+            for player in active_players:
+                teams.setdefault(player.character.instance.name, [])
+                teams[player.character.instance.name].append(player)
+            context["teams"] = teams
+        context["players"] = active_players
+        context["players_count"] = active_count
+
+        inactive_count, inactive_players = self.get_inactive_players(players_qs)
+        context["inactive_players"] = inactive_players
+        context["inactive_count"] = inactive_count
+
+        invites_count, invited_players = self.get_invited_players(players_qs)
+        context["invites"] = invited_players
+        context["invites_count"] = invites_count
+
         if len(context.get("simpl_nav", {})) > 1 and context.get("simpl_configuring"):
             context["next_url"] = nav.get_next_url(self.run, self.simpl_name)
         return context

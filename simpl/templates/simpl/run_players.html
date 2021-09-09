@@ -5,7 +5,7 @@
 {% block content_inner %}
 {{ block.super }}
 <div class="player-grid">
-  {% if simpl_configuring and players %}
+  {% if simpl_configuring and players_count %}
   <div class="player-col">
     <div class="all-players-managed">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23.043 17.154" class="icon">
@@ -23,9 +23,21 @@
   </div>
   {% endif %}
   <div class="player-col">
+    {% includecontents "simpl/includes/search_form.html" with value=request.GET.q %}
+    Filter players
+    {% endincludecontents %}
+
+    {% if not players and not inactive_players and not invites %}
+    <p>No players found.</p>
+    {% endif %}
+
+    {% if players %}
     <div class="player-header">
-      <p class="walkthrough-chapter-heading">Players List</p>
+      <p class="walkthrough-chapter-heading">Active Players
+        ({{ players|length }}{% if players|length != players_count %}/{{ players_count }}{% endif %})</p>
     </div>
+    {% endif %}
+
     <div class="team-scroll is-taller">
       {% if run.status >= run.STATUS.PLAY and run.multiplayer %}
       {% for team, team_players in teams.items %}
@@ -64,8 +76,9 @@
       {% endif %}
 
       {% if inactive_players %}
-      <div class="player-header is-nested">
-        <p class="walkthrough-chapter-heading">Inactive Players</p>
+      <div class="player-header">
+        <p class="walkthrough-chapter-heading">Inactive Players
+        ({{ inactive_players|length }}{% if inactive_players|length != inactive_count %}/{{ inactive_count }}{% endif %})</p>
       </div>
       <div class="card player-card glow-shadow team-card is-inactive-player">
         {% for player in inactive_players %}
@@ -85,7 +98,8 @@
 
       {% if invites %}
       <div class="player-header">
-        <p class="walkthrough-chapter-heading">Invites Sent</p>
+        <p class="walkthrough-chapter-heading">Invites Sent
+        ({{ invites|length }}{% if invites|length != invites_count %}/{{ invites_count }}{% endif %})</p>
       </div>
       <div class="card player-card glow-shadow team-card is-inactive-player">
         {% for player in invites %}
