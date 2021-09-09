@@ -123,7 +123,7 @@ class PlayersView(SimplMixin, DetailView):
         players_qs = self.run.player_set.select_related(
             "user",
             "character__instance"
-        )
+        ).order_by("user__first_name", "user__last_name")
         players = players_qs.active().has_user()
         if self.run.status >= self.run.STATUS.PLAY:
             players = players.exclude(character__instance=None)
