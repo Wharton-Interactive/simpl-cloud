@@ -29,7 +29,12 @@ class Query(graphene.ObjectType):
     )
     games = graphene.List(
         types.SimplGame,
-        description=f"Return Game Experiences.",
+        description="Return Game Experiences.",
+    )
+    game = graphene.Field(
+        types.SimplGame,
+        id=graphene.ID(required=True),
+        description="Return the Game for a given ID.",
     )
 
     @staticmethod
@@ -86,3 +91,12 @@ class Query(graphene.ObjectType):
                 GameExperience._default_manager.sort_games_by_version(current_group)[-1]
             )
         return games
+
+    @staticmethod
+    @simpl_token_required
+    def resolve_game(root, info, id):
+        games = GameExperience._default_manager.filter(experience_id=id)
+        if games:
+            return GameExperience._default_manager.sort_games_by_version(
+                games
+            )[-1]
