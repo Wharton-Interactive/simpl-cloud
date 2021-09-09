@@ -7,13 +7,7 @@
       </div>
     </div>
 
-    <p class="avatar-detail-meta">
-    {% if player.user.get_full_name %}
-      {{ player.user.get_full_name }}
-    {% else %}
-      Anonymous Player: {{ player|playerinitials|upper }}
-    {% endif %}
-    </p>
+    <p class="avatar-detail-meta">{{ player.public_name }}</p>
   </div>
   {{ contents }}
 </div>
