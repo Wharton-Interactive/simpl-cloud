@@ -1,0 +1,64 @@
+// Search Field
+//
+// The search field is part of the Thread List component, but is built with the
+// flexibility to be used elsewhere.
+//
+// .dark-fields - This is a theme applied to a field to give it a darker appearance. To be used on white backgrounds.
+// :focus   - focus state
+//
+// Markup: ../../styleguide/src/components/search.hbs
+//
+// Weight: 6
+//
+// Style guide: forms.search
+
+.search-wrap {
+  position: relative;
+
+  input:not([type='submit']):not([type='checkbox']):not([type='radio']).search-input {
+    padding-right: 30px;
+
+    &::-webkit-search-cancel-button {
+      // webkit-only cancel button that appears on focus, only when there is
+      // text in the field.
+      position: relative;
+      right: 10px;
+    }
+
+    &::placeholder {
+      font-family: var(--search-placeholder-font-family, var(--global-font-family));
+      letter-spacing: var(--search-placeholder-letter-spacing, normal);
+    }
+  }
+
+  &.w-400 {
+    width: 400px;
+    max-width: 100%;
+  }
+
+  .search-button {
+    @include square(24px);
+    appearance: none;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--text-color);
+
+    .icon {
+      @include square(24px);
+    }
+
+    &:not(:disabled):hover {
+      color: var(--brand-color-tint1);
+    }
+
+    &:focus {
+      box-shadow: var(--focus-shadow);
+      outline: none;
+    }
+  }
+}

@@ -492,6 +492,10 @@
       grid-gap: 0 rem-calc(60);
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       height: 100%;
+
+      @at-root .page-header & {
+        height: auto;
+      }
     }
 
     &-col {
