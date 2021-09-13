@@ -77,7 +77,10 @@
         justify-content: space-between;
         align-items: center;
         gap: 2rem;
-        padding: 0 26px 0 16px;
+
+        &.h-pad {
+          padding: 0 26px 0 16px;
+        }
       }
     }
 
