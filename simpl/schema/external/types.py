@@ -96,7 +96,7 @@ class SimplRun(DjangoObjectType):
     class Meta:
         model = Run
         skip_registry = True
-        fields = ["id", "name", "multiplayer"]
+        fields = ["id", "name", "multiplayer", "continuous"]
 
     @staticmethod
     def resolve_management_url(obj, info):
