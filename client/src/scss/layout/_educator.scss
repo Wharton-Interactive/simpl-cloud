@@ -739,8 +739,16 @@
 
 :fullscreen {
   background: var(--body-bg-color);
+  padding: 100px;
+  overflow: auto;
 }
 
 .svelte-app-wrap {
   height: 100%;
+}
+
+.report-header-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
 }

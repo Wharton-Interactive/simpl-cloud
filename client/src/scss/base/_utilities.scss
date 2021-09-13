@@ -252,3 +252,11 @@ a.reverse-link {
 .hidden {
   display: none;
 }
+
+.fullscreen-only {
+  display: none !important;
+
+  @at-root :fullscreen & {
+    display: flex !important;
+  }
+}
