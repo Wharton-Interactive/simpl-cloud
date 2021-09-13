@@ -4,10 +4,10 @@ Change log for Simpl Cloud
 A list of notable changes to the Simpl-Cloud library included in each release.
 
 
-0.28 (unreleased)
-=================
+0.28 (13 September 2021)
+========================
 
-- Nothing changed yet.
+- Progress UI fixes.
 
 
 0.27 (13 September 2021)
