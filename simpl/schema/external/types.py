@@ -238,7 +238,7 @@ class SimplGame(DjangoObjectType):
     class Meta:
         model = GameExperience
         skip_registry = True
-        fields = ["name"]
+        fields = ["name", "continuous"]
 
     @staticmethod
     def resolve_runs(obj, info):
