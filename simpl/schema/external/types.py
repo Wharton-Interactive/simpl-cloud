@@ -199,7 +199,8 @@ class SimplUserRun(graphene.ObjectType):
     @staticmethod
     def resolve_url(obj: models.Player, info):
         url = obj.get_play_url()
-        return build_url(url, user_ids=[obj.user_id], request=info.context)
+        if url:
+            return build_url(url, user_ids=[obj.user_id], request=info.context)
 
 
 class SimplUser(graphene.ObjectType):

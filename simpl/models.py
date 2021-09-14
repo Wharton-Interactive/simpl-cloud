@@ -369,7 +369,6 @@ class BaseInstance(DataMixin, models.Model):
     def archive(self):
         self.player_set.delete()
 
-    @property
     def get_play_url(self):
         return ""
 
