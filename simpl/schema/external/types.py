@@ -92,6 +92,7 @@ class SimplRun(DjangoObjectType):
     status = graphene.Field(RunStatus)
     class_id = graphene.ID()
     class_name = graphene.Field(graphene.String)
+    continuous_open = graphene.Boolean()
 
     class Meta:
         model = Run
