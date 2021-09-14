@@ -4,10 +4,14 @@ Change log for Simpl Cloud
 A list of notable changes to the Simpl-Cloud library included in each release.
 
 
-0.29 (unreleased)
-=================
+0.29 (14 September 2021)
+========================
 
-- Nothing changed yet.
+- Add continuous field to game in API.
+
+- Add continuous open field to run in API.
+
+- Fix get play URL method in Run model.
 
 
 0.28 (13 September 2021)
