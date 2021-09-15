@@ -32,6 +32,29 @@ img {
   @include clamplines(3);
 }
 
+.read-more {
+  display: flex;
+
+  &.is-expanded {
+    display: block;
+
+    .clamp-button {
+      display: block;
+      margin-top: rem-calc(8);
+    }
+  }
+
+  &:not(.is-expanded) {
+    .clamp-text {
+      flex: 1 1 100%;
+      @include clamplines(1);
+    }
+    .clamp-button {
+      flex: 0 0 auto;
+    }
+  }
+}
+
 .nowrap {
   white-space: nowrap;
 }
@@ -53,7 +76,21 @@ img {
   }
 }
 
-.mb {
+[toggle-this] {
+  display: none;
+
+  &.is-expanded {
+    display: block;
+  }
+}
+
+.v-pad {
+  padding-top: calc(var(--global-margin) / 2);
+  padding-bottom: calc(var(--global-margin) / 2);
+}
+
+.mb,
+.mb-1 {
   margin-bottom: var(--global-margin) !important;
 }
 
@@ -62,12 +99,34 @@ img {
   margin-top: var(--global-margin) !important;
 }
 
+.mt-0 {
+  margin-top: 0 !important;
+}
+
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
+.m-0 {
+  margin: 0 !important;
+}
+
 .mt-2 {
   margin-top: calc(var(--global-margin) * 2) !important;
 }
 
+.mb-2 {
+  margin-bottom: calc(var(--global-margin) * 2) !important;
+}
+
 .pad-right {
   padding-right: var(--global-margin);
+}
+
+.zero-text-margins {
+  p, ul, ol, li, h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+  }
 }
 
 .float-right {
@@ -114,6 +173,14 @@ img {
 .reverse-links a,
 a.reverse-link {
   @include reverse-link-decoration;
+}
+
+.fullscreen-only {
+  display: none !important;
+
+  @at-root :fullscreen & {
+    display: flex !important;
+  }
 }
 
 .mobile-only {

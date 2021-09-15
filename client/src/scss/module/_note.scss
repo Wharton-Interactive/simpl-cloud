@@ -17,6 +17,8 @@
 // .is-sticky.is-at-bottom - adds position:sticky and positions it at the bottom of the container.
 // .is-flex - adds `display: flex`, for use in single-action notifications.
 // .is-feature - increases font size and adds extra padding.
+// .has-large-icon - increase icons size and padding
+// .border-theme.theme-success-color - combine `.border-theme` theme classes to create alternate styles
 // .theme-caution-color -  Indicate something important.
 // .theme-alert-color -  Indicate an error.
 // .theme-success-color -  Indicate a successful action.
@@ -112,7 +114,10 @@
   &.is-flex .note-content {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
+    gap: 1rem;
+    margin-right: 0;
 
     > * {
       margin: 0;
@@ -134,6 +139,25 @@
     }
   }
 
+  &.has-large-icon {
+    --icon-size: #{rem-calc(42)};
+    padding: 1rem;
+
+    .button {
+      white-space: nowrap;
+    }
+  }
+
+  &.border-theme {
+    border: 0 none;
+    border-left: 4px solid var(
+        --theme-color,
+        var(--note-default-border-color, var(--card-border-color-default))
+      );
+    background: var(--card-bg);
+    box-shadow: var(--feature-shadow);
+  }
+
   &.is-thin {
     padding: rem-calc(2) rem-calc(10);
   }
@@ -151,6 +175,10 @@
 
   & + & {
     margin-bottom: rem-calc(10);
+  }
+
+  &-heading {
+    font-size: 1rem;
   }
 
   // special case to fix wrapping on team page
