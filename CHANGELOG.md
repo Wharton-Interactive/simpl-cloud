@@ -4,10 +4,12 @@ Change log for Simpl Cloud
 A list of notable changes to the Simpl-Cloud library included in each release.
 
 
-0.30 (unreleased)
+0.30 (16 September 2021)
 =================
 
-- Nothing changed yet.
+- Dropdown groups added to report styling
+
+- Layout fix on Teams page and UI changes on Status page
 
 
 0.29 (14 September 2021)
