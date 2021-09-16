@@ -537,9 +537,14 @@ class Player(BasePlayer):
 
 class APIToken(models.Model):
     token = models.CharField(max_length=32, editable=False, unique=True)
+    name = models.CharField(max_length=100, blank=True)
     last_used = models.DateField(blank=True, null=True)
 
     def __str__(self):
+        return self.name or self.token_part
+
+    @property
+    def token_part(self):
         return f"{self.token[:8]}..."
 
     def save(self, *args, **kwargs):
