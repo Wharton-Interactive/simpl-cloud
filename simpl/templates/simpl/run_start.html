@@ -1,38 +1,12 @@
 {% extends "simpl/base.html" %}
 
-{% block main_wrap_classes %}v-nav-flex-layout{% endblock %}
-
 {% block arrows %}
 {% include 'simpl/includes/status-arrows.html' %}
 {% endblock arrows %}
 
-{% block heading %}The {% if not run.multiplayer and not run.continuous %}Practice{% endif %} Game is in Setup Mode{% endblock %}
+{% block heading %}Start {% if not run.multiplayer %}Practice{% endif %} Game{% endblock %}
 
 {% block content_inner %}
 {{ block.super }}
-<form class="prose" action="{{ action|default:'.' }}" method="post">
-  {% csrf_token %}
-  <p>While configuring, players will be able to join the lobby in preparation to
-    play. They’ll receive an email to set up an account if they haven’t.
-    <a href="{% url 'simpl.players' run.id %}">Review players to ensure the
-    class is ready</a>. When you’re ready for play to begin, select
-    <strong>Begin {% if not run.multiplayer and not run.continuous %}Practice{% endif %}
-    Game</strong> below.
-  </p>
-
-  <p>
-    {% if run.continuous %}
-    Game instances will be automatically created for new players added after
-    this run is started.
-    {% else %}
-    Players added after this run is started will need to be manually assigned
-    to new teams.
-    {% endif %}
-  </p>
-
-
-  <div class="button-wrap">
-    <button type="submit" class="button large" {% if not ready %} disabled{% endif %}>Begin {% if not run.multiplayer and not run.continuous %}Practice{% endif %} Game</button>
-  </div>
-</form>
+{% include 'simpl/includes/form_start.html' %}
 {% endblock %}
