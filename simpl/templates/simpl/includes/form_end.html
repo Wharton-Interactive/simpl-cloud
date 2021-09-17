@@ -3,9 +3,9 @@
   {% if redirect_to %}<input type="hidden" value="{{ redirect_to }}" name="redirect_to" />{% endif %}
   <p>
     {% if not run.ended %}
-    End Gamplay stops the game. Players will no longer be able to play or submit decisions.
+    <strong>End Gameplay</strong> stops the game. Players will no longer be able to play or submit decisions.
     {% else %}
-    <strong>Restart Gamplay</strong> resumes the game. Players can continue to submit decisions.
+    <strong>Restart Gameplay</strong> resumes the game. Players can continue to submit decisions.
     {% endif %}
   </p>
   <div class="button-wrap">
