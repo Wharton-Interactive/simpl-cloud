@@ -189,8 +189,6 @@ class BaseRun(DataMixin, models.Model):
 
     @cached_property
     def ended(self):
-        if self.continuous_open:
-            return False
         instances = self.instances.count()
         return (
             instances > 0
@@ -308,8 +306,12 @@ class BaseRun(DataMixin, models.Model):
         return self._get_app_setting("USE_STATUS_DEBRIEF")
 
     @property
+    def can_end(self) -> bool:
+        return self._get_app_setting("CAN_END_RUN")
+
+    @property
     def can_restart(self) -> bool:
-        return self._get_app_setting("CAN_RESTART_RUN")
+        return self.can_end and self._get_app_setting("CAN_RESTART_RUN")
 
 
 class Run(BaseRun, DataMixin, models.Model):

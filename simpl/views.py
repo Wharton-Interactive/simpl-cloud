@@ -254,7 +254,7 @@ class EndGameplayView(SimplMixin, DetailView):
                 )
                 self.run.save()
         else:
-            for instance in self.run.instances.exclude(date_ended=None):
+            for instance in self.run.instances.exclude(date_end=None):
                 instance.restart()
             message = "The game has been restarted."
 
