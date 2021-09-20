@@ -98,12 +98,12 @@ class ClassMutationTestCase(TestCase):
         context.user = baker.make(get_user_model(), is_superuser=True)
         result = schema.execute(
             """mutation ($id: UUID!, $name: String!) {
-                class(id: $id, name: $name)
+                simplClass(id: $id, name: $name)
             }""",
             variable_values={"id": class_id, "name": "Test class"},
             context_value=context,
         )
-        self.assertEqual(result.data["class"], class_id)
+        self.assertEqual(result.data["simplClass"], class_id)
         self.assertEqual(Class.objects.get().name, "Test class")
 
     def test_update_class(self):
@@ -113,12 +113,12 @@ class ClassMutationTestCase(TestCase):
         context.user = baker.make(get_user_model(), is_superuser=True)
         result = schema.execute(
             """mutation ($id: UUID!, $name: String!) {
-                class(id: $id, name: $name)
+                simplClass(id: $id, name: $name)
             }""",
             variable_values={"id": simpl_class.id.hex, "name": "New name"},
             context_value=context,
         )
-        self.assertEqual(result.data["class"], str(simpl_class.id))
+        self.assertEqual(result.data["simplClass"], str(simpl_class.id))
         simpl_class.refresh_from_db()
         self.assertEqual(Class.objects.get().name, "New name")
 
@@ -126,10 +126,10 @@ class ClassMutationTestCase(TestCase):
             """
             query ($runId: ID!) {
                 run(id: $runId) {
-                    class
+                    className
                 }
             }""",
             variable_values={"runId": run.id},
             context_value=context,
         )
-        self.assertEqual(result.data["run"]["class"], "New name")
+        self.assertEqual(result.data["run"]["className"], "New name")

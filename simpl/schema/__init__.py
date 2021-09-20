@@ -12,7 +12,7 @@ class Mutation(graphene.ObjectType):
     run = external_mutations.SimplRun.Field()
     players = external_mutations.SimplPlayers.Field()
     managers = external_mutations.SimplManagers.Field()
-    class_ = external_mutations.SimplClass.Field(name="class")
+    simpl_class = external_mutations.SimplClass.Field()
     alter_user = external_mutations.AlterUser.Field()
 
 
