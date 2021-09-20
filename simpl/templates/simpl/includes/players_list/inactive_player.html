@@ -1,0 +1,12 @@
+{% load includecontents %}
+
+{% includecontents "simpl/includes/player.html" %}
+  {% if run.status < run.STATUS.PLAY or run.continuous %}
+  {% includecontents "simpl/includes/dropdown.html" %}
+    {% includecontents "simpl/includes/dropdown-item.html" with post=True %}
+    Mark active
+    {% contents extra %}<input type="hidden" name="reactivate" value="{{ player.pk }}">{% endcontents %}
+    {% endincludecontents %}
+  {% endincludecontents %}
+  {% endif %}
+{% endincludecontents %}

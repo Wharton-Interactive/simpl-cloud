@@ -1,0 +1,8 @@
+{% load includecontents %}
+
+{% includecontents "simpl/includes/player.html" %}{%  if not player.character.instance.date_end %}
+<span class="status-flag is-player">Active</span>
+{% else %}
+<span class="status-flag is-finished">Done</span>
+{% endif %}
+{% endincludecontents %}

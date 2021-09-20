@@ -1,0 +1,10 @@
+{% load includecontents %}
+
+{% includecontents "simpl/includes/player.html" %}
+  {% includecontents "simpl/includes/dropdown.html" %}
+    {% includecontents "simpl/includes/dropdown-item.html" with post=True %}
+    Mark inactive
+    {% contents extra %}<input type="hidden" name="deactivate" value="{{ player.pk }}">{% endcontents %}
+    {% endincludecontents %}
+  {% endincludecontents %}
+{% endincludecontents %}
