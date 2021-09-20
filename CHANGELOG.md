@@ -4,10 +4,24 @@ Change log for Simpl Cloud
 A list of notable changes to the Simpl-Cloud library included in each release.
 
 
-0.31 (unreleased)
-=================
+0.31 (20 September 2021)
+========================
 
-- Nothing changed yet.
+- Add optional name to APIToken.
+
+- Templates cleanup
+  - remove unused includes
+  - use correct form includes in status change pages
+
+- Use new players template layout with includes to allow overrides on smaller elements.
+
+- Allow configuring Run transition steps
+  - Run.use_status_prepare
+  - Run.use_status_debrief
+  - Run.can_end
+  - Run.can_restart
+
+- Change class mutation name to avoid reserved word.
 
 
 0.30 (16 September 2021)
