@@ -7,13 +7,7 @@
       </div>
     </div>
 
-    <p class="avatar-detail-meta">{{ player }}
-      {% comment %}
-      {% if player.user.email %}
-      <span class="avatar-detail-desc">{{ player.user.email }}</span>
-      {% endif %}
-      {% endcomment %}
-    </p>
+    <p class="avatar-detail-meta">{{ player.public_name }}</p>
   </div>
   {{ contents }}
 </div>

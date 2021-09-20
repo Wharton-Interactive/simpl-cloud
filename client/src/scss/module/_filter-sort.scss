@@ -1,0 +1,230 @@
+// Filter and Sort tools
+//
+// This component is used on detail list views to filter and sort any list
+// of items.
+//
+// Markup: ../../styleguide/src/components/nav-filter.hbs
+//
+// Weight: 10
+//
+// Style guide: Navigation.sort-filter
+
+:root {
+  --layout-option-icon-size: #{rem-calc(34)};
+}
+
+.sort-filter {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: 100%;
+  grid-template-areas:
+    'secondary'
+    'primary';
+  grid-template-rows: 1fr;
+  align-items: center;
+  margin: rem-calc(10) 0;
+  padding: 0;
+
+  &-primary {
+    grid-area: primary;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    .field.sort-by {
+      flex: 1 1 100%;
+      justify-content: flex-end;
+      margin-bottom: rem-calc(10);
+    }
+  }
+
+  &-secondary {
+    grid-area: secondary;
+    display: flex;
+  }
+
+  &-heading {
+    margin-right: rem-calc(20);
+    font-size: rem-calc(20);
+  }
+
+  .page-subheading {
+    margin: 0;
+  }
+
+  .number-selected {
+    width: rem-calc(85);
+    font-size: rem-calc(14);
+    white-space: nowrap;
+  }
+
+  .field {
+    display: flex;
+    flex: 1 1 auto;
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
+
+    &.select-all {
+      order: 3;
+      flex: 0 0 auto;
+      margin-top: rem-calc(20);
+      margin-right: rem-calc(20);
+      padding: 0 0 0 rem-calc(7);
+      width: auto;
+      line-height: 1.1;
+    }
+
+    .has-dropdown {
+      flex: 1 1 auto;
+      margin-bottom: 0;
+
+      .button {
+        width: 100%;
+      }
+    }
+  }
+
+  .search-wrap {
+    flex: 1 1 auto;
+  }
+
+  label {
+    margin: 0;
+  }
+
+  &.well {
+    padding: rem-calc(10);
+  }
+
+  .button + * {
+    margin-left: rem-calc(10);
+  }
+
+  @include breakpoint($smedium) {
+    grid-template-areas:
+      'secondary'
+      'primary';
+
+    &.auto-collapse {
+      grid-template-areas: 'primary secondary';
+      grid-template-columns: 1fr 1fr;
+    }
+
+    &.extra-pad {
+      padding-top: rem-calc(40);
+      padding-bottom: rem-calc(10);
+    }
+
+    &-primary {
+      grid-area: primary;
+      justify-content: flex-start;
+
+      > *:last-child:not(:only-child) {
+        margin: 0 0 0 auto;
+
+        &.filter-button {
+          font-weight: var(--global-weight-semibold);
+          margin-bottom: -4px;
+        }
+      }
+
+      .field.select-all {
+        order: 1;
+        margin-top: 0;
+      }
+
+      .field.sort-by {
+        order: 3;
+        flex: 1 1 auto;
+        margin: 0 0 0 rem-calc(30);
+
+        .has-dropdown {
+          flex: 0 0 auto;
+        }
+      }
+
+      .field.select-action {
+        order: 2;
+      }
+    }
+
+    &-secondary {
+      grid-area: secondary;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-bottom: 0;
+    }
+
+    .search-wrap {
+      width: 100%;
+      min-width: 170px;
+    }
+
+    .field {
+      flex: 0 0 auto;
+      width: auto;
+
+      .has-dropdown .button {
+        width: auto;
+      }
+    }
+
+    .push-right {
+      margin-left: auto;
+    }
+  }
+
+  @include breakpoint($xlarge) {
+    grid-template-columns: max-content;
+    grid-template-areas: 'primary secondary';
+    grid-gap: 0 10px;
+
+    .search-wrap {
+      margin: 0 rem-calc(10) 0 0;
+      max-width: 350px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+// This is broken out into its own module because this layout makes more sense
+// as flexbox. This is the initial row with add button.
+.sort-filter.add-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  grid-gap: 0; // Firefox renders this on flexbox and Chrome doesn't.
+
+  .button {
+    margin: 0 0 rem-calc(10) auto;
+  }
+
+  .toggle-expandables {
+    order: 2;
+  }
+
+  @include breakpoint($smedium) {
+    align-items: center;
+
+    .sort-filter-heading {
+      order: 1;
+    }
+
+    .button {
+      order: 3;
+      margin: 0 0 0 auto;
+    }
+
+    .field {
+      order: 2;
+      width: auto;
+    }
+  }
+}

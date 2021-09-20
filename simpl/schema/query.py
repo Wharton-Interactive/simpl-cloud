@@ -1,9 +1,12 @@
 import graphene
+from django.db.models import Prefetch
 
-from .. import get_run_model
+from simpl.models import Lobby
+from .. import get_run_model, get_player_model
 from . import types
 
 
+Player = get_player_model()
 Run = get_run_model()
 
 
@@ -20,8 +23,15 @@ class BalancingMixin:
         if not user:
             return None
         try:
+            players_qs = Player.objects.select_related("user").order_by(
+                "user__first_name", "user__last_name"
+            )
+            lobby_qs = Lobby.objects.prefetch_related(
+                Prefetch("player_set", players_qs)
+            ).prepare_ready().order_by("-date_created")
             run = Run.objects.prefetch_related(
-                "player_set__user", "lobby_set__player_set"
+                Prefetch("player_set", players_qs),
+                Prefetch("lobby_set", lobby_qs)
             ).get(pk=run_id)
         except Run.DoesNotExist:
             return None

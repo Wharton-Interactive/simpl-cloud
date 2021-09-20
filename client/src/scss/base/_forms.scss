@@ -774,5 +774,18 @@ textarea {
 
 .highcharts-container {
   min-width: 100%;
-  height: 55vh;
+
+  @include breakpoint($smedium) {
+    &.split {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+
+      > .chart:not(:only-child){
+        width: calc(50% - 1rem);
+      }
+    }
+
+
+  }
 }

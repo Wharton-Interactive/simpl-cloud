@@ -1,13 +1,16 @@
 {% extends "simpl/base.html" %}
 
-{% block main_wrap_classes %}v-nav-flex-layout{% endblock %}
-
-{% block heading %}End Gameplay{% endblock %}
-
 {% block arrows %}
 {% include 'simpl/includes/status-arrows.html' %}
 {% endblock arrows %}
 
+{% block heading %}
+{% if not run.ended %}
+The Game is in Play
+{% else %}
+The Game is Finished
+{% endif %}
+{% endblock %}
 
 {% block content_inner %}
 {{ block.super }}

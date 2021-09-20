@@ -335,13 +335,11 @@
     }
 
     a {
-      color: var(--alert-color);
       text-decoration: none;
       font-size: var(--font-size-small);
       font-weight: var(--global-weight-semibold);
 
       &:hover {
-        color: var(--alert-color-shade);
         text-decoration: underline;
       }
     }
@@ -492,6 +490,10 @@
       grid-gap: 0 rem-calc(60);
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       height: 100%;
+
+      @at-root .page-header & {
+        height: auto;
+      }
     }
 
     &-col {
@@ -735,8 +737,16 @@
 
 :fullscreen {
   background: var(--body-bg-color);
+  padding: 100px;
+  overflow: auto;
 }
 
 .svelte-app-wrap {
   height: 100%;
+}
+
+.report-header-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
 }

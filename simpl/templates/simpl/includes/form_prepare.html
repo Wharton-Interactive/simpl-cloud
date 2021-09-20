@@ -23,10 +23,7 @@
 
   <div class="button-wrap align-full">
     {% if run.status == run.STATUS.PREPARE %}
-    {% if simpl_nav.prepare.next_url %}
-    <a href="{{ simpl_nav.prepare.next_url }}" class="button large">Next Step</a>
-    {% endif %}
-    <button class="button no-border large">Revert Players Prepare</button>
+    <button class="button large theme-alert-color">Revert Players Prepare</button>
     {% else %}
     <p><button class="button large">Begin Players Prepare</button></p>
     {% endif %}

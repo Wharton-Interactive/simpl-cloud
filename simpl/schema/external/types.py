@@ -90,12 +90,14 @@ class SimplRun(DjangoObjectType):
     )
     instances = graphene.List(SimplInstance)
     status = graphene.Field(RunStatus)
-    class_ = graphene.Field(graphene.String, name="class")
+    class_id = graphene.ID()
+    class_name = graphene.Field(graphene.String)
+    continuous_open = graphene.Boolean()
 
     class Meta:
         model = Run
         skip_registry = True
-        fields = ["id", "name", "multiplayer"]
+        fields = ["id", "name", "multiplayer", "continuous"]
 
     @staticmethod
     def resolve_management_url(obj, info):
@@ -126,7 +128,12 @@ class SimplRun(DjangoObjectType):
         return Instance._default_manager.filter(run=obj)
 
     @staticmethod
-    def resolve_class_(obj, info):
+    def resolve_class_id(obj, info):
+        if obj.simpl_class:
+            return obj.simpl_class.id
+
+    @staticmethod
+    def resolve_class_name(obj, info):
         return obj.simpl_class.name if obj.simpl_class else ""
 
 
@@ -192,7 +199,8 @@ class SimplUserRun(graphene.ObjectType):
     @staticmethod
     def resolve_url(obj: models.Player, info):
         url = obj.get_play_url()
-        return build_url(url, user_ids=[obj.user_id], request=info.context)
+        if url:
+            return build_url(url, user_ids=[obj.user_id], request=info.context)
 
 
 class SimplUser(graphene.ObjectType):
@@ -231,7 +239,7 @@ class SimplGame(DjangoObjectType):
     class Meta:
         model = GameExperience
         skip_registry = True
-        fields = ["name"]
+        fields = ["name", "continuous"]
 
     @staticmethod
     def resolve_runs(obj, info):

@@ -240,6 +240,15 @@
     border-bottom: none;
   }
 
+  &-group {
+    padding: #{rem-calc(6)} #{rem-calc(16)};
+    font-weight: var(--global-weight-semibold);
+    background: var(--body-bg-shade);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
   &-link {
     display: flex;
     align-items: center;

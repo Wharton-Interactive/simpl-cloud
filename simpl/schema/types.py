@@ -18,7 +18,7 @@ class BalancingPlayer(DjangoObjectType):
 
     @staticmethod
     def resolve_name(obj: Player, info):
-        return str(obj)
+        return obj.public_name
 
     @staticmethod
     def resolve_email(obj: Player, info):
@@ -64,4 +64,4 @@ class Balancing(DjangoObjectType):
 
     @staticmethod
     def resolve_teams(obj, info):
-        return obj.lobby_set.order_by("-date_created")
+        return obj.lobby_set.all()

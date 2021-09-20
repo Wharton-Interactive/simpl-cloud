@@ -397,7 +397,6 @@ class BaseInstance(DataMixin, models.Model):
     def archive(self):
         self.player_set.delete()
 
-    @property
     def get_play_url(self):
         return ""
 
@@ -534,6 +533,16 @@ class BasePlayer(models.Model):
             return str(self.character)
         return "<Player>"
 
+    @property
+    def public_name(self):
+        if self.user:
+            name = self.user.get_full_name()
+        else:
+            name = "Anonymous Player"
+            if self.character:
+                name += f": {self.character}"
+        return name
+
     def get_play_url(self) -> str:
         custom_play_url = getattr(settings, "SIMPL_GET_PLAY_URL", None)
         if custom_play_url:
@@ -556,9 +565,14 @@ class Player(BasePlayer):
 
 class APIToken(models.Model):
     token = models.CharField(max_length=32, editable=False, unique=True)
+    name = models.CharField(max_length=100, blank=True)
     last_used = models.DateField(blank=True, null=True)
 
     def __str__(self):
+        return self.name or self.token_part
+
+    @property
+    def token_part(self):
         return f"{self.token[:8]}..."
 
     def save(self, *args, **kwargs):

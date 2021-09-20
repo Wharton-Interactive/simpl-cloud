@@ -1,0 +1,40 @@
+{% if run.status < run.STATUS.PLAY %}
+    <p class="walkthrough-help-heading">
+      The Game is in Setup Mode.
+    </p>
+    <p class="walkthrough-help-text">
+      Players may still join in preparation to begin. The list here reflects the current set of known, registered players prepared to begin.
+    </p>
+    <p class="walkthrough-help-text"><strong>No actions are required.</strong></p>
+{% endif %}
+
+{% if run.status == run.STATUS.PLAY %}
+  <p class="walkthrough-help-heading">
+    The Game is in Play Mode.
+  </p>
+  {% if run.continuous %}
+  <p class="walkthrough-help-text">
+    Players who join during Play Mode will automatically be allowed to play. This list reflects the current set of known, registered players who may play the game.
+  </p>
+  <p class="walkthrough-help-text"><strong>No actions are required.</strong></p>
+  {% else %}
+  <p class="walkthrough-help-text">This run is not continuous. (#TODO: copy needed.)</p>
+  {% endif %}
+
+{% endif %}
+
+{% if inactive_players %}
+  <p class="walkthrough-help-heading">
+    <strong>There {{ inactive_players|pluralize:"is,are" }}
+    {{ inactive_players|length }}{% if inactive_players|length != inactive_count %}/{{ inactive_count }}{% endif %}
+    Inactive player{{ inactive_players|pluralize }}</strong>.
+  </p>
+
+  {% if run.status < run.STATUS.PLAY or run.continuous %}
+  <p class="walkthrough-help-text">
+    Select "Mark Active" next to {{ inactive_players|pluralize:"this,each" }}
+    player's name to allow them to join. They will
+    be notified and added immediately to a new game.
+  </p>
+  {% endif %}
+{% endif %}

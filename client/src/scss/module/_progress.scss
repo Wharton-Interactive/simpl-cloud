@@ -253,12 +253,12 @@
   letter-spacing: 1px;
   font-size: 0.7em;
   padding: 0.2em 0.7em;
-  margin: -1.5rem rem-calc(20) 0 0;
+  margin: 0 rem-calc(20) 0 0;
   border-radius: 0.3em;
 
   &.listening {
     background: var(--success-color);
-    opacity: 0.4;
+    opacity: 0;
   }
   &.disconnected {
     background: var(--alert-color);

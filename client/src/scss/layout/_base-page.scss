@@ -27,6 +27,10 @@
   &-header-description {
     max-width: 74ch;
     padding-right: 2.5rem;
+
+    &:empty {
+      display: none;
+    }
   }
 
   &-heading {
@@ -66,6 +70,18 @@
 
     &-header {
       padding: var(--page-header-padding-lg, #{rem-calc(30) rem-calc(20) 0 rem-calc(120)});
+
+      &-flex-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 2rem;
+
+        &.h-pad {
+          padding: 0 26px 0 16px;
+        }
+      }
     }
 
     &-heading {
