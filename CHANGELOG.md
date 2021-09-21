@@ -4,10 +4,10 @@ Change log for Simpl Cloud
 A list of notable changes to the Simpl-Cloud library included in each release.
 
 
-0.32 (unreleased)
-=================
+0.31.2 (21 September 2021)
+==========================
 
-- Nothing changed yet.
+- Add missing message for non continuous runs in players list.
 
 
 0.31.1 (20 September 2021)
