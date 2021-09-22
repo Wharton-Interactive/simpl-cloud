@@ -4,10 +4,10 @@ Change log for Simpl Cloud
 A list of notable changes to the Simpl-Cloud library included in each release.
 
 
-0.32 (unreleased)
-=================
+0.31.3 (22 September 2021)
+==========================
 
-- Nothing changed yet.
+- Fix game id query parameter in game API.
 
 
 0.31.2 (21 September 2021)
