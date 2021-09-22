@@ -33,7 +33,7 @@ class Query(graphene.ObjectType):
     )
     game = graphene.Field(
         types.SimplGame,
-        id=graphene.ID(required=True),
+        id=graphene.UUID(required=True),
         description="Return the Game for a given ID.",
     )
 
