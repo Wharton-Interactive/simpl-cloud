@@ -4,10 +4,12 @@ Change log for Simpl Cloud
 A list of notable changes to the Simpl-Cloud library included in each release.
 
 
-0.32 (unreleased)
-=================
+0.32 (23 September 2021)
+========================
 
-- Nothing changed yet.
+- Show correct button to end game in form.
+
+- Fix status arrow showing debrief as current step when run ended.
 
 
 0.31.3 (22 September 2021)
