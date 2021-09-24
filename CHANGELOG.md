@@ -7,7 +7,7 @@ A list of notable changes to the Simpl-Cloud library included in each release.
 0.33 (unreleased)
 =================
 
-- Nothing changed yet.
+- Fix logic for ending and restarting runs.
 
 
 0.32 (23 September 2021)

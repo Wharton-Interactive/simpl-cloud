@@ -189,6 +189,8 @@ class BaseRun(DataMixin, models.Model):
 
     @cached_property
     def ended(self):
+        if self.completed:
+            return True
         instances = self.instances.count()
         return (
             instances > 0
@@ -386,7 +388,7 @@ class BaseInstance(DataMixin, models.Model):
         self.save()
 
     def restart(self):
-        self.date_start = None
+        self.date_end = None
         self.save()
 
     def get_status_display(self):

@@ -236,28 +236,39 @@ class EndGameplayView(SimplMixin, DetailView):
     simpl_name = "end"
 
     def post(self, request, *args, **kwargs):
-        running_instances = self.run.instances.exclude(date_start=None).filter(
-            date_end=None
-        )
-        if running_instances:
-            for instance in running_instances:
-                instance.stop()
-            message = "The game has been stopped for all players."
-            if not self.run.continuous_open:
-                self.run.status = (
-                    self.run.STATUS.DEBRIEF
-                    if (
-                        self.run.use_status_debrief
-                        and self.run.status < self.run.STATUS.DEBRIEF
+        stoped_msg = "The game has been stopped for all players."
+        started_msg = "The game has been restarted."
+        if self.run.instances.exists():
+            running_instances = self.run.instances.exclude(date_start=None).filter(
+                date_end=None
+            )
+            if running_instances:
+                for instance in running_instances:
+                    instance.stop()
+                message = stoped_msg
+                if not self.run.continuous_open:
+                    self.run.status = (
+                        self.run.STATUS.DEBRIEF
+                        if (
+                            self.run.use_status_debrief
+                            and self.run.status < self.run.STATUS.DEBRIEF
+                        )
+                        else self.run.STATUS.COMPLETE
                     )
-                    else self.run.STATUS.COMPLETE
-                )
-                self.run.save()
+            else:
+                for instance in self.run.instances.exclude(date_end=None):
+                    instance.restart()
+                self.run.status = self.run.STATUS.PLAY
+                message = started_msg
         else:
-            for instance in self.run.instances.exclude(date_end=None):
-                instance.restart()
-            message = "The game has been restarted."
+            if self.run.status == self.run.STATUS.COMPLETE:
+                self.run.status = self.run.STATUS.PLAY
+                message = started_msg
+            else:
+                self.run.status = self.run.STATUS.COMPLETE
+                message = stoped_msg
 
+        self.run.save()
         messages.success(request, message)
         url = request.POST.get("redirect_to") or nav.get_next_url(
             self.run, self.simpl_name
