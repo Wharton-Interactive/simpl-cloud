@@ -110,13 +110,7 @@
         <p class="text-center">
           All players are assigned to teams and ready to play. You may now
           enable Players Prepare and Start Game in
-          <strong>
-            {#if nextStep}
-              <a href={nextStep}>Game Status</a>
-            {:else}
-            Game Status
-            {/if}
-          </strong>.
+          <strong>{#if nextStep}<a href={nextStep}>Game Status</a>{:else}Game Status{/if}</strong>.
         </p>
       </div>
     {/if}
