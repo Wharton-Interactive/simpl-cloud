@@ -1,6 +1,6 @@
 <form class="prose" action="{{ action|default:'.' }}" method="post">
   {% csrf_token %}
-  {% if run.multiplayer and run.status == run.STATUS.PREPARE %}
+  {% if run.status == run.STATUS.PREPARE %}
   <p>Players are currently in Players Prepare. Game instructions and supporting
     materials have been made available. If you revert Players Prepare, instructions
     and materials will be hidden.</p>
