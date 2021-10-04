@@ -90,6 +90,7 @@ class SimplRun(DjangoObjectType):
     )
     instances = graphene.List(SimplInstance)
     status = graphene.Field(RunStatus)
+    game_id = graphene.UUID()
     class_id = graphene.ID()
     class_name = graphene.Field(graphene.String)
     continuous_open = graphene.Boolean()
@@ -126,6 +127,11 @@ class SimplRun(DjangoObjectType):
     @staticmethod
     def resolve_instances(obj, info):
         return Instance._default_manager.filter(run=obj)
+
+    @staticmethod
+    def resolve_game_id(obj, info):
+        if obj.game:
+            return obj.game.experience_id
 
     @staticmethod
     def resolve_class_id(obj, info):
