@@ -84,6 +84,10 @@ class SimplRun(DjangoObjectType):
         description="List of Auth0 IDs for players that have not been assigned to a "
         "run yet.",
     )
+    players_inactive = graphene.List(
+        graphene.ID,
+        description="List of Auth0 IDs for players that are inactive.",
+    )
     player_count = graphene.Int()
     managers = graphene.List(
         graphene.ID, description="List of Auth0 IDs for managers of this run"
@@ -114,6 +118,11 @@ class SimplRun(DjangoObjectType):
     @staticmethod
     def resolve_players_unassigned(obj, info):
         users = User.objects.filter(player__run=obj, player__character=None)
+        return utils.get_auth0_ids(*users)
+
+    @staticmethod
+    def resolve_players_inactive(obj, info):
+        users = obj.player_set.filter(inactive=True).values_list("user")
         return utils.get_auth0_ids(*users)
 
     @staticmethod

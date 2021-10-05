@@ -6,7 +6,7 @@ A list of notable changes to the Simpl-Cloud library included in each release.
 0.37 (unreleased)
 =================
 
-- Nothing changed yet.
+- Add inactive players list to run API.
 
 
 0.36 (4 October 2021)
