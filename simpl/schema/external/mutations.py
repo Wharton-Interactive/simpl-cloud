@@ -150,27 +150,3 @@ class SimplManagers(graphene.Mutation):
             run.managers.remove(*remove_users)
 
     Output = types.SimplRun
-
-
-class AlterUser(graphene.Mutation):
-    """
-    Create or update an Auth0 user.
-    """
-
-    class Arguments:
-        auth0_id = graphene.ID(required=True)
-        first_name = graphene.String()
-        last_name = graphene.String()
-
-    @staticmethod
-    @simpl_token_required
-    def mutate(root, info, auth0_id, first_name="", last_name=""):
-        users = get_auth0_users(auth0_id)
-        user = users[0]
-        if first_name or last_name:
-            user.first_name = first_name
-            user.last_name = last_name
-            user.save()
-        return user
-
-    Output = types.SimplUser

@@ -13,7 +13,6 @@ class Mutation(graphene.ObjectType):
     players = external_mutations.SimplPlayers.Field()
     managers = external_mutations.SimplManagers.Field()
     simpl_class = external_mutations.SimplClass.Field()
-    alter_user = external_mutations.AlterUser.Field()
 
 
 class Query(query.Query, ExternalQuery):
