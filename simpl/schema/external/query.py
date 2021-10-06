@@ -1,4 +1,4 @@
-from simpl import get_game_experience_model, get_run_model
+from simpl import get_game_experience_model, get_run_model, models
 from simpl.schema.external.utils import get_auth0_users, simpl_token_required
 import graphene
 
@@ -35,6 +35,15 @@ class Query(graphene.ObjectType):
         types.SimplGame,
         id=graphene.UUID(required=True),
         description="Return the Game for a given ID.",
+    )
+    simpl_classes = graphene.List(
+        types.SimplClass,
+        description="Return Classes.",
+    )
+    simpl_class = graphene.Field(
+        types.SimplClass,
+        id=graphene.UUID(required=True),
+        description="Return the Class for a given ID.",
     )
 
     @staticmethod
@@ -100,3 +109,13 @@ class Query(graphene.ObjectType):
             return GameExperience._default_manager.sort_games_by_version(
                 games
             )[-1]
+
+    @staticmethod
+    @simpl_token_required
+    def resolve_simpl_classes(root, info):
+        return models.Class.objects.all()
+
+    @staticmethod
+    @simpl_token_required
+    def resolve_simpl_class(root, info, id):
+        return models.Class.objects.filter(id=id).first()

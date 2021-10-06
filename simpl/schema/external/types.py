@@ -263,3 +263,14 @@ class SimplGame(DjangoObjectType):
     @staticmethod
     def resolve_id(obj, info):
         return obj.experience_id
+
+
+class SimplClass(DjangoObjectType):
+    """
+    A Simpl class
+    """
+
+    class Meta:
+        model = models.Class
+        skip_registry = True
+        fields = ["id", "name"]
