@@ -3,10 +3,14 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-0.37 (unreleased)
-=================
+0.37 (6 October 2021)
+=====================
 
 - Add inactive players list to run API.
+
+- Add Class resource to API.
+
+- Remove unused user mutation from API.
 
 
 0.36 (4 October 2021)
