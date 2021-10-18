@@ -3,10 +3,10 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-0.40 (unreleased)
-=================
+0.40 (18 October 2021)
+======================
 
-- Nothing changed yet.
+- Add close button to messages component.
 
 
 0.39 (18 October 2021)
