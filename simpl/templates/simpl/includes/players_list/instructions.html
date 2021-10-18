@@ -7,10 +7,14 @@
     </p>
 {% endif %}
 
-{% if run.status == run.STATUS.PLAY %}
+{% if run.status == run.STATUS.PLAY and not run.ended %}
   <p class="walkthrough-help-heading">
     The Game is currently in Play.
   </p>
+{% elif run.ended %}
+<p class="walkthrough-help-heading">
+  Gameplay has ended.
+</p>
 {% endif %}
 
 {% if inactive_players %}
