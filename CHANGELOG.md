@@ -3,10 +3,10 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-0.41 (unreleased)
-=================
+0.41.1 (18 October 2021)
+========================
 
-- Nothing changed yet.
+- Fix missing JS file.
 
 
 0.40 (18 October 2021)
