@@ -27,13 +27,7 @@
       <p class="page-header-description">{% block page_description %}{% endblock %}</p>
 
       {% block messages %}
-      <div class="prose">
-      {% for message in messages %}
-      <div class="note theme-{% if message.tags == 'error' %}alert{% else %}{{ message.tags }}{% endif %}-color mt">
-        <div class="note-content">{{ message }}</div>
-      </div>
-      {% endfor %}
-      </div>
+        {% include "simpl/includes/messages.html" %}
       {% endblock messages %}
     </header>
     {% endblock page_header %}
@@ -68,6 +62,10 @@
       ©{% now "Y" %}, The Wharton School, The University of Pennsylvania</p>
   </main>
 
+  <script type="module">
+  import { initComponents } from "{% static 'simpl/simpl.es.js' %}";
+  initComponents();
+  </script>
   {% block extra_script %}{% endblock %}
 </body>
 
