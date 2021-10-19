@@ -27,11 +27,34 @@ class ToggleElement {
   }
 }
 
+class Toast {
+  selector: string;
+  constructor() {
+    this.selector = "[data-toast]";
+    document
+      .querySelectorAll(this.selector)
+      .forEach(this.initComponent, this);
+  }
+
+  initComponent(el) {
+    const timeOut = el.getAttribute("data-timeout") || 5000;
+    setTimeout(() => {
+      if (el.classList.contains("collapse")) {
+        el.classList.remove("in")
+      } else {
+        el.classList.add("hide")
+      }
+    }, timeOut);
+  }
+}
+
 function initComponents() {
-  new ToggleElement()
+  new ToggleElement();
+  new Toast();
 }
 
 export {
   initComponents,
+  Toast,
   ToggleElement,
 }

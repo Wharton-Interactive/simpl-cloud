@@ -1,6 +1,10 @@
 <div class="prose">
   {% for message in messages %}
-  <div class="note theme-{% if message.tags == 'error' %}alert{% else %}{{ message.tags }}{% endif %}-color mt has-close-button" id="message-{{ forloop.counter}}">
+  <div
+    class="note mt has-close-button collapse in theme-{% if message.tags == 'error' %}alert{% else %}{{ message.tags }}{% endif %}-color"
+    id="message-{{ forloop.counter}}"
+    data-toast
+  >
     <div class="note-content">{{ message }}</div>
     <button class="close-button transparent center" data-toggle-element="message-{{ forloop.counter}}">&times;</button>
   </div>
