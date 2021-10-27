@@ -35,13 +35,18 @@ class BaseGameExperience(models.Model):
         blank=True,
         null=True,
         help_text="Whether multiple players play a single instance of the game. "
-        "If unset, this become configurable at the run level.",
+        "If unset, this becomes configurable at the run level.",
     )
     continuous = models.BooleanField(
         blank=True,
         null=True,
         help_text="Whether players can join after a run is in play. "
-        "If unset, this become configurable at the run level.",
+        "If unset, this becomes configurable at the run level.",
+    )
+    allow_facilitator_continuous_management = models.NullBooleanField(
+        default=True,
+        help_text="Allow facilitators to disable enrollment for continuous runs. "
+        "If unset, this becomes configurable at the run level.",
     )
 
     objects = managers.GameExperienceManager()
@@ -133,6 +138,10 @@ class BaseRun(DataMixin, models.Model):
         help_text="Automatically add new players to new instances for runs in play.",
     )
     date_continuous_end = models.DateTimeField(blank=True, null=True)
+    allow_facilitator_continuous_management = models.BooleanField(
+        default=True,
+        help_text="Allow facilitators to disable enrollment for continuous runs.",
+    )
 
     date_prepare = None
 
@@ -152,6 +161,10 @@ class BaseRun(DataMixin, models.Model):
                 self.continuous = self.game.continuous
             if self.game.multiplayer is not None:
                 self.multiplayer = self.game.multiplayer
+            if self.game.allow_facilitator_continuous_management is not None:
+                self.allow_facilitator_continuous_management = (
+                    self.game.allow_facilitator_continuous_management
+                )
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
