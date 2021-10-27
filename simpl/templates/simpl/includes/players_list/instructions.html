@@ -1,6 +1,6 @@
 {% if run.status < run.STATUS.PLAY %}
     <p class="walkthrough-help-heading">
-      The Game is currently in Setup.
+      The game is currently in Setup.
     </p>
     <p class="walkthrough-help-text">
       These players are enrolled in the game and ready to play. You may now enable Players Prepare and Start Game in <strong>Game Status</strong>.
@@ -9,7 +9,7 @@
 
 {% if run.status == run.STATUS.PLAY and not run.ended %}
   <p class="walkthrough-help-heading">
-    The Game is currently in Play.
+    The game is currently in Play.
   </p>
 {% elif run.ended %}
 <p class="walkthrough-help-heading">
