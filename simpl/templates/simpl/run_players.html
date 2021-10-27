@@ -18,11 +18,7 @@
     </div>
   </div>
 
-  {% for message in messages %}
-  <div class="note theme-{% if message.tags == 'error' %}alert{% else %}{{ message.tags }}{% endif %}-color mt">
-    <div class="note-content">{{ message }}</div>
-  </div>
-  {% endfor %}
+  {% include "simpl/includes/messages.html" %}
 </header>
 {% endblock page_header %}
 

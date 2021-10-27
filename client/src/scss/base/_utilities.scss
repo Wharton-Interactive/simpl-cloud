@@ -295,6 +295,22 @@ a.reverse-link {
   transform: translateX(120%);
 }
 
+.collapse {
+  transition: all 0.3s;
+
+  &:not(.in) {
+    height: 0;
+    opacity: 0;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  &.in {
+    height: initial;
+    opacity: 1;
+  }
+}
+
 :root {
   scrollbar-color: var(--scrollbar-color, red) var(--scrollbar-bg, blue);
 }
@@ -317,7 +333,7 @@ a.reverse-link {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .fullscreen-only {

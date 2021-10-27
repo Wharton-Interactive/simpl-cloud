@@ -378,6 +378,10 @@ input[type='file']:focus + .file-label-button {
     top: 5px;
     right: 5px;
     z-index: $z-index-above-links;
+
+    &.center {
+      top: calc(50% - 10px);
+    }
   }
 }
 
@@ -415,6 +419,12 @@ input[type='file']:focus + .file-label-button {
 
   &.inverse {
     background-color: var(--close-button-color, var(--knockout-color));
+    --icon-color: var(--close-button-bg-color, var(--text-color));
+    color: var(--close-button-bg-color, var(--text-color));
+  }
+
+  &.transparent {
+    background-color: transparent;
     --icon-color: var(--close-button-bg-color, var(--text-color));
     color: var(--close-button-bg-color, var(--text-color));
   }

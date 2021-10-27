@@ -3,10 +3,40 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-0.40 (unreleased)
+0.45 (unreleased)
 =================
 
 - Nothing changed yet.
+
+
+0.44 (27 October 2021)
+======================
+
+- Add fields to Game and Run to toggle facilitator's ability to disable continuous enrollment.
+
+
+0.43 (20 October 2021)
+======================
+
+- CSS fix.
+
+
+0.42 (19 October 2021)
+======================
+
+- Hide messages after 5s.
+
+
+0.41 (18 October 2021)
+======================
+
+- Fix missing JS file.
+
+
+0.40 (18 October 2021)
+======================
+
+- Add close button to messages component.
 
 
 0.39 (18 October 2021)
