@@ -3,10 +3,10 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-0.46 (unreleased)
-=================
+0.46 (28 October 2021)
+======================
 
-- Nothing changed yet.
+- Change toggle JS component to work with multiple targets.
 
 
 0.45 (28 October 2021)
