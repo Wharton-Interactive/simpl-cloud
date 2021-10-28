@@ -1,28 +1,27 @@
 class ToggleElement {
-  buttonSelector: string;
+  buttonAttr: string;
   constructor() {
-    this.buttonSelector = "[data-toggle-element]";
+    this.buttonAttr = "data-toggle-elements";
     document
-      .querySelectorAll(this.buttonSelector)
+      .querySelectorAll(`[${this.buttonAttr}]`)
       .forEach(this.initComponent, this);
   }
 
-  toggleEl(targetId) {
-    const el = document.getElementById(targetId);
-    if (el) {
+  toggleEl(targetSelector) {
+    document.querySelectorAll(targetSelector).forEach((el) => {
       if (el.classList.contains("hide") ) {
         el.classList.remove("hide");
       } else{
         el.classList.add("hide")
       }
-    }
+    })
   }
 
   initComponent(el) {
-    const targetId = el.getAttribute("data-toggle-element");
+    const targetSelector = el.getAttribute(this.buttonAttr);
     el.addEventListener("click", (evt) => {
       evt.preventDefault();
-      this.toggleEl(targetId);
+      this.toggleEl(targetSelector);
     });
   }
 }
