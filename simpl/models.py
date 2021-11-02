@@ -355,6 +355,8 @@ class BaseInstance(DataMixin, models.Model):
 
     @property
     def status(self):
+        if self.date_end:
+            return self.STATUS.COMPLETE
         if self.run:
             if self.run.status == BaseRun.STATUS.SETUP:
                 return self.STATUS.WAITING
@@ -362,9 +364,7 @@ class BaseInstance(DataMixin, models.Model):
                 return self.STATUS.DEBRIEF
             if self.run.status == BaseRun.STATUS.PREPARE:
                 return self.STATUS.PREPARE
-        if self.date_end or (self.run and self.run.status == BaseRun.STATUS.COMPLETE):
-            return self.STATUS.COMPLETE
-        if self.date_start or (self.run and self.run.status == BaseRun.STATUS.PLAY):
+        if self.date_start:
             return self.STATUS.PLAY
         return self.STATUS.WAITING
 
