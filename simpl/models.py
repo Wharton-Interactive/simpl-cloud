@@ -43,7 +43,9 @@ class BaseGameExperience(models.Model):
         help_text="Whether players can join after a run is in play. "
         "If unset, this becomes configurable at the run level.",
     )
-    allow_facilitator_continuous_management = models.NullBooleanField(
+    allow_facilitator_continuous_management = models.BooleanField(
+        blank=True,
+        null=True,
         default=True,
         help_text="Allow facilitators to disable enrollment for continuous runs. "
         "If unset, this becomes configurable at the run level.",
