@@ -3,8 +3,8 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-0.47 (unreleased)
-=================
+0.47 (2 November 2021)
+======================
 
 - Use BooleanField insted of NullBooleanField.
 
