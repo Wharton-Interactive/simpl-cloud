@@ -771,21 +771,3 @@ textarea {
   max-width: 600px;
   padding: rem-calc(40) 0;
 }
-
-.highcharts-container {
-  min-width: 100%;
-
-  @include breakpoint($smedium) {
-    &.split {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2rem;
-
-      > .chart:not(:only-child){
-        width: calc(50% - 1rem);
-      }
-    }
-
-
-  }
-}
