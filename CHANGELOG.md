@@ -3,10 +3,10 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-0.48 (unreleased)
-=================
+0.48 (3 November 2021)
+======================
 
-- Nothing changed yet.
+- Remove unnecessary highcharts container styles.
 
 
 0.47 (2 November 2021)
