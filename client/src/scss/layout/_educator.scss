@@ -352,7 +352,7 @@
       margin-top: 2rem;
     }
 
-    > * {
+    > *:not(dialog) {
       position: static;
     }
 
