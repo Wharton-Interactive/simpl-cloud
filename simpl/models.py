@@ -432,6 +432,7 @@ class Instance(BaseInstance):
 class BaseCharacterData(DataMixin, models.Model):
     name = models.CharField("In-game name", max_length=200)
     data: dict = JSONField(editable=False, default=dict, blank=True)
+    _date_finished = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         abstract = True
@@ -439,6 +440,10 @@ class BaseCharacterData(DataMixin, models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def date_finished(self):
+        return self._date_finished
 
     def save(self, *args, **kwargs):
         if not self.name:
