@@ -419,6 +419,17 @@ class BaseInstance(DataMixin, models.Model):
     def get_play_url(self):
         return ""
 
+    def finish_character(self, character: BaseCharacterData):
+        assert character.instance_id == self.id
+        character.finish()
+
+        characters = self.character_set.exclude(user=None)
+        total = characters.count()
+        finished = characters.exclude(_date_finished=None).count()
+        if total and total == finished:
+            self.date_end = timezone.now()
+            self.save()
+
 
 class Instance(BaseInstance):
     """
@@ -459,6 +470,10 @@ class BaseCharacterData(DataMixin, models.Model):
         return random_name(
             existing_names=other_characters.values_list("name", flat=True)
         )
+
+    def finish(self):
+        self._date_finished = timezone.now()
+        self.save()
 
 
 class BaseCharacterLinked(models.Model):

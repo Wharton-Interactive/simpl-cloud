@@ -3,8 +3,10 @@ from allauth.socialaccount.models import SocialAccount
 
 from django.apps import apps
 from django.test import TestCase
+from django.utils import timezone
 from model_bakery import baker
 from simpl import (
+    get_character_model,
     get_game_experience_model,
     get_instance_model,
     get_player_model,
@@ -195,7 +197,7 @@ class SocialAccountTestCase(TestCase):
         self.assertEqual(user.first_name, "Bob")
         self.assertEqual(user.last_name, "Jones")
 
-    def test_updates_user(self):
+    def test_updates_user_without_extra_data(self):
         user = baker.make(get_user_model())
         SocialAccount.objects.create(extra_data={}, user=user)
         user_refreshed = get_user_model().objects.get()
@@ -213,3 +215,34 @@ class SocialAccountTestCase(TestCase):
         SocialAccount.objects.create(extra_data={"email": "new@example.com"}, user=user)
         user_refreshed = get_user_model().objects.get()
         self.assertEqual(user.email, user_refreshed.email)
+
+
+class CharacterTestCase(TestCase):
+    def setUp(self):
+        Character = get_character_model()
+        self.character = baker.make(Character)
+
+    def test_finish(self):
+        self.assertIsNone(self.character.date_finished)
+        self.character.finish()
+        self.assertEqual(self.character.date_finished.date(), timezone.now().date())
+
+
+class InstanceTestCase(TestCase):
+    def setUp(self):
+        Instance = get_instance_model()
+        Character = get_character_model()
+        self.instance = baker.make(Instance)
+        self.characters = baker.make(Character, _quantity=3)
+
+    def test_finish_character(self):
+        character = self.characters[0]
+        self.instance.finish_character(character)
+        character.refresh_from_db()
+        self.assertEqual(character.date_finished.date(), timezone.now().date())
+
+    def test_finish_all_characters(self):
+        for character in self.characters:
+            self.instance.finish_character(character)
+        self.instance.refresh_from_db()
+        self.assertEqual(self.instance.date_end.date(), timezone.now().date())
