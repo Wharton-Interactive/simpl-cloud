@@ -3,10 +3,10 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-0.51 (unreleased)
-=================
+0.50.1 (15 November 2021)
+=========================
 
-- Nothing changed yet.
+- Fix method to finish characters to accept multiple characters.
 
 
 0.50 (9 November 2021)
