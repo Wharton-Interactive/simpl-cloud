@@ -233,16 +233,17 @@ class InstanceTestCase(TestCase):
         Instance = get_instance_model()
         Character = get_character_model()
         self.instance = baker.make(Instance)
-        self.characters = baker.make(Character, _quantity=3)
+        self.characters = baker.make(
+            Character, instance=self.instance, user__is_active=True, _quantity=3
+        )
 
     def test_finish_character(self):
         character = self.characters[0]
-        self.instance.finish_character(character)
+        self.instance.finish_characters(character)
         character.refresh_from_db()
         self.assertEqual(character.date_finished.date(), timezone.now().date())
 
     def test_finish_all_characters(self):
-        for character in self.characters:
-            self.instance.finish_character(character)
+        self.instance.finish_characters(*self.characters)
         self.instance.refresh_from_db()
         self.assertEqual(self.instance.date_end.date(), timezone.now().date())

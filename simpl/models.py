@@ -419,13 +419,14 @@ class BaseInstance(DataMixin, models.Model):
     def get_play_url(self):
         return ""
 
-    def finish_character(self, character: BaseCharacterData):
-        assert character.instance_id == self.id
-        character.finish()
+    def finish_characters(self, *characters: List[BaseCharacterData]):
+        for character in characters:
+            assert character.instance_id == self.id
+            character.finish()
 
-        characters = self.character_set.exclude(user=None)
-        total = characters.count()
-        finished = characters.exclude(_date_finished=None).count()
+        all_characters = self.character_set.exclude(user=None)
+        total = all_characters.count()
+        finished = all_characters.exclude(_date_finished=None).count()
         if total and total == finished:
             self.date_end = timezone.now()
             self.save()
