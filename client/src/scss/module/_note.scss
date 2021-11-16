@@ -149,13 +149,12 @@
   }
 
   &.border-theme {
-    border: 0 none;
+    border: 1px solid var(--card-border-color-default);
     border-left: 4px solid var(
         --theme-color,
         var(--note-default-border-color, var(--card-border-color-default))
       );
     background: var(--card-bg);
-    box-shadow: var(--feature-shadow);
   }
 
   &.is-thin {

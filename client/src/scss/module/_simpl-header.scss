@@ -1,33 +1,31 @@
-.simpl-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+
+// overrides for simpl templates
+.site-header.is-simpl {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  background: var(--site-nav-background);
-  height: var(--site-nav-height);
+  gap: 2rem;
   padding-right: 1rem;
   padding-left: 1rem;
-  color: var(--site-nav-link-color);
-  z-index: $z-index-abs-links;
-
-  @at-root .theme-alt &  {
-    background-image: var(--site-nav-background-alt);
-  }
+  min-height: var(--site-nav-height);
 
   p {
     margin: 0;
   }
 
-  &-title {
-    font-size: rem-calc(12);
-    opacity: 0.7;
-    font-weight: var(--global-weight-semibold);
+  .wharton-shield-icon {
+    width: 20px;
   }
 
-  &-subtitle {
+  .nav-items {
+    flex: 1 1 auto;
+  }
+}
+
+.simpl-header {
+  &-title {
+    font-weight: var(--global-weight-semibold);
+    margin: 0;
+
     .mode-flag {
       font-style: italic;
       background: rgba(255,255,255,0.15);
@@ -39,10 +37,6 @@
   &-title-wrap {
     display: flex;
     gap: 8px;
-  }
-
-  .wharton-shield-icon {
-    width: 20px;
   }
 
   &-info {
@@ -58,14 +52,36 @@
   }
 }
 
+.simpl-subheader {
+  background: var(--body-bg-shade);
+  padding: rem-calc(10);
+  font-size: var(--font-size-small);
+  display: flex;
+  justify-content: space-between;
+
+  p {
+    margin: 0;
+  }
+
+  &-back {
+    font-weight: var(--global-weight-semibold);
+    color: var(--site-nav-link-color);
+    text-decoration: none;
+
+    &:before {
+      content: "« ";
+    }
+
+    &:hover {
+      color: var(--site-nav-link-color-hover);
+    }
+  }
+}
+
 @include breakpoint($nav-breakpoint) {
   .simpl-header {
     &.has-todos {
       padding-right: calc(var(--todo-aside-width) + 20px);
-    }
-
-    &-title {
-      font-size: rem-calc(13);
     }
 
     &-subtitle {
@@ -79,7 +95,6 @@
     &-link {
       font-size: var(--font-size-small);
       display: inline;
-
     }
 
     &-mini-nav {
@@ -90,5 +105,9 @@
         content: "/";
       }
     }
+  }
+
+  .simpl-subheader {
+    padding: rem-calc(10) rem-calc(20);
   }
 }

@@ -13,43 +13,30 @@
 
 <body class="{% if run.multiplayer %}theme-alt{% endif %}">
   {% block header %}{% include "simpl/includes/site-header.html" %}{% endblock header %}
-
-  <main class="{% block main_wrap_classes %}v-nav-flex-layout{% endblock %}">
+  {% block subheader %}{% include "simpl/includes/site-subheader.html" %}{% endblock subheader %}
+  <main class="{% block main_wrap_classes %}{% endblock %}">
     {% block content %}
-
-    {% block game_stage_steps %}
-    {% endblock game_stage_steps %}
 
     {% block page_header %}
     <header class="page-header">
-      {% block arrows %}{% endblock arrows %}
-      <h1 class="page-heading">{% block heading %}{% endblock %}</h1>
-      <p class="page-header-description">{% block page_description %}{% endblock %}</p>
+      <div class="main-container {% block page_header_width_classes %}{% endblock %}">
 
-      {% block messages %}
+        <h1 class="page-heading">{% block heading %}{% endblock %}</h1>
+        {% block arrows %}{% endblock arrows %}
+
+        {% block page_description_wrap %}
+        <p class="page-header-description">{% block page_description %}{% endblock %}</p>
+        {% endblock page_description_wrap %}
+
+        {% block messages %}
         {% include "simpl/includes/messages.html" %}
-      {% endblock messages %}
+        {% endblock messages %}
+      </div>
     </header>
     {% endblock page_header %}
 
-    <div class="edu-has-v-nav">
-      {% block left_nav %}
-      <nav class="v-nav">
-        <ul class="v-nav-list">
-          {% for nav_key, item in simpl_nav.items %}
-          {% if not item.hidden %}
-          <li class="v-nav-item">
-            <a {% if item.status != NAV_DISABLED %}href="{{ item.url }}" {% endif %}class="v-nav-link"
-              {% if nav_key == simpl_current_nav %}aria-current="page" {% endif %}>
-              {% include "simpl/includes/nav-icon.html" %}
-              <span class="v-nav-text">{{ item.name }}</span>
-            </a>
-          </li>
-          {% endif %}
-          {% endfor %}
-        </ul>
-      </nav>
-      {% endblock %}
+    <div class="main-container {% block page_content_width_classes %}{% endblock %}">
+      {% block left_nav %}{% endblock %}
 
       {% block content_inner %}
 
@@ -57,9 +44,9 @@
     </div>
 
     {% endblock content %}
-    <p
-      class="copyright-text">
-      ©{% now "Y" %}, The Wharton School, The University of Pennsylvania</p>
+    <div class="copyright-text">
+    <p>©{% now "Y" %}, The Wharton School, The University of Pennsylvania</p>
+    </div>
   </main>
 
   <script type="module">

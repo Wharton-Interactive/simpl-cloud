@@ -1,15 +1,7 @@
-:root {
-  --todo-aside-width: 300px;
-}
-
-.todo-heading {
-  font-size: rem-calc(24);
-  font-weight: var(--global-weight-normal);
-  color: var(--text-color);
-  margin-top: 0;
-  margin-bottom: var(--global-margin);
-}
 .todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -18,32 +10,28 @@
 .todo-link {
   position: relative;
   font-size: rem-calc(16);
+  font-weight: var(--global-weight-semibold);
   text-decoration: none;
-  display: block;
-  padding: 0.5rem var(--global-margin) 0.5rem calc(var(--global-margin) + 30px);
-  margin: 0 calc(-1 * var(--global-margin));
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
   color: var(--text-color);
-
-  &.is-active,
-  &.is-active:hover {
-    font-weight: bold;
-    background: var(--info-color-tint6);
-  }
+  border: 1px solid var(--brand-color);
+  border-radius: var(--global-radius);
+  background-image: linear-gradient(340.18deg, rgba(36, 56, 87, 0.5) -75.52%, rgba(255, 255, 255, 0.4) 50.7%);
+  background-size: 130% 180%;
+  transition: background-position 0.3s linear;
 
   &[href]:hover {
-    background: var(--info-color-tint6);
+    background-position: bottom right;
   }
 
   &:before {
     display: block;
-    position: absolute;
-    top: 10px;
-    left: 1.25rem;
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
-    background-color: var(--brand-color-alpha);
-    border-color: var(--brand-color-alpha);
     mask-position: center left;
     mask-repeat: no-repeat;
     mask-size: 100% 100%;
@@ -66,16 +54,21 @@
     border-color: var(--info-color);
   }
 
-  &.is-alert:before {
-    mask-image: svg-url(
-      '<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 49"><path d="M24.35.509a24 24 0 1024 24 24.027 24.027 0 00-24-24zm-2.572 12a2.571 2.571 0 115.143 0v10.285a2.572 2.572 0 01-5.143 0V12.508zm2.571 25.714a3.429 3.429 0 110-6.858 3.429 3.429 0 010 6.858z" fill="#000"/></svg>'
-    );
-    -webkit-mask-image: svg-url(
-      '<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 49"><path d="M24.35.509a24 24 0 1024 24 24.027 24.027 0 00-24-24zm-2.572 12a2.571 2.571 0 115.143 0v10.285a2.572 2.572 0 01-5.143 0V12.508zm2.571 25.714a3.429 3.429 0 110-6.858 3.429 3.429 0 010 6.858z" fill="#000"/></svg>'
-    );
-    background-color: var(--caution-color);
+  &.is-alert {
     border-color: var(--caution-color);
+
+    &:before {
+      mask-image: svg-url(
+        '<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22"><path d="M21.279 9.244 12.743.7a2.52 2.52 0 0 0-3.486 0L.721 9.244a2.468 2.468 0 0 0 0 3.488l8.536 8.544a2.462 2.462 0 0 0 3.486 0l8.536-8.546a2.468 2.468 0 0 0 0-3.487v.001ZM9.82 5.484A1.18 1.18 0 0 1 11 4.303a1.178 1.178 0 0 1 1.179 1.18v4.718A1.18 1.18 0 0 1 11 11.382a1.178 1.178 0 0 1-1.179-1.18V5.483ZM11 16.493a1.57 1.57 0 0 1-1.541-1.88 1.574 1.574 0 0 1 2.142-1.146 1.571 1.571 0 0 1 .51 2.566 1.57 1.57 0 0 1 1.111.46Z" fill="#FFBE15"/></svg>'
+      );
+      -webkit-mask-image: svg-url(
+        '<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22"><path d="M21.279 9.244 12.743.7a2.52 2.52 0 0 0-3.486 0L.721 9.244a2.468 2.468 0 0 0 0 3.488l8.536 8.544a2.462 2.462 0 0 0 3.486 0l8.536-8.546a2.468 2.468 0 0 0 0-3.487v.001ZM9.82 5.484A1.18 1.18 0 0 1 11 4.303a1.178 1.178 0 0 1 1.179 1.18v4.718A1.18 1.18 0 0 1 11 11.382a1.178 1.178 0 0 1-1.179-1.18V5.483ZM11 16.493a1.57 1.57 0 0 1-1.541-1.88 1.574 1.574 0 0 1 2.142-1.146 1.571 1.571 0 0 1 .51 2.566 1.57 1.57 0 0 1 1.111.46Z" fill="#FFBE15"/></svg>'
+      );
+      background-color: var(--caution-color);
+    }
   }
+
+
 
   &.is-active:before {
     background-color: var(--tint);
@@ -109,24 +102,14 @@
   display: flex;
   align-items: center;
   font-size: var(--font-size-small);
+  font-weight: var(--global-weight-normal);
   color: var(--text-color);
 }
 
-.todo-aside-layout {
+.simpl-push-footer {
   display: flex;
-  flex-direction: column-reverse;
-}
-
-.todo-aside {
-  border-radius: var(--global-radius);
-  background: var(--todo-aside, var(--info-color-tint5));
-  padding: var(--global-margin);
-  box-shadow: var(--base-shadow);
-
-  .button {
-    margin-top: 1rem;
-    width: 100%;
-  }
+  flex-direction: column;
+  min-height: calc(100vh - var(--site-nav-height));
 }
 
 .copyright-text {
@@ -134,32 +117,11 @@
 }
 
 @include breakpoint($nav-breakpoint) {
-  .todo-aside-layout {
-    display: flex;
-    flex-direction: column;
-    padding-right: var(--todo-aside-width);
-    min-height: 100vh;
-  }
-
   .copyright-text {
     display: block;
     margin-top: auto;
     font-size: 13px;
     padding-top: 20px;
-    padding-left: 120px;
-  }
-
-  .todo-main {
-    grid-area: main;
-  }
-
-  .todo-aside {
-    position: fixed;
-    top: 16px;
-    right: rem-calc(40);
-    width: calc(var(--todo-aside-width) - 40px);
-    max-height: calc(100vh - 16px);
-    overflow: auto;
-    z-index: $z-index-above-links;
+    padding-left: 20px;
   }
 }

@@ -19,7 +19,7 @@
 
   &-header {
     margin-bottom: rem-calc(20);
-    padding: var(--page-header-padding-sm, #{rem-calc(30) rem-calc(20) 0});
+    padding: var(--page-header-padding-sm, #{rem-calc(30) 0 0});
     background: var(--header-bg, transparent);
     border-bottom: var(--header-border-bottom, 1px solid var(--card-border-color-default));
   }
@@ -69,7 +69,7 @@
     margin-top: var(--page-margin-top-desktop, 0);
 
     &-header {
-      padding: var(--page-header-padding-lg, #{rem-calc(30) rem-calc(20) 0 rem-calc(120)});
+      padding: var(--page-header-padding-lg, #{rem-calc(30) 0 0 0});
 
       &-flex-wrap {
         display: flex;

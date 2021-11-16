@@ -279,6 +279,17 @@
     padding-bottom: 0;
   }
 
+  .world-logo {
+    --icon-size: 40px;
+    max-width: 100px;
+    max-height: 60px;
+    color: var(--brand-color);
+  }
+
+  .substats {
+    margin: 1em 0 0 0;
+  }
+
   &.has-shadow {
     box-shadow: var(--card-shadow);
   }
@@ -296,10 +307,12 @@
     border: 0 none;
   }
 
-  &.is-centered {
-    margin: 0 auto;
-    max-width: 600px;
+  &.feature-shadow {
+    box-shadow: var(--feature-shadow);
+    border: 0 none;
   }
+
+
 
   &-details {
     display: flex;
@@ -413,8 +426,10 @@
       }
 
       .card-heading {
-        font-size: rem-calc(28);
+        font-size: var(--feature-card-heading-size, #{rem-calc(28)});
         font-family: var(--heading-font-family);
+        font-weight: var(--feature-card-heading-weight, var(--global-weight-semibold));
+        margin: var(--feature-card-heading-margin, inherit);
       }
 
       .card-footer {

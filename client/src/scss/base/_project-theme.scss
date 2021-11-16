@@ -2,14 +2,14 @@
 $white: #fff;
 $black: #000;
 
-$wi-red: #9c2136;
+$wi-red: #dd0847;
 $wi-blue: #2b66b2;
 $wi-light-blue: #71bbff;
 $wi-teal: #71bbff;
-$wi-green: #00c968;
-$wi-gold: #f59e0b;
+$wi-green: #4DD476;
+$wi-gold: #FFBE15;
 $text-color: #2e373f;
-$body-bg: #f9fafb;
+$body-bg: #ecf0f3;
 
 $brand-color: $wi-blue;
 
@@ -67,21 +67,22 @@ $knockout-color: $white;
   --code-font-family: Menlo, "Ubuntu Mono", "Lucida Console", "Courier New",
     Courier, monospace;
 
-  // layout colors
-  --body-bg-color: #{$body-bg};
-  --body-bg-shade: #{mix($shade, $body-bg, 5%)};
-  --body-bg-shade2: #{mix($shade, $body-bg, 15%)};
-  --body-bg-shade-half: #{mix($shade, $body-bg, 2%)};
-  --body-bg-tint: #{mix($tint, $body-bg, 50%)};
-  --body-bg-image: linear-gradient(to bottom, #f9fafb, #ffffff);
-  --body-bg-image-size: 100% 100%;
-  --body-bg-image-attachment: fixed, fixed;
-  --body-bg-image-repeat: no-repeat;
+    --body-bg-color: #{$body-bg};
+    --body-bg-shade: #{mix($shade, $body-bg, 5%)};
+    --body-bg-shade2: #{mix($shade, $body-bg, 15%)};
+    --body-bg-shade-half: #{mix($shade, $body-bg, 2%)};
+    --body-bg-tint: #{mix($tint, $body-bg, 50%)};
+    --body-bg-image: url(#{$asset-path}dots.svg),
+      linear-gradient(to bottom, #fff 10%, #ecf0f3 100%);
+    --body-bg-image-size: auto, 100% 500px;
+    --body-bg-image-attachment: fixed, fixed;
+    --body-bg-image-repeat: repeat-x, no-repeat;
 
   --header-bg: transparent;
   --header-border-bottom: 0 none;
   --sidebar-background: var(--card-bg);
   --sidebar-link-hover-bg: var(--body-bg-shade-half);
+  --site-header-grid-cols-xl: 13.5rem 1fr auto;
 
   --stat-card-bg: var(--caution-color-tint5);
   --stat-card-bg-alt1: var(--success-color-tint5);
@@ -90,10 +91,10 @@ $knockout-color: $white;
   --stat-card-radius: var(--global-radius);
 
   // nav
-  --site-nav-background: linear-gradient(90deg, #0c66b8, #042441);
+  --site-nav-background: var(--tint);
   --site-nav-background-alt: var(--site-nav-background);
 
-  --site-nav-link-color: var(--knockout-color);
+  --site-nav-link-color: var(--text-color);
   --site-nav-link-color-hover: var(--alert-color);
   --site-nav-link-hover-bg-color: transparent;
   --site-nav-text-transform: none;
@@ -156,6 +157,10 @@ $knockout-color: $white;
   --card-shadow-default: var(--base-shadow);
   --card-radius: var(--global-radius);
   --card-unread-border-top: 4px solid var(--unread-color);
+  --card-border-width: 0;
+  --feature-card-heading-weight: var(--global-weight-normal);
+  --feature-card-heading-size: #{rem-calc(24)};
+  --feature-card-heading-margin: 0 0 1rem 0;
 
   // modals
   --modal-bg: var(--card-bg);

@@ -11,7 +11,7 @@
 
 {% block content_inner %}
 {{ block.super }}
-<div class="prose">
+<div class="card feature-card">
 <p>The game is in <strong>{{ run.get_status_display }}</strong> mode. You can review your setup and advance to the next step.</p>
 <p>
   <a href="{{ next_item.url }}" class="button large">{{ next_item.name }}</a>

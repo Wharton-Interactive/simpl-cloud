@@ -1,0 +1,879 @@
+// Navigation
+//
+// Weight: 20
+//
+// Style guide: Navigation
+
+// Site Header
+//
+// This is the pattern for the main app navigation. It contains a logo and a
+// list of links, and will collapse into a full-screen overlay menu at a
+// specified breakpoint. To force the full-screen menu, add `.force-toggle-nav`
+// to `.site-header`. That will hide the navigation items and display the toggle
+// button at all sizes.
+//
+// Markup: ../../styleguide/src/components/navigation.hbs
+//
+// chromeless: true
+//
+// full: true
+//
+// Weight: 1
+//
+// Style guide: Navigation.site-header
+
+// add this to body to make nav fixed
+.has-fixed-nav {
+  padding-top: var(--site-nav-height);
+
+  .site-header.is-fixed {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: $z-index-sticky-header;
+
+    &.nav-open {
+      z-index: $z-index-overlays;
+    }
+  }
+}
+
+.site-header {
+  --link-color: var(--site-nav-link-color);
+  --avatar-font-size: #{rem-calc(11)};
+  display: grid;
+  grid-gap: var(--site-header-gap, 0 4px);
+  grid-template-columns: rem-calc(60) 1fr auto;
+  grid-template-rows: var(--site-nav-height);
+  grid-template-areas: 'toggle title profile';
+  align-items: center;
+  background-color: var(--site-nav-background);
+  background-image: var(--site-nav-bg-image, none);
+  background-size: var(--site-nav-bg-size, auto);
+  background-repeat: var(--site-nav-bg-repeat, no-repeat);
+  background-position: var(--site-nav-bg-position, top left);
+  position: relative;
+  border-bottom: var(--site-nav-border-bottom, none);
+  box-shadow: var(--site-nav-box-shadow, none);
+  mask-image: var(--site-nav-mask-image, none);
+  mask-size: var(--site-nav-mask-size, 100% 100%);
+  mask-repeat: var(--site-nav-mask-repeat, no-repeat);
+
+  &:after {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: var(--site-header-bg, none transparent);
+    background-size: var(--site-header-bg-size, auto);
+    filter: var(--site-header-bg-filter, none);
+    z-index: $z-index-abs-links;
+    content: var(--site-header-after-content, unset);
+  }
+
+  @at-root .header-dropdown-is-open & {
+    mask-image: none;
+  }
+
+  > * {
+    z-index: $z-index-above-links;
+  }
+
+  > .profile {
+    z-index: $z-index-dropdowns;
+  }
+
+  &-title {
+    font-weight: var(--global-weight-semibold);
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--site-nav-link-color);
+    overflow: hidden;
+    grid-area: title;
+
+    @at-root .thin & {
+      color: var(--site-nav-thin-text-color, var(--site-nav-link-color));
+    }
+  }
+
+  &.force-toggle-nav {
+    grid-template-columns: rem-calc(60) auto;
+    grid-template-areas: 'toggle title';
+
+    .site-logo {
+      justify-self: start;
+      padding: 0;
+    }
+
+    &.nav-open .site-logo {
+      grid-column-end: span 2;
+    }
+  }
+
+  &.nav-open {
+    background: var(--site-header-mobile-is-open-bg-color, var(--site-nav-background));
+
+    &:after {
+      content: none;
+    }
+
+    .secondary-nav {
+      margin-left: var(--site-header-mobile-secondary-margin-left, 0);
+    }
+  }
+
+  .avatar-label {
+    display: var(--site-header-avatar-label-display, block);
+  }
+
+  .button:not(.icon-button):not(.site-back) .icon {
+    display: var(--site-header-icons-display, block);
+  }
+}
+
+.site-toggle {
+  position: relative;
+  padding: 0.75rem;
+  height: var(--site-nav-height);
+  border: none;
+  font: 0/0 a;
+  line-height: 1rem;
+  color: transparent;
+  cursor: pointer;
+
+  &:before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1rem;
+    height: 1rem;
+    background-color: var(--site-toggle-color, var(--site-nav-link-color));
+    mask-image: svg-url('<svg viewBox="0 0 613 478.29" fill="currentColor" id="hamburger" xmlns="http://www.w3.org/2000/svg"><path d="M1 0h612v70.64H1V0zm0 407.65h612v70.64H1v-70.64zM0 203h612v70.64H0V203z"/></svg>');
+    mask-position: center center;
+    mask-repeat: no-repeat;
+    mask-size: 100% 100%;
+    content: '';
+    transform: translate(-50%, -50%);
+  }
+}
+
+.site-logo {
+  display: none;
+  align-items: center;
+  align-self: center;
+  line-height: 1;
+  text-decoration: none;
+  justify-self: center;
+
+  &,
+  &:hover {
+    color: var(--site-nav-logo-color);
+  }
+
+  img {
+    width: 100%;
+  }
+}
+
+.main-nav {
+  &-list {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    color: var(--site-nav-link-color);
+    list-style: none;
+    background-color: var(--site-nav-list-bg-color, transparent);
+  }
+
+  &-link {
+    position: relative;
+    display: var(--site-header-link-display, inline-flex);
+    flex-direction: var(--site-nav-link-flex-direction, row);
+    align-items: center;
+    border-radius: var(--site-nav-link-radius, var(--global-radius));
+    font-family: var(--alt-font-family, var(--global-font-family));
+    font-size: var(--site-nav-font-size, #{rem-calc(13)});
+    font-weight: var(--site-nav-font-weight, var(--global-weight-normal));
+    text-decoration: none;
+    text-transform: var(--site-nav-text-transform, uppercase);
+    letter-spacing: var(--site-nav-letter-spacing, 0.1rem);
+    background-image: var(--site-nav-text-bg-image, none);
+    will-change: color;
+    transition: color 0.25s ease-out;
+
+    &:not(:disabled):hover {
+      background-color: var(--site-nav-link-hover-bg-color);
+      color: var(--site-nav-link-color-hover, var(--site-nav-link-color));
+    }
+
+    &[aria-current='page'],
+    &[aria-current='page']:not(:disabled):hover {
+      background-color: var(--site-nav-link-current-bg);
+      color: var(--site-nav-link-current-color);
+      border: var(--site-nav-border-current, 0 none);
+      border-width: var(--site-nav-border-current-width, 0);
+      border-color: var(--site-nav-border-current-color, transparent);
+    }
+
+    .icon {
+      @include square(20px);
+      flex: 0 0 auto;
+      min-width: 20px;
+    }
+
+    .icon + * {
+      margin-left: rem-calc(6);
+    }
+  }
+}
+
+.profile {
+  display: flex;
+  grid-area: profile;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: rem-calc(20);
+  padding-left: rem-calc(6);
+  height: var(--site-nav-height);
+
+  &-img-link {
+    @include square(40px);
+    display: block;
+    border-radius: 50%;
+
+    img {
+      display: block;
+      border-radius: 50%;
+    }
+  }
+
+  .avatar-label {
+    display: none;
+  }
+
+  .avatar-group .avatar {
+    box-shadow: var(--site-nav-avatar-box-shadow, 0 0 0 2px var(--site-nav-background));
+  }
+
+  .avatar-link:hover .avatar {
+    box-shadow: var(
+      --site-nav-avatar-box-shadow-hover,
+      0 0 0 2px var(--site-nav-link-hover-color)
+    );
+  }
+}
+
+// for text effects on Safari.
+.main-nav-link {
+  background-image: var(--site-nav-text-bg-image, none);
+  -webkit-text-fill-color: var(--site-nav-text-fill-color, unset);
+
+  &:not(:disabled):hover {
+    background-image: var(--site-nav-text-bg-image-hover, none);
+    -webkit-text-fill-color: var(--site-nav-text-fill-color, unset);
+  }
+
+  &[data-notification-badge]::after {
+    -webkit-text-fill-color: var(--site-header-mobile-is-open-bg-color, unset);
+    transform: var(--site-nav-notification-badge-transform, translate(20%, -20%));
+  }
+
+  &[aria-current='page'] {
+    &:before {
+      position: var(--site-nav-active-pip-position, static);
+      left: var(--site-nav-active-pip-left, unset);
+      bottom: var(--site-nav-active-pip-bottom, unset);
+      width: var(--site-nav-active-pip-width, unset);
+      height: var(--site-nav-active-pip-height, unset);
+      background-image: var(--site-nav-active-pip-img, none);
+      transform: var(--site-nav-active-pip-before-transform-sm, none);
+      content: var(--site-nav-active-pip-before-content, unset);
+    }
+  }
+
+  &.Inbox,
+  &.Dashboard,
+  &.Meetings,
+  &.Files,
+  &.Insights {
+    &:before {
+      width: var(--site-nav-icon-size, #{rem-calc(24)});
+      height: var(--site-nav-icon-size, #{rem-calc(24)});
+      background-color: var(--brand-color);
+      mask-image: var(--site-nav-link-icon-inbox, none);
+      mask-size: 100% 100%;
+      mask-repeat: no-repeat;
+      content: var(--site-nav-link-icon-content, none);
+    }
+  }
+
+  &.Dashboard:before {
+    mask-image: var(--site-nav-link-icon-dashboard, none);
+  }
+
+  &.Meetings:before {
+    mask-image: var(--site-nav-link-icon-meetings, none);
+  }
+
+  &.Files:before,
+  &.Insights:before,
+   {
+    mask-image: var(--site-nav-link-icon-files, none);
+  }
+}
+
+.secondary-nav,
+.profile {
+  border: var(--secondary-nav-border, none);
+  border-width: var(--secondary-nav-border-width, 0);
+  box-shadow: var(--secondary-nav-border-width-shadow, none);
+}
+
+.secondary-nav {
+  display: flex;
+  align-items: center;
+
+  .button {
+    position: relative;
+    border: var(--site-nav-button-border, 1px solid rgba(255, 255, 255, 0.2));
+    border-bottom-width: var(--button-border-bottom-width, 1px);
+    background-color: transparent;
+    color: var(--site-nav-link-color);
+    font-size: var(--site-nav-font-size, #{rem-calc(13)});
+    font-family: var(--alt-font-family, var(--global-font-family));
+    text-transform: var(--site-nav-button-text-transform, none);
+    font-weight: var(--site-nav-button-font-weight, inherit);
+    line-height: var(--site-nav-button-line-height, inherit);
+    text-shadow: none;
+
+    &:not(:disabled):hover,
+    &:not(:disabled):focus {
+      background-color: var(--site-nav-link-hover-bg-color);
+      color: var(--site-nav-link-color-hover, var(--site-nav-link-color));
+      border: var(--site-nav-button-border, 1px solid rgba(255, 255, 255, 0.3));
+      border-bottom-width: var(--button-border-bottom-width, 1px);
+    }
+
+    &[aria-current='page'],
+    &[aria-current='page']:not(:disabled):hover,
+    &[aria-current='page']:not(:disabled):focus {
+      border-color: transparent;
+      background-color: var(--site-nav-link-current-bg);
+      color: var(--site-nav-link-current-color);
+    }
+  }
+}
+
+.nav-items {
+  display: none;
+}
+
+// Mobile menu, or hamburger-style menu on desktop. If we don't
+// want this enabled on desktop, hide the hamburger menu button.
+.site-header.nav-open {
+  @include full-screen-fixed;
+  grid-template-rows: var(--site-nav-height) 1fr;
+  grid-template-columns: rem-calc(60) min-content 1fr auto;
+  grid-template-areas:
+    'toggle logo .. profile'
+    '...    menu menu menu';
+  overflow: auto;
+  -webkit-overflow-scrolling: touch; // sass-lint:disable-line no-misspelled-properties no-vendor-prefixes
+  mask-image: none;
+
+  .site-header-title {
+    display: none;
+  }
+
+  .site-logo {
+    display: flex;
+    white-space: nowrap;
+  }
+
+  .nav-items {
+    grid-area: menu;
+    display: block;
+    margin: 0 0 calc(var(--site-nav-height) * 2);
+    text-align: left;
+  }
+
+  .main-nav-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-left: rem-calc(-20);
+    padding: 1rem 0;
+    width: 100%;
+  }
+
+  .main-nav-link,
+  .button {
+    display: inline-flex;
+    justify-content: flex-start;
+    margin: 0.25rem 0;
+    padding: 0.625rem 1.15rem;
+    width: auto;
+    font-size: rem-calc(20);
+    font-weight: var(--global-weight-normal);
+    text-transform: none;
+    letter-spacing: 0;
+
+    &.Inbox,
+    &.Dashboard,
+    &.Meetings,
+    &.Files,
+    &.Insights {
+      &:before {
+        content: none;
+      }
+    }
+  }
+
+  .profile,
+  .secondary-nav {
+    box-shadow: none;
+    border: 0 none;
+  }
+
+  .secondary-nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .site-toggle {
+    padding-left: rem-calc(20);
+    grid-area: toggle;
+
+    &:before {
+      background-color: var(
+        --site-toggle-close-color,
+        var(--site-toggle-color, var(--site-nav-link-color))
+      );
+      mask-image: url('<svg viewBox="0 0 16.59 16.59" id="close" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M11.38 7.75L16 3.14a1.86 1.86 0 00.25-2.38 1.79 1.79 0 00-2.74-.23L8.83 5.2a.76.76 0 01-1.08 0L3.14.6A1.86 1.86 0 00.76.33a1.79 1.79 0 00-.23 2.74L5.2 7.75a.76.76 0 010 1.08L.6 13.44a1.88 1.88 0 00-.27 2.39 1.81 1.81 0 002.74.23l4.68-4.68a.76.76 0 011.08 0L13.44 16a1.87 1.87 0 002.39.26 1.81 1.81 0 00.23-2.74l-4.68-4.69a.76.76 0 010-1.08z"/></svg>');
+    }
+  }
+}
+
+@include breakpoint($nav-breakpoint) {
+  .site-header {
+    padding: 0;
+    padding-bottom: var(--site-header-padding-bottom-lg, 0);
+    grid-template-columns: var(--site-header-grid-cols-lg, #{rem-calc(160) 1fr auto});
+    grid-template-areas: 'logo nav-items profile';
+    align-items: var(--site-header-align-items-lg, center);
+
+    &-title {
+      display: none;
+    }
+
+    &.nav-open {
+      overflow: visible;
+    }
+
+    &:not(.nav-open):not(.force-toggle-nav) {
+      .site-toggle {
+        display: none;
+      }
+    }
+
+    &.force-toggle-nav:not(.nav-open) {
+      .nav-items {
+        display: none;
+      }
+    }
+
+    .has-fixed-subnav & {
+      grid-template-rows: var(--site-nav-height) var(--subnav-height);
+      grid-template-areas:
+        'logo nav-items profile'
+        'subnav subnav subnav';
+      background-color: var(
+        --site-header-has-fixed-subnav-bg,
+        var(--site-nav-background)
+      );
+      padding-bottom: var(--subnav-bg-padding-bottom);
+
+      &:after {
+        background-position: bottom 60px center;
+      }
+    }
+  }
+
+  .main-nav {
+    margin: var(--main-nav-margin-lg, 0);
+  }
+
+  .main-nav-list li + li {
+    margin-left: var(--site-nav-li-margin-left-lg, #{rem-calc(8)});
+  }
+
+  .main-nav-link,
+  .secondary-nav .button {
+    font-size: var(--site-nav-font-size-lg, var(--site-nav-font-size, #{rem-calc(13)}));
+    white-space: nowrap;
+
+    &[data-notification-badge]::after {
+      top: var(--site-nav-notification-badge-top-lg, 0);
+      right: var(--site-nav-notification-badge-right-lg, 0);
+      transform: var(--site-nav-notification-badge-transform-lg, translate(20%, -20%));
+    }
+
+    &[aria-current='page'] {
+      &:before {
+        left: var(--site-nav-active-pip-before-left-lg, unset);
+        bottom: var(--site-nav-active-pip-before-bottom-lg, unset);
+        right: var(--site-nav-active-pip-before-right-lg, unset);
+        transform: var(--site-nav-active-pip-before-transform-lg, none);
+      }
+    }
+  }
+
+  .main-nav-link {
+    padding: var(--site-nav-link-padding-lg, #{rem-calc(10)});
+  }
+
+  .site-logo {
+    display: flex;
+    align-self: stretch;
+    padding-right: rem-calc(20);
+    padding-left: rem-calc(20);
+  }
+
+  .site-logo.has-brand {
+    padding: 0;
+    height: var(--site-logo-height, auto);
+    width: var(--site-logo-width, auto);
+    background-image: var(--site-logo-url, none);
+    background-size: var(--site-logo-bg-size-sm, auto);
+    background-position: var(--site-logo-bg-position-sm, auto);
+    background-repeat: no-repeat;
+    transform: var(--site-logo-transform, none);
+
+    img {
+      height: rem-calc(26);
+      display: var(--site-logo-img-display, block);
+    }
+
+    @include breakpoint($nav-breakpoint) {
+      background-position: var(--site-logo-bg-position-lg, auto);
+      background-size: var(--site-logo-bg-size-lg, auto);
+      transform: none;
+    }
+  }
+
+  .nav-items {
+    grid-area: nav-items;
+    display: flex;
+    justify-content: space-between;
+    align-self: var(--nav-items-align-self, center);
+  }
+
+  .secondary-nav {
+    grid-area: secondary-nav;
+
+    .button {
+      margin-left: rem-calc(10);
+    }
+  }
+
+  .profile .avatar-label {
+    display: var(--site-header-avatar-label-display, block);
+  }
+
+  .site-back-text {
+    display: block;
+    white-space: nowrap;
+    font-size: 13px;
+    font-weight: var(--global-weight-semibold);
+    margin-left: rem-calc(6);
+  }
+}
+
+@include breakpoint(1050px) {
+  .site-header {
+    grid-template-columns: var(--site-header-grid-cols-xl, #{rem-calc(160) 1fr auto});
+  }
+
+  .main-nav-link,
+  .secondary-nav .button {
+    font-size: var(--site-nav-font-size-xl, #{rem-calc(13)});
+  }
+
+  .main-nav-link {
+    padding: var(--site-nav-link-padding-xl, #{rem-calc(10)});
+  }
+}
+
+@include breakpoint($xxlarge) {
+  .site-header {
+    grid-template-columns: var(--site-header-grid-cols-xl, #{rem-calc(160) 1fr auto});
+  }
+
+  .main-nav-link,
+  .secondary-nav .button {
+    font-size: var(--site-nav-font-size-xxl, #{rem-calc(13)});
+  }
+
+  .main-nav-link {
+    padding: var(--site-nav-link-padding-xxl, #{rem-calc(10)});
+  }
+
+  .main-nav-list li + li {
+    margin-left: var(--site-nav-li-margin-left-xxl, #{rem-calc(10)});
+  }
+}
+
+// Thin Navigation
+//
+// This is a variation of the navigation pattern that is used as a container
+// for the back button. This is a thinner nav, so it shouldn't ever contain
+// much more than a back button and a title. There is an optional modifier class
+// that will reveal the heading only when the user scrolls on the inbox.
+//
+// Markup: ../../styleguide/src/components/navigation_thin.hbs
+//
+// chromeless: true
+//
+// full: true
+//
+// Weight: 2
+//
+// Style guide: Navigation.thin-nav
+
+.has-thin-nav {
+  --site-nav-height: var(--site-nav-mobile-nav-thin-height);
+}
+
+.site-header.thin {
+  --site-nav-height: var(--site-nav-mobile-nav-thin-height);
+  grid-template-rows: var(--site-nav-height);
+  grid-template-columns: rem-calc(40) 1fr rem-calc(60);
+  grid-template-areas: 'back title ..';
+  padding: 0;
+  align-items: center;
+  mask-image: none;
+  background-color: var(--site-nav-background-thin, var(--site-nav-background));
+  background-image: var(--site-nav-background-image-thin, none);
+
+  &:after {
+    background: none;
+  }
+
+  .site-back,
+  .secondary-nav {
+    --icon-size: #{rem-calc(16)};
+    --icon-color: var(--site-nav-thin-text-color, var(--site-nav-link-color));
+    display: flex;
+    margin: auto;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .secondary-nav {
+    margin: 0 4px 0 auto;
+  }
+
+  .nav-right-button {
+    --icon-color: var(--site-nav-link-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: rem-calc(30);
+    height: var(--site-nav-height);
+    border: none;
+    background: none;
+  }
+
+  .nav-right-button.dropdown-button:after {
+    display: none;
+  }
+
+  @include breakpoint($nav-breakpoint) {
+    grid-template-columns: rem-calc(140) 1fr rem-calc(140);
+
+    .site-header-title {
+      display: block;
+    }
+  }
+
+  .has-dropdown {
+    margin-bottom: 0;
+  }
+}
+
+.site-header.show-title-on-scroll {
+  .site-header-title {
+    opacity: 0;
+    transition: opacity 0.3s linear;
+  }
+
+  &.headroom--not-top {
+    .site-header-title {
+      opacity: 1;
+    }
+  }
+}
+
+@include breakpoint($nav-breakpoint) {
+  .site-header.thin {
+    .secondary-nav {
+      grid-area: auto;
+    }
+  }
+
+  .site-header.thin .site-header-title {
+    display: block;
+    font-size: var(--font-size-base);
+  }
+}
+
+.site-header.is-doc-builder {
+  --site-nav-background: var(--ivideo-header-bg, var(--text-color));
+  --site-nav-link-color: var(--tint);
+  height: var(--doc-builder-site-nav-height, var(--site-nav-height));
+  display: flex;
+  align-items: center;
+  padding: 0;
+  mask-image: none;
+  background-image: none;
+
+  .site-header-title {
+    overflow: visible;
+  }
+
+  .site-back {
+    --icon-size: #{rem-calc(16)};
+    --icon-color: var(--site-nav-link-color);
+    --button-icon-opacity: 1;
+    display: flex;
+    margin: 0 rem-calc(10);
+    align-items: center;
+    text-decoration: none;
+    flex: 0 0 auto;
+    color: var(--site-nav-thin-text-color, var(--link-color));
+  }
+
+  .site-header-title {
+    display: block;
+    font-size: var(--font-size-base);
+    flex: 1 1 auto;
+    margin: 0 auto;
+  }
+
+  @include breakpoint($large) {
+    .site-back {
+      margin-right: 289px; // to center the headline
+    }
+
+    // to center title when items are missing
+    .secondary-nav {
+      justify-content: flex-end;
+      min-width: 315px;
+    }
+  }
+}
+
+// Character Impersonation Mode
+//
+// This is a variation of the navigation pattern is used to communicate that the
+// administration is in Character Impersonation mode.
+//
+// Markup: ../../styleguide/src/components/navigation-impersonation.hbs
+//
+// chromeless: true
+//
+// full: true
+//
+// Weight: 4
+//
+// Style guide: Navigation.impersonation
+
+.floating-ghost-modal {
+  position: fixed;
+  bottom: 6px;
+  right: 6px;
+  border: 1px solid var(--caution-color-shade);
+  border-radius: 4px;
+  padding: 16px 24px 10px;
+  background: var(--ghost-modal-bg, rgba(255, 255, 255, 0.95));
+  z-index: 100;
+  box-shadow: var(--heavy-shadow);
+  color: var(--ghost-modal-text-color, var(--text-color));
+
+  @supports (backdrop-filter: blur(4px)) {
+    backdrop-filter: blur(4px);
+    background: var(--ghost-modal-bg-blurred, rgba(255, 255, 255, 0.6));
+  }
+
+  .button.button {
+    margin: rem-calc(16) 0 0 0;
+    min-height: rem-calc(24);
+    white-space: nowrap;
+    color: var(--global-modal-button-color, var(--button-hollow-color, var(--info-color-shade)));
+    text-shadow: none;
+  }
+
+  .avatar-detail-meta {
+    white-space: nowrap;
+  }
+
+  &:after {
+    position: absolute;
+    top: 28px;
+    left: 4px;
+    display: block;
+    width: 16px;
+    height: 16px;
+    background-image: url('<svg fill="none" viewBox="0 0 16 17" id="drag_handle" xmlns="http://www.w3.org/2000/svg"><path d="M14 4a2 2 0 100-4 2 2 0 000 4zm0 6.03a2 2 0 100-4 2 2 0 000 4zm0 6.03a2 2 0 100-4 2 2 0 000 4zM2 4a2 2 0 100-4 2 2 0 000 4zm0 6.03a2 2 0 100-4 2 2 0 000 4zm0 6.03a2 2 0 100-4 2 2 0 000 4zM8 4a2 2 0 100-4 2 2 0 000 4zm0 6.03a2 2 0 100-4 2 2 0 000 4zm0 6.03a2 2 0 100-4 2 2 0 000 4z" fill="currentColor"/></svg>');
+    background-position: center center;
+    background-size: 16px 16px;
+    opacity: 0.4;
+    content: '';
+    z-index: 120;
+  }
+
+  &:before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 6px;
+    content: '';
+    background-color: var(--caution-color);
+    border-radius: 3px 3px 0 0;
+    background-image: repeating-linear-gradient(
+      45deg,
+      var(--caution-color-shade),
+      var(--caution-color-shade) 10px,
+      transparent 10px,
+      transparent 20px
+    );
+  }
+}
+
+// background multiplier, for Saturn.
+:root {
+  --bg-multiplier: 1; // for Saturn
+  @include breakpoint($medium) {
+    --bg-multiplier: 2;
+  }
+
+  @include breakpoint($xlarge) {
+    --bg-multiplier: 2.5;
+  }
+}
+
+#reply:target {
+  height: calc(var(--site-nav-height) + 30px);
+  width: 1px;
+  display: block;
+  position: absolute;
+  margin-top: calc((var(--site-nav-height) + 30px) * -1);
+}

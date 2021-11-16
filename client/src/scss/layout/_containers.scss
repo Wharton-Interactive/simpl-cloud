@@ -1,0 +1,131 @@
+// Containers
+//
+// This class and its modifiers provide a centered, max-width container. The
+// default `.main-container` class has a `max-width` of `1200px`.
+//
+// .two-thirds - `max-width: 800px`
+// .half - `max-width: 600px`
+// .one-third - `max-width: 400px`
+// .v-pad - This is used to add vertical padding to full-page containers.
+// .v-pad-half - This is a more condensed vertical padding option.
+// .v-pad-page-bottom - This adds extra bottom padding to indicate the bottom of the page. Intended for use on the main container element.
+//
+// Markup: ../../styleguide/src/components/containers.hbs
+//
+// Weight: 6
+//
+// Style guide: containers
+
+html,
+body {
+  box-sizing: border-box;
+  height: 100%;
+  min-height: 100%;
+}
+
+.main-container {
+  margin: 0 auto;
+  padding-right: 10px;
+  padding-left: 10px;
+  width: 100%;
+  max-width: var(--main-container-width, 1200px);
+
+  .main-container {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  &.two-thirds {
+    max-width: 800px;
+  }
+
+  &.half {
+    max-width: 600px;
+  }
+
+  &.one-third {
+    max-width: 400px;
+  }
+
+  &.extra-wide {
+    max-width: 1600px;
+  }
+
+  &.v-pad {
+    padding-top: rem-calc(20);
+    padding-bottom: rem-calc(20);
+  }
+
+  &.v-pad-half {
+    padding-top: rem-calc(10);
+    padding-bottom: rem-calc(10);
+  }
+
+  &.v-pad-page-bottom {
+    padding-bottom: rem-calc(40);
+  }
+
+  @include breakpoint($medium) {
+    padding-right: 20px;
+    padding-left: 20px;
+
+    &.v-pad {
+      padding-top: rem-calc(40);
+      padding-bottom: rem-calc(40);
+    }
+
+    &.v-pad-half {
+      padding-top: rem-calc(20);
+      padding-bottom: rem-calc(20);
+    }
+
+    &.v-pad-page-bottom {
+      padding-bottom: rem-calc(400);
+    }
+  }
+}
+
+// Avatar plus content grid component
+//
+// This class provides a simple container to show an avatar-width column next
+// to a flexible-width column. Optionally, '.hide-avatar-on-mobile' can be
+// applied if necessary.
+//
+// .hide-avatar-on-mobile - Hide avatar on mobile and make the content full width.
+// .v-center - Center the avatar vertically. Component is top-aligned by default.
+//
+// Markup: ../../styleguide/src/components/avatar-plus-content.hbs
+//
+// Style guide: containers.avatar-plus-content
+
+.avatar-content {
+  display: grid;
+  grid-gap: 0 rem-calc(10);
+  grid-template-columns: var(--avatar-size) 1fr;
+  grid-template-areas: 'avatar content';
+  align-items: start;
+  padding: rem-calc(10) 0;
+
+  &.v-center {
+    align-items: center;
+  }
+
+  .avatar-wrap {
+    grid-area: avatar;
+  }
+
+  .content-wrap {
+    grid-area: content;
+    @include bottomless;
+  }
+
+  @include breakpoint($small-only) {
+    &.hide-avatar-on-mobile {
+      display: block;
+
+      .avatar-wrap {
+        display: none;
+      }
+    }
+  }
+}
