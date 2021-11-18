@@ -14,5 +14,9 @@ The Game is Finished
 
 {% block content_inner %}
 {{ block.super }}
+{% if run.instances %}
 {% include 'simpl/includes/form_end.html' %}
+{% else %}
+<p>There are no players in this game.</p>
+{% endif %}
 {% endblock %}
