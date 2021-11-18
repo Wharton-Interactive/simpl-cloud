@@ -428,6 +428,18 @@ class BaseInstance(DataMixin, models.Model):
     def get_play_url(self):
         return ""
 
+    def finish_characters(self, *characters: List[BaseCharacterData]):
+        for character in characters:
+            assert character.instance_id == self.id
+            character.finish()
+
+        all_characters = self.character_set.exclude(user=None)
+        total = all_characters.count()
+        finished = all_characters.exclude(_date_finished=None).count()
+        if total and total == finished:
+            self.date_end = timezone.now()
+            self.save()
+
 
 class Instance(BaseInstance):
     """
@@ -441,6 +453,7 @@ class Instance(BaseInstance):
 class BaseCharacterData(DataMixin, models.Model):
     name = models.CharField("In-game name", max_length=200)
     data: dict = JSONField(editable=False, default=dict, blank=True)
+    _date_finished = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         abstract = True
@@ -448,6 +461,10 @@ class BaseCharacterData(DataMixin, models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def date_finished(self):
+        return self._date_finished
 
     def save(self, *args, **kwargs):
         if not self.name:
@@ -463,6 +480,10 @@ class BaseCharacterData(DataMixin, models.Model):
         return random_name(
             existing_names=other_characters.values_list("name", flat=True)
         )
+
+    def finish(self):
+        self._date_finished = timezone.now()
+        self.save()
 
 
 class BaseCharacterLinked(models.Model):
