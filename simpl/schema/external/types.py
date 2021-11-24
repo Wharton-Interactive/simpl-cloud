@@ -170,7 +170,7 @@ class SimplUserInstance(graphene.ObjectType):
 
     @staticmethod
     def resolve_status(obj, info):
-        obj.instance.status
+        return obj.instance.status
 
     @staticmethod
     def resolve_player_name(obj, info):

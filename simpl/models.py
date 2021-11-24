@@ -203,14 +203,23 @@ class BaseRun(DataMixin, models.Model):
         return Instance.objects.filter(run=self)
 
     @cached_property
+    def running_instances(self) -> List[BaseInstance]:
+        return [
+            instance
+            for instance in self.instances
+            if instance.date_start and not instance.date_end
+        ]
+
+    @cached_property
+    def ended_instances(self) -> List[BaseInstance]:
+        return [instance for instance in self.instances if instance.date_end]
+
+    @cached_property
     def ended(self):
         if self.completed:
             return True
-        instances = self.instances.count()
-        return (
-            instances > 0
-            and self.instances.filter(date_end__isnull=False).count() == instances
-        )
+        instances_count = len(self.instances)
+        return instances_count > 0 and len(self.ended_instances) == instances_count
 
     def prepare(self) -> List[BaseInstance]:
         """

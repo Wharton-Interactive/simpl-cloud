@@ -213,12 +213,14 @@ class DebriefView(SimplMixin, DetailView):
     template_name = "simpl/run_debrief.html"
 
     def post(self, request, *args, **kwargs):
-        if self.run.status == self.run.STATUS.PLAY:
+        if self.run.status == self.run.STATUS.DEBRIEF:
+            self.run.status = (
+                self.run.STATUS.COMPLETE if self.run.ended else self.run.STATUS.PLAY
+            )
+            message = "Player reports have been hidden."
+        else:
             self.run.status = self.run.STATUS.DEBRIEF
             message = "Player reports have been published."
-        elif self.run.status == self.run.STATUS.DEBRIEF:
-            self.run.status = self.run.STATUS.PLAY
-            message = "Player reports have been hidden."
         self.run.save()
         messages.success(request, message)
         url = request.POST.get("redirect_to") or nav.get_next_url(
@@ -238,37 +240,25 @@ class EndGameplayView(SimplMixin, DetailView):
     def post(self, request, *args, **kwargs):
         stoped_msg = "The game has been stopped for all players."
         started_msg = "The game has been restarted."
-        if self.run.instances.exists():
-            running_instances = self.run.instances.exclude(date_start=None).filter(
-                date_end=None
-            )
-            if running_instances:
-                for instance in running_instances:
+        if self.run.instances:
+            if self.run.running_instances:  # end run
+                for instance in self.run.running_instances:
                     instance.stop()
                 message = stoped_msg
-                if not self.run.continuous_open:
-                    self.run.status = (
-                        self.run.STATUS.DEBRIEF
-                        if (
-                            self.run.use_status_debrief
-                            and self.run.status < self.run.STATUS.DEBRIEF
-                        )
-                        else self.run.STATUS.COMPLETE
-                    )
-            else:
-                for instance in self.run.instances.exclude(date_end=None):
+                if self.run.status == self.run.STATUS.PLAY:
+                    self.run.status = self.run.STATUS.COMPLETE
+                # DEBRIEF and COMPLETE statuses remain the same
+            else:  # restart
+                for instance in self.run.ended_instances:
                     instance.restart()
-                self.run.status = self.run.STATUS.PLAY
                 message = started_msg
+                if self.run.status == self.run.STATUS.COMPLETE:
+                    self.run.status = self.run.STATUS.PLAY
+                # DEBRIEF and PLAY statuses remain the same
+            self.run.save()
         else:
-            if self.run.status == self.run.STATUS.COMPLETE:
-                self.run.status = self.run.STATUS.PLAY
-                message = started_msg
-            else:
-                self.run.status = self.run.STATUS.COMPLETE
-                message = stoped_msg
+            message = "Wait for players to sign up to proceed to the next step."
 
-        self.run.save()
         messages.success(request, message)
         url = request.POST.get("redirect_to") or nav.get_next_url(
             self.run, self.simpl_name

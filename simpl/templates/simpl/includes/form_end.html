@@ -5,17 +5,17 @@
   {% csrf_token %}
   {% if redirect_to %}<input type="hidden" value="{{ redirect_to }}" name="redirect_to" />{% endif %}
   <p>
-    {% if not run.ended %}
+    {% if not run.ended and run.can_end %}
     <strong>{% trans "End Gameplay" %}</strong>
     {% trans "stops the game. Players will no longer be able to play or submit decisions." %}
     {% elif run.can_restart %}
     <strong>{% trans "Restart Gameplay" %}</strong>
     {% trans "resumes the game allowing players to continue playing and submitting decisions." %}
-    {% else %}
+    {% elif run.ended %}
     {% trans "Gameplay is ended and can not be restarted." %}
     {% endif %}
   </p>
-  {% if not run.ended %}
+  {% if not run.ended and run.can_end %}
   <div class="button-wrap">
     <button type="submit" class="button large" name="end_game">{% trans "End Gameplay" %}</button>
   </div>

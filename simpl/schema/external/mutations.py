@@ -148,5 +148,6 @@ class SimplManagers(graphene.Mutation):
         )
         if remove_users:
             run.managers.remove(*remove_users)
+        return run
 
     Output = types.SimplRun

@@ -3,10 +3,24 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-0.51 (unreleased)
+0.53 (unreleased)
 =================
 
 - Nothing changed yet.
+
+
+0.52 (24 November 2021)
+=======================
+
+- Fix run managers API mutation not returning run.
+
+
+0.51 (22 November 2021)
+=======================
+
+- Fix user instance status field on API.
+
+- Fix run setting status correctly when ending non continuous runs.
 
 
 0.50.1 (15 November 2021)
