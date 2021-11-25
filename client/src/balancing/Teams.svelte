@@ -2,6 +2,7 @@
   import { fade, slide } from "svelte/transition";
   import Team from "./Team.svelte";
   import { formatSession } from "./utils";
+  import example from "../img/player-management-examples.png";
 
   export let data;
   export let currentSession = undefined;
@@ -199,7 +200,7 @@
 
 
       <h3 class="player-help-header">Option 2: Build teams manually</h3>
-      <img class="player-help-img" src="/static/player-management-examples.png" alt="Player Management Examples" />
+      <img class="player-help-img" src={example} alt="Player Management Examples" />
       <ol>
       <li>Select one or more players from  the ’Unassigned Players’ list by hovering over their name and clicking he check box.</li>
       <li>Click
