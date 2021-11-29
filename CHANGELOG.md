@@ -3,8 +3,8 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-0.53 (unreleased)
-=================
+0.53 (29 November 2021)
+=======================
 
 - Improve sessions handling (don't require times, any string will do).
 
