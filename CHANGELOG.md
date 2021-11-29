@@ -6,7 +6,7 @@ A list of notable changes to the Simpl-Cloud library included in each release.
 0.54 (unreleased)
 =================
 
-- Nothing changed yet.
+- Fix issue with initial data loading failure.
 
 
 0.53.1 (30 November 2021)

@@ -74,7 +74,7 @@
       }
     }
   }
-  $: allInactive = $data?.players.filter((p) => p.inactive) || [];
+  $: allInactive = $data?.players?.filter((p) => p.inactive) || [];
 
   const createTeam = (name) => {
     if (!name) {
