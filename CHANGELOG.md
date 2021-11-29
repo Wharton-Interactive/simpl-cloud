@@ -6,7 +6,7 @@ A list of notable changes to the Simpl-Cloud library included in each release.
 0.54 (unreleased)
 =================
 
-- Nothing changed yet.
+- Improve the BalanceTeams mutation flexibility some more.
 
 
 0.53.2 (30 November 2021)

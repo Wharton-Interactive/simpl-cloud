@@ -41,8 +41,7 @@ class BalanceTeams(query.BalancingMixin, graphene.Mutation):
                         continue
                 else:
                     lobby = models.Lobby(run=run)
-                cls.update_lobby_data(lobby, team_input)
-                lobby.save()
+                cls.save_lobby_data(lobby, team_input)
                 lobby.player_set.set(
                     [run_players[pk] for pk in team_input.players if pk in run_players]
                 )
@@ -54,8 +53,10 @@ class BalanceTeams(query.BalancingMixin, graphene.Mutation):
         return cls.get_run(info, run_id)
 
     @staticmethod
-    def update_lobby_data(lobby: models.Lobby, team: TeamInput):
+    def save_lobby_data(lobby: models.Lobby, team: TeamInput, save: bool = True):
         lobby.name = team.name
+        if save:
+            lobby.save()
         return lobby
 
 
