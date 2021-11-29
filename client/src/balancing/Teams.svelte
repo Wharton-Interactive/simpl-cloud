@@ -14,10 +14,13 @@
   $: readOnly = currentSession === null;
   $: teams = readOnly
     ? $data.teams
-    : $data.teams.filter((t) => !t.session || t.session === currentSession);
+    : $data.teams.filter(
+        (t) =>
+          !t.session ||
+          t.session === currentSession ||
+          currentSession === undefined
+      );
   let groupedTeams = new Map();
-  let total = 0;
-  let unassigned = 0;
   $: {
     if (readOnly) {
       groupedTeams = new Map();
@@ -29,9 +32,6 @@
         }
         groupedTeams.get(team.session).push(team);
       });
-      const assigned = $data.teams.flatMap((t) => t.players);
-      unassigned = $data.players.filter((p) => !assigned.includes(p.id)).length;
-      total = $data.players.length;
     }
   }
 
@@ -141,7 +141,7 @@
       </button>
     </div>
     <div class="team-scroll">
-      {#each teams as team (team.id)}
+      {#each teams as team (team.internalId || team.id)}
         <div
           class="card player-card glow-shadow team-card"
           transition:fade|local={{ duration: 200 }}
@@ -171,20 +171,6 @@
       {/each}
     </div>
   {:else}
-    {#if unassigned}
-      <div class="note theme-alert-color">
-        <div class="note-content">
-          {unassigned} of {total} player{total === 1 ? "" : "s"} still unassigned.
-        </div>
-      </div>
-    {:else}
-      <div class="note theme-success-color">
-        <div class="note-content">
-          {total > 1 ? "All" : ""}
-          {total} player{total === 1 ? "" : "s"} assigned to teams.
-        </div>
-      </div>
-    {/if}
     <dl>
       {#each $data.sessions as session}
         <dt>{formatSession(session)}</dt>
@@ -211,6 +197,7 @@
     {#each [...groupedTeams] as [session, sessionTeams] (session)}
       {#if sessionTeams.length}
         <div transition:slide|local={{ duration: 200 }}>
+          <hr />
           <h3 id={`session-${session}`}>
             <a
               href="."
