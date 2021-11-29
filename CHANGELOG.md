@@ -6,7 +6,11 @@ A list of notable changes to the Simpl-Cloud library included in each release.
 0.53 (unreleased)
 =================
 
-- Nothing changed yet.
+- Improve sessions handling (don't require times, any string will do).
+
+- Fix bug with auto-balance.
+
+- Add some flexibility to the BalanceTeams graphQL mutation.
 
 
 0.52 (24 November 2021)
