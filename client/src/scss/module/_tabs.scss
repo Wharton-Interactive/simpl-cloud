@@ -53,7 +53,6 @@
       &.current {
         opacity: 1;
       }
-
     }
     .tab-sm-label {
       font-size: rem-calc(14);
@@ -85,13 +84,14 @@
 
     .tab-link.current,
     .tab-link.current:hover,
-    .tab-link[aria-selected='true'],
-    .tab-link[aria-selected='true']:hover,
-    .tab-link[aria-current='page'],
-    .tab-link[aria-current='page']:hover {
+    .tab-link[aria-selected="true"],
+    .tab-link[aria-selected="true"]:hover,
+    .tab-link[aria-current="page"],
+    .tab-link[aria-current="page"]:hover {
       border-radius: var(
         --tab-first-border-radius,
-        var(--tab-link-border-radius,
+        var(
+          --tab-link-border-radius,
           var(--global-radius-tl) var(--global-radius-tr) 0 0
         )
       );
@@ -147,7 +147,7 @@
     display: flex;
     padding: var(--tab-link-padding, 10px 16px);
     background-color: var(--tab-link-bg-color, transparent);
-    border: 1px solid var(--tab-link-border-color, transparent);
+    border: 1px solid var(--tab-bg-color-current, var(--info-color));
     border-width: var(--tab-link-border-width, 0);
     text-decoration: none;
     border-radius: var(
@@ -179,11 +179,12 @@
     &.current:hover,
     &.selected,
     &.selected:hover,
-    &[aria-selected='true'],
-    &[aria-selected='true']:hover,
-    &[aria-current='page'],
-    &[aria-current='page']:hover {
-      border-bottom: 3px solid var(--tab-link-current-border-color, var(--link-color));
+    &[aria-selected="true"],
+    &[aria-selected="true"]:hover,
+    &[aria-current="page"],
+    &[aria-current="page"]:hover {
+      border-bottom: 3px solid
+        var(--tab-link-current-border-color, var(--link-color));
       border-width: var(--tab-link-border-width, 0);
       color: var(--tab-link-color-current, var(--knockout-color));
       background-color: var(--tab-bg-color-current, var(--info-color));
@@ -199,7 +200,7 @@
         bottom: 0;
         left: -6px;
         background-image: var(--tab-active-after-image, none);
-        content: '';
+        content: "";
       }
     }
 
@@ -232,7 +233,8 @@
 
     border-radius: var(
       --tab-last-border-radius,
-      var(--tab-link-border-radius,
+      var(
+        --tab-link-border-radius,
         var(--global-radius-tl) var(--global-radius-tr) 0 0
       )
     );
@@ -249,7 +251,7 @@
       mask-size: 12px 12px;
       background-color: var(--tab-link-color, var(--link-color));
       transition: transform 0.2s;
-      content: '';
+      content: "";
     }
 
     &:hover,
@@ -260,8 +262,8 @@
     }
 
     &.current,
-    &[aria-selected='true'],
-    &[aria-current='page'] {
+    &[aria-selected="true"],
+    &[aria-current="page"] {
       color: var(--tab-link-color-current, var(--link-color));
       background-color: var(--tab-bg-color-current, transparent);
       background-image: var(--tab-more-button-bg-image-current, none);
@@ -299,6 +301,7 @@
       padding: rem-calc(8) rem-calc(12);
       background: transparent;
       border: 0 none;
+      border-color: var(--tab-bg-color-current, transparent);
       border-radius: 0;
       color: var(--tab-dropdown-text-color, var(--link-color));
       flex: 1 1 100%;
@@ -313,15 +316,18 @@
       }
 
       &.current,
-      &[aria-selected='true'],
-      &[aria-current='page'] {
+      &[aria-selected="true"],
+      &[aria-current="page"] {
         background-color: var(
           --tab-dropdown-bg-color-current,
           var(--dropdown-hover-color)
         );
         color: var(--tab-link-color-current, var(--link-color));
         background-color: var(--tab-bg-color-current, transparent);
-        background-image: var(--tab-more-dropdown-bg-image-current, var(--tab-bg-image-current, none));
+        background-image: var(
+          --tab-more-dropdown-bg-image-current,
+          var(--tab-bg-image-current, none)
+        );
       }
 
       &[data-notification-badge]:after {
@@ -355,7 +361,7 @@
 
   .tab-link[data-notification-badge]:not([data-notification-badge="*"])::after {
     border: 2px solid --site-header-has-fixed-subnav-bg,
-    var(--subnav-background-lg, var(--subnav-background));
+      var(--subnav-background-lg, var(--subnav-background));
   }
 }
 

@@ -171,45 +171,31 @@
       {/each}
     </div>
   {:else}
-    <dl>
-      {#each $data.sessions as session}
-        <dt>{formatSession(session)}</dt>
-        <dd>
-          {#if groupedTeams.get(session)?.length}
-            <a
-              href={`#session-${session}`}
-              on:click|preventDefault={() => {
-                document
-                  .getElementById(`session-${session}`)
-                  .scrollIntoView({ behavior: "smooth" });
-              }}
-              >{groupedTeams.get(session).length} Team{groupedTeams.get(session)
-                .length === 1
-                ? ""
-                : "s"}</a
-            >
-          {:else}
-            No teams
-          {/if}
-        </dd>
-      {/each}
-    </dl>
     {#each [...groupedTeams] as [session, sessionTeams] (session)}
       {#if sessionTeams.length}
-        <div transition:slide|local={{ duration: 200 }}>
-          <hr />
-          <h3 id={`session-${session}`}>
-            <a
-              href="."
-              on:click|preventDefault={() => {
-                currentSession = session;
-              }}
-              >{formatSession(session)}
-            </a>
-          </h3>
+        <div class="card well" transition:slide|local={{ duration: 200 }}>
+          <div id={`session-${session}`} class="card-header">
+            <h3>
+              {#if session}
+                <a
+                  href="."
+                  on:click|preventDefault={() => {
+                    currentSession = session;
+                  }}
+                >
+                  {formatSession(session)}
+                </a>
+              {:else}
+                <em>No Session Group</em>
+              {/if}
+            </h3>
+            ({sessionTeams.length}
+            {sessionTeams.length == 1 ? "team" : "teams"})
+          </div>
+
           {#each sessionTeams as team (team.internalId || team.id)}
             <div
-              class="card player-card glow-shadow team-card"
+              class="card player-card team-card"
               transition:fade|local={{ duration: 200 }}
             >
               <Team
@@ -232,3 +218,9 @@
     {/each}
   {/if}
 </div>
+
+<style>
+  h3 {
+    font-size: 1rem;
+  }
+</style>

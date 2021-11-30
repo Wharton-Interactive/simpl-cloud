@@ -8,6 +8,10 @@ A list of notable changes to the Simpl-Cloud library included in each release.
 
 - Improve the BalanceTeams mutation flexibility some more.
 
+- Better formatting for summary page.
+
+- Fix badges for unfinished session groups, and add a bit of tab styling.
+
 
 0.53.2 (30 November 2021)
 =========================

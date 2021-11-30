@@ -48,25 +48,21 @@
   $: {
     if ($data?.players) {
       const assigned = $data.teams.flatMap((t) => t.players);
+      allUnassigned = $data.players.filter(
+        (p) => !assigned.includes(p.id) && !p.inactive
+      );
       unassigned = {};
-      allUnassigned = [];
       if (useSessions) {
         for (const session of $data.sessions) {
-          unassigned[session] = $data.players.filter(
-            (p) =>
-              (!p.session || p.session === session) && !assigned.includes(p.id)
-          );
-          allUnassigned.push(
-            ...unassigned[session].filter((p) => !allUnassigned.includes(p))
+          unassigned[session] = allUnassigned.filter(
+            (p) => !p.inactive && (!p.session || p.session === session)
           );
         }
       } else {
         if ($data?.sessions?.length === 1) {
           currentSession = $data.sessions[0];
         }
-        unassigned[currentSession] = $data.players.filter(
-          (p) => !assigned.includes(p.id)
-        );
+        unassigned[currentSession] = allUnassigned;
       }
       if (useSessions && currentSession === undefined) {
         currentSession =
@@ -134,7 +130,10 @@
     {#each switcherSessions as session (session)}
       <SwitcherOption
         bind:state={currentSession}
-        badge={(unassigned[session] && unassigned[session].length) || null}
+        badge={(unassigned[session] &&
+          unassigned[session].filter((p) => !p.inactive).length) ||
+          null}
+        outline={!session && !allUnassigned.length}
         value={session}
         >{session ? formatSession(session) : "Summary"}</SwitcherOption
       >
