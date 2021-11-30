@@ -47,13 +47,49 @@ class Toast {
   }
 }
 
+class CheckboxEnhancement {
+  selector: string;
+  constructor() {
+    this.selector = ".field-pair";
+    document
+      .querySelectorAll(this.selector)
+      .forEach(this.initComponent, this);
+  }
+
+  toggleCheckboxes(el){
+    this.checkbox = el.querySelector("[type=checkbox]");
+    this.willDisable = el.querySelector("[data-disabled-when-unchecked]");
+    this.willDisableField = this.willDisable.querySelector('input');
+    let isChecked = el.querySelector(":checked");
+
+    if (isChecked) {
+      this.willDisableField.removeAttribute('disabled');
+    } else {
+      this.willDisableField.setAttribute('disabled', 'disabled');
+    }
+
+    this.willDisable.classList.toggle('is-disabled', !isChecked);
+    el.classList.toggle("has-checked", isChecked);
+  }
+
+  initComponent(el) {
+    this.toggleCheckboxes(el);
+
+    this.checkbox.addEventListener("change", () => {
+      this.toggleCheckboxes(el);
+    });
+  }
+}
+
 function initComponents() {
   new ToggleElement();
   new Toast();
+  new CheckboxEnhancement();
 }
 
 export {
   initComponents,
   Toast,
   ToggleElement,
+  CheckboxEnhancement,
 }

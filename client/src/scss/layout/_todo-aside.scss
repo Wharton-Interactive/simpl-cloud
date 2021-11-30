@@ -49,10 +49,10 @@
     border-color: var(--success-color);
   }
 
-  &.is-ready:before {
-    background: var(--info-color);
-    border-color: var(--info-color);
-  }
+  // &.is-ready:before {
+  //   background: var(--info-color);
+  //   border-color: var(--info-color);
+  // }
 
   &.is-alert {
     border-color: var(--caution-color);

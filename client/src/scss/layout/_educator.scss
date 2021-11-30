@@ -135,6 +135,10 @@
   &-grid {
     display: flex;
     flex-direction: column-reverse;
+
+    .card {
+      @include bottomless;
+    }
   }
 
   &-main {
@@ -143,6 +147,10 @@
     flex-direction: column;
     justify-content: center;
     padding-bottom: var(--global-margin);
+
+    &.half-pb {
+      padding-bottom: calc(var(--global-margin) / 2 );
+    }
   }
 
   &-aside {
@@ -156,17 +164,19 @@
   &-heading {
     font-weight: var(--global-weight-semibold);
     margin-bottom: 0;
-    font-size: rem-calc(16);
+    font-size: rem-calc(20);
   }
 
-  &-help-heading {
+  &-help-heading,
+  &-help-text {
     --icon-size: #{rem-calc(20)};
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     font-weight: var(--global-weight-semibold);
     margin-bottom: rem-calc(8);
 
     .icon {
+      margin-top: rem-calc(4);
       margin-right: rem-calc(6);
     }
   }
@@ -174,11 +184,19 @@
   &-subheading,
   &-help-text {
     font-size: var(--font-size-small);
+
+    &.is-large {
+      font-size: var(--font-size-normal);
+    }
   }
 
   &-help-heading,
   &-help-text {
     max-width: 480px;
+  }
+
+  &-help-text {
+    font-weight: var(--global-weight-normal);
   }
 
   &-fieldset {
@@ -192,6 +210,9 @@
   }
 
   &-chapter-heading {
+    display: flex;
+    gap: 8px;
+    align-items: center;
     font-weight: var(--global-weight-semibold);
     margin-bottom: 1rem;
     font-size: rem-calc(20);
@@ -207,10 +228,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-
-  .card {
-    @include bottomless;
   }
 
   @include breakpoint($nav-breakpoint) {
@@ -528,6 +545,7 @@
   float: right;
   margin: 0 0 1rem 1rem;
   box-shadow: var(--base-shadow);
+  opacity: 0.5;
 }
 
 .button.inline-help-button {

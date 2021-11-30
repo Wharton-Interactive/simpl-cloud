@@ -213,6 +213,10 @@ span.label {
       order: 3;
       width: 100%;
     }
+
+    @include breakpoint($smedium) {
+      flex-wrap: nowrap;
+    }
   }
 
   &.full {
@@ -334,6 +338,28 @@ textarea {
 
   .button {
     margin-left: rem-calc(8);
+  }
+}
+
+.field-pair {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: var(--global-radius);
+  padding: 8px 12px;
+  margin-bottom: 8px;
+
+  .inline-label {
+    width: calc(100% - 160px);
+  }
+
+  .field {
+    margin: 0;
+  }
+
+  &.has-checked {
+    background-color: var(--info-color-tint4);
   }
 }
 
@@ -476,7 +502,7 @@ textarea {
     z-index: 1;
     border: none;
     background-color: var(--checkbox-radio-selected-color);
-    // mask-image: url('#{$sprite-path}#checkbox_selected');
+    mask-image: svg-url('<svg viewBox="0 0 16 16" id="checkbox_selected" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M8 12L3 7l2-2 3 3 8-8H0v16h16V4z"/></svg>');
     mask-position: center center;
     mask-repeat: no-repeat;
     mask-size: 18px 18px;
@@ -632,7 +658,7 @@ textarea {
 
     .radio,
     .checkbox {
-      label {
+      > label {
         background-color: var(--card-bg-shade);
         border-radius: var(--global-radius);
         padding: 8px 12px;
@@ -661,10 +687,14 @@ textarea {
     }
 
     .radio {
-      label {
+      > label {
         padding: 8px 12px 8px calc(var(--radio-size) * 1.8);
       }
     }
+  }
+
+  &.nested-fields {
+
   }
 }
 
