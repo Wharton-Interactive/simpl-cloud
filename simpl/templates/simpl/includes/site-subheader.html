@@ -1,6 +1,11 @@
 <header class="simpl-subheader">
   {% if simpl_current_nav != "status" and "status" in simpl_nav %}
   <a class="simpl-subheader-back" href="{% url 'simpl.status' run.id %}">Return to Game Status</a>
+  {% else %}
+  <span class="simpl-subheader-status">
+    The game is in {% if run.status == 0 %}Setup{% elif run.status == 1 %}Play{% endif %}
+  </span>
   {% endif %}
-  <p class="simpl-subheader-help">Have questions or need assistance? <a href="#">Contact the Wharton Interactive support team</a>.</p>
+  <p class="simpl-subheader-help">Have questions or need assistance?
+    <a href="#TODO-WI-contact">Contact the Wharton Interactive support team</a>.</p>
 </header>

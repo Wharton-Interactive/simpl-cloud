@@ -13,7 +13,7 @@
   }
 
   .wharton-shield-icon {
-    width: 20px;
+    width: 28px;
   }
 
   .nav-items {
@@ -34,8 +34,13 @@
     }
   }
 
+  &-subtitle {
+    font-size: rem-calc(12);
+  }
+
   &-title-wrap {
     display: flex;
+    align-items: center;
     gap: 8px;
   }
 
@@ -75,6 +80,12 @@
     &:hover {
       color: var(--site-nav-link-color-hover);
     }
+  }
+
+  &-status {
+    font-size: var(--font-size-base);
+    font-weight: var(--global-weight-semibold);
+    font-style: italic;
   }
 }
 

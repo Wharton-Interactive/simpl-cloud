@@ -8,6 +8,7 @@
       <span>Setup</span>
     </span>
   </li>
+
   {% if run.use_status_prepare %}
   <li class="game-stage-item">
     <span class="
@@ -32,7 +33,7 @@
         game-stage-link {% if run.status == run.STATUS.DEBRIEF and not run.ended %}is-this-step{% endif %}
         {% if run.status == run.STATUS.DEBRIEF %}is-complete{% endif %}
         ">
-      <span>Player Reports</span>
+      <span>Debrief</span>
     </span>
   </li>
   {% endif %}
