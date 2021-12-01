@@ -446,6 +446,8 @@ class Instance(BaseInstance):
     An instance of a Simpl experience.
     """
 
+    objects = managers.CharacterQuerySet.as_manager()
+
     class Meta:
         swappable = "SIMPL_INSTANCE"
 
@@ -472,7 +474,11 @@ class BaseCharacterData(DataMixin, models.Model):
 
     @property
     def status(self):
-        if self.date_finished and self.date_finished <= timezone.now():
+        # This should always be in sync with managers.CharacterQuerySet.annotate_status
+        now = timezone.now()
+        if (self.date_finished and self.date_finished <= now) or (
+            self.instance.date_end and self.instance.date_end <= now
+        ):
             return self.STATUS.COMPLETE
         return self.STATUS.PLAY
 
