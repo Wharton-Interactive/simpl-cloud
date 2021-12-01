@@ -5,20 +5,23 @@
 
 {% block main_wrap_classes %}v-nav-page-layout{% endblock %}
 
+
+
 {% block page_header %}
 <header class="page-header">
-  <div class="player-grid">
-    <div class="player-col">
-      <div class="page-header-flex-wrap h-pad">
-        <h1 class="page-heading">Review Players</h1>
-        {% includecontents "simpl/includes/search_form.html" with value=request.GET.q %}
-        Filter players
-        {% endincludecontents %}
+  <div class="main-container {% block page_header_width_classes %}{% endblock %}">
+    <div class="player-grid">
+      <div class="player-col">
+        <div class="page-header-flex-wrap h-pad">
+          <h1 class="page-heading">{% trans "Teams and Players" %}</h1>
+          {% includecontents "simpl/includes/search_form.html" with value=request.GET.q %}
+          Filter players
+          {% endincludecontents %}
+        </div>
       </div>
     </div>
+    {% include "simpl/includes/messages.html" %}
   </div>
-
-  {% include "simpl/includes/messages.html" %}
 </header>
 {% endblock page_header %}
 
@@ -33,25 +36,49 @@
       {% endif %}
 
       {% if run.status >= run.STATUS.PLAY %}
-
+      <div id="active" data-tab-pane>
         {% if players %}
         <div class="player-header is-nested">
           <p class="walkthrough-chapter-heading">Active Players
             ({{ players|length }}{% if players|length != players_count %}/{{ players_count }}{% endif %})</p>
+
+          <a href="#" class="toggle-expandables expand-all hide">Expand all</a>
+          <a href="#" class="toggle-expandables collapse-all">Collapse all</a>
+
+          {% if inactive_players %}
+          <ul class="player-toggle">
+            <li><a href="#" data-toggle-attr="[data-tab-pane]" aria-selected="true">Active</a></li>
+            <li>
+              <a href="#" data-toggle-attr="[data-tab-pane]">
+                Inactive
+                ({{ inactive_players|length }}{% if inactive_players|length != inactive_count %}/{{ inactive_count }}{% endif %})
+              </a>
+            </li>
+          </ul>
+          {% endif %}
         </div>
         {% endif %}
 
         {% if run.multiplayer %}
+
           {% for team, team_players in teams.items %}
             <div class="card player-card glow-shadow team-card">
               <div class="player-item is-header">
                 <h2 class="player-card-heading">
                   {{ team }}
                 </h2>
+
+                <div class="player-card-actions">
+                  <button class="toggle-button is-expanded" data-toggle-attr="#id_{{ team | slugify }}">
+                    {% include "includes/icon.html" with icon="caret" %}
+                  </button>
+                </div>
               </div>
-              {% for player in team_players %}
-                {% include "simpl/includes/players_list/multiplayer_in_play.html" %}
-              {% endfor %}
+              <div id="id_{{ team | slugify }}" data-is-accordion>
+                {% for player in team_players %}
+                  {% include "simpl/includes/players_list/multiplayer_in_play.html" %}
+                {% endfor %}
+              </div>
             </div>
           {% endfor %}
         {% else %}{% comment %} Single player {% endcomment %}
@@ -93,15 +120,28 @@
 
       {% endif %}
 
-      {% if inactive_players %}
-      <div class="player-header is-nested">
-        <p class="walkthrough-chapter-heading">Inactive Players
-        ({{ inactive_players|length }}{% if inactive_players|length != inactive_count %}/{{ inactive_count }}{% endif %})</p>
       </div>
-      <div class="card player-card team-card is-inactive-player">
-        {% for player in inactive_players %}
-          {% include "simpl/includes/players_list/inactive_player.html" %}
-        {% endfor %}
+      {% if inactive_players %}
+      <div id="inactive" class="hide" data-tab-pane>
+        <div class="player-header is-nested">
+          <p class="walkthrough-chapter-heading">Inactive Players
+          ({{ inactive_players|length }}{% if inactive_players|length != inactive_count %}/{{ inactive_count }}{% endif %})</p>
+
+
+          <ul class="player-toggle">
+            <li>
+              <a href="#" data-toggle-attr="[data-tab-pane]">
+                Active
+                ({{ players|length }}{% if players|length != players_count %}/{{ players_count }}{% endif %})
+              </a></li>
+            <li><a href="#" data-toggle-attr="[data-tab-pane]" aria-selected="true">Inactive</a></li>
+          </ul>
+        </div>
+        <div class="card player-card team-card is-inactive-player">
+          {% for player in inactive_players %}
+            {% include "simpl/includes/players_list/inactive_player.html" %}
+          {% endfor %}
+        </div>
       </div>
       {% endif %}{% comment %} Inactive {% endcomment %}
 
@@ -121,7 +161,22 @@
   </div>
 
   <div class="player-col">
-    {% include "simpl/includes/players_list/instructions.html" %}
+    {% if inactive_players %}
+    <p class="walkthrough-help-heading">
+      {% include "includes/icon.html" with icon="info_alt" %}
+      There {% if inactive_players|length > 1 %}are{% else %}is{% endif %} {{ inactive_players|length }} inactive player{{ inactive_players | pluralize }}.
+    </p>
+    <p class="walkthrough-help-text is-large">
+    Select ‘Mark Active’ next to each player’s name to allow them to join the game.
+    </p>
+    <p class="walkthrough-help-text is-large">
+      Click ‘Impersonate’ next to a player to view their game. NOTE: No actions
+      can be made as the player while impersonating.
+    </p>
+    <p class="walkthrough-help-text is-large">
+      <a href="#TODO-need-CSV" download>Download CSV of players</a>
+    </p>
+    {% endif %}
   </div>
 
 </div>

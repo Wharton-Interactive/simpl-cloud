@@ -22,6 +22,10 @@ class ToggleElement {
     el.addEventListener("click", (evt) => {
       evt.preventDefault();
       this.toggleEl(targetSelector);
+
+      if (el.classList.contains('toggle-button')) {
+        el.classList.toggle('is-expanded');
+      }
     });
   }
 }

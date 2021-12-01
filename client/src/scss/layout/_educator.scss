@@ -57,7 +57,7 @@
 }
 
 .v-nav-page-layout {
-  height: 100vh;
+  height: calc(100vh - var(--site-nav-height) - var(--site-subheader-height));
   display: grid;
   grid-gap: 0;
   grid-template-rows: min-content minmax(0, 1fr) min-content;
@@ -569,7 +569,8 @@
   mask-size: 100% 100%;
   mask-repeat: no-repeat;
 
-  > *:first-child {
+  > *:first-child,
+  [data-tab-pane] {
     margin-top: 16px;
   }
 
@@ -650,7 +651,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 26px;
+  margin-top: rem-calc(12);
 
   .icon {
     margin-bottom: 1rem;

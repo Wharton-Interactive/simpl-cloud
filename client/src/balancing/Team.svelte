@@ -29,7 +29,7 @@
   </h2>
   {#if selectedElsewhere.length}
     <button
-      class="button small hollow theme-tint"
+      class="button small hollow theme-tint animate-in"
       on:click={() => {
         dispatch("addPlayers");
       }}

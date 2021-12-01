@@ -108,6 +108,7 @@ $knockout-color: $white;
   --site-nav-link-current-color: var(--site-nav-link-color-hover);
   --site-nav-height: #{rem-calc(64)};
   --site-nav-height-open: #{rem-calc(100)};
+  --site-subheader-height: #{rem-calc(41)}; 
   --site-nav-mobile-nav-background: var(--brand-color-tint1);
   --site-nav-mobile-nav-thin-height: #{rem-calc(30)};
   --site-nav-border-bottom: 1px solid var(--card-border-color-default);

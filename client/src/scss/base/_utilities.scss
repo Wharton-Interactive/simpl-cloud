@@ -76,7 +76,7 @@ img {
   }
 }
 
-[toggle-this] {
+[data-toggle-this] {
   display: none;
 
   &.is-expanded {
@@ -341,5 +341,37 @@ a.reverse-link {
 
   @at-root :fullscreen & {
     display: flex !important;
+  }
+}
+
+.animate-in {
+  animation: pulse;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes pulse {
+  from {
+    box-shadow: none;
+    opacity: 0;
+    // transform: scale3d(1, 1, 1);
+    // color: var(--tint);
+
+  }
+
+  25% {
+    box-shadow: 0 0 0 10px rgba(255,255,255, 0.6);
+    opacity: 1;
+    // transform: scale3d(1.1, 1.1, 1.1);
+    // color: var(--text-color);
+    // background-color: var(--tint);
+
+  }
+
+  to {
+    box-shadow: none;
+    // transform: scale3d(1, 1, 1);
+    // color: var(--tint);
+    // background-color: transparent;
   }
 }
