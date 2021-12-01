@@ -3,10 +3,10 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-0.56 (unreleased)
-=================
+0.56 (1 December 2021)
+======================
 
-- Nothing changed yet.
+- Consider character complete if instance is ended.
 
 
 0.55 (30 November 2021)
