@@ -16,6 +16,9 @@ from simpl.models import Lobby, BaseRun
 from django.contrib.auth import get_user_model
 
 
+Character = get_character_model()
+
+
 class RunTest(TestCase):
     def setUp(self):
         Player = get_player_model()
@@ -219,13 +222,29 @@ class SocialAccountTestCase(TestCase):
 
 class CharacterTestCase(TestCase):
     def setUp(self):
-        Character = get_character_model()
         self.character = baker.make(Character)
 
     def test_finish(self):
         self.assertIsNone(self.character.date_finished)
         self.character.finish()
         self.assertEqual(self.character.date_finished.date(), timezone.now().date())
+
+    def test_status_play_by_default(self):
+        character = Character.objects.annotate_status().get(id=self.character.id)
+        self.assertEqual(character.status, character.STATUS.PLAY)
+        self.assertEqual(character._status, character.STATUS.PLAY)
+
+    def test_status_complete_if_fnished(self):
+        self.character.finish()
+        character = Character.objects.annotate_status().get(id=self.character.id)
+        self.assertEqual(character.status, character.STATUS.COMPLETE)
+        self.assertEqual(character._status, character.STATUS.COMPLETE)
+
+    def test_status_complete_if_instance_ended(self):
+        self.character.instance.stop()
+        character = Character.objects.annotate_status().get(id=self.character.id)
+        self.assertEqual(character.status, character.STATUS.COMPLETE)
+        self.assertEqual(character._status, character.STATUS.COMPLETE)
 
 
 class InstanceTestCase(TestCase):

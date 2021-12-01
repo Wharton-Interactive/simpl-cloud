@@ -3,10 +3,54 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-0.53 (unreleased)
+0.57 (unreleased)
 =================
 
 - Nothing changed yet.
+
+
+0.56 (1 December 2021)
+======================
+
+- Consider character complete if instance is ended.
+
+
+0.55 (30 November 2021)
+=======================
+
+- Add status property to Character.
+
+
+0.54 (30 November 2021)
+=======================
+
+- Improve the BalanceTeams mutation flexibility some more.
+
+- Better formatting for summary page.
+
+- Fix badges for unfinished session groups, and add a bit of tab styling.
+
+
+0.53.2 (30 November 2021)
+=========================
+
+- Fix issue with initial data loading failure.
+
+
+0.53.1 (30 November 2021)
+=========================
+
+- Update JS static files from v0.53 changes.
+
+
+0.53 (29 November 2021)
+=======================
+
+- Improve sessions handling (don't require times, any string will do).
+
+- Fix bug with auto-balance.
+
+- Add some flexibility to the BalanceTeams graphQL mutation.
 
 
 0.52 (24 November 2021)

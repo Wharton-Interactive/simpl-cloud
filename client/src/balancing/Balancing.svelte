@@ -8,20 +8,23 @@
   import { formatSession, shuffle } from "./utils";
 
   let showDialog = false;
-  export let nextStep;
-  $: activePlayerIds =
-    $data?.players && $data.players.filter((p) => !p.inactive).map((p) => p.id);
+  export let nextStep = null;
 
   const exampleData = {
-    sessions: [], // ["10:00:00", "14:00:00", "17:00:00"],
+    sessions: [
+      // comment all but one session to see different behaviour
+      "10:00:00",
+      "14:00:00",
+      "other",
+    ],
     players: [
-      { id: 1, session: "10:00:00", name: "John Sampson" },
-      { id: 2, session: "10:00:00", name: "Jill Fisher" },
-      { id: 3, session: "10:00:00", name: "Jane Beard" },
-      { id: 4, session: "14:00:00", name: "Lucy Lawless" },
-      { id: 5, session: "14:00:00", name: "Gengis Khan" },
-      { id: 6, session: "14:00:00", name: "Michael Trythall" },
-      { id: 7, name: "The Wellerman" },
+      { id: 1, session: "10:00:00", name: "John Sampson", inactive: false },
+      { id: 2, session: "10:00:00", name: "Jill Fisher", inactive: false },
+      { id: 3, session: "10:00:00", name: "Jane Beard", inactive: false },
+      { id: 4, session: "14:00:00", name: "Lucy Lawless", inactive: false },
+      { id: 5, session: "14:00:00", name: "Gengis Khan", inactive: true },
+      { id: 6, session: "other", name: "Michael Trythall", inactive: false },
+      { id: 7, name: "The Wellerman", inactive: false },
     ],
     teams: [{ id: 1, session: "10:00:00", name: "First", players: [2] }],
   };
@@ -34,38 +37,40 @@
     $data = exampleData;
   }
 
+  $: useSessions = $data?.sessions?.length > 1;
   let currentSession;
-  $: switcherSessions =
-    $data.teams.length && $data.sessions?.length
-      ? [...$data.sessions, null]
-      : $data.sessions;
+  $: switcherSessions = useSessions
+    ? [...$data.sessions, null]
+    : $data.sessions;
 
   let unassigned = {};
+  let allUnassigned = [];
   $: {
     if ($data?.players) {
       const assigned = $data.teams.flatMap((t) => t.players);
+      allUnassigned = $data.players.filter(
+        (p) => !assigned.includes(p.id) && !p.inactive
+      );
       unassigned = {};
-      let totalUnassigned = 0;
-      if ($data.sessions) {
+      if (useSessions) {
         for (const session of $data.sessions) {
-          unassigned[session] = $data.players.filter(
-            (p) =>
-              (!p.session || p.session === session) && !assigned.includes(p.id)
+          unassigned[session] = allUnassigned.filter(
+            (p) => !p.inactive && (!p.session || p.session === session)
           );
-          totalUnassigned += unassigned[session].length;
         }
+      } else {
+        if ($data?.sessions?.length === 1) {
+          currentSession = $data.sessions[0];
+        }
+        unassigned[currentSession] = allUnassigned;
       }
-      if (!$data.sessions?.length) {
-        unassigned[undefined] = $data.players.filter(
-          (p) => !assigned.includes(p.id)
-        );
-      }
-      if ($data.sessions?.length && currentSession === undefined) {
+      if (useSessions && currentSession === undefined) {
         currentSession =
-          assigned && !totalUnassigned ? null : $data.sessions[0];
+          assigned && !allUnassigned.length ? null : $data.sessions[0];
       }
     }
   }
+  $: allInactive = $data?.players?.filter((p) => p.inactive) || [];
 
   const createTeam = (name) => {
     if (!name) {
@@ -94,7 +99,7 @@
 
   let currentSessionSelected = [];
   $: {
-    if ($data.sessions?.length) {
+    if (useSessions) {
       const currentSessionPlayers = $data.players
         .filter(
           (p) =>
@@ -120,14 +125,17 @@
   let fillCount = 3;
 </script>
 
-{#if $data.sessions && $data.sessions.length > 1}
+{#if $data.sessions && useSessions}
   <Switcher>
     {#each switcherSessions as session (session)}
       <SwitcherOption
         bind:state={currentSession}
-        badge={(unassigned[session] && unassigned[session].length) || null}
+        badge={(unassigned[session] &&
+          unassigned[session].filter((p) => !p.inactive).length) ||
+          null}
+        outline={!session && !allUnassigned.length}
         value={session}
-        >{session ? formatSession(session) : "Overview"}</SwitcherOption
+        >{session ? formatSession(session) : "Summary"}</SwitcherOption
       >
     {/each}
   </Switcher>
@@ -170,16 +178,18 @@
 {#if $data.players}
   {#each [currentSession] as s (s)}
     <div class="player-grid">
-      {#if currentSession !== null}
-        <Players
-          {selected}
-          unassigned={unassigned[currentSession] || []}
-          on:selectPlayer={(e) => {
-            clickPlayer(e.detail.id);
-          }}
-          {nextStep}
-        />
-      {/if}
+      <Players
+        {selected}
+        unassigned={currentSession === null
+          ? allUnassigned
+          : unassigned[currentSession] || []}
+        {allInactive}
+        on:selectPlayer={(e) => {
+          clickPlayer(e.detail.id);
+        }}
+        nextStep={useSessions && currentSession !== null ? false : nextStep}
+        unassignedIsError={useSessions && currentSession === null}
+      />
 
       <Teams
         bind:selected

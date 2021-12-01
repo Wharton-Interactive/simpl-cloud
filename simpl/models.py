@@ -446,11 +446,17 @@ class Instance(BaseInstance):
     An instance of a Simpl experience.
     """
 
+    objects = managers.CharacterQuerySet.as_manager()
+
     class Meta:
         swappable = "SIMPL_INSTANCE"
 
 
 class BaseCharacterData(DataMixin, models.Model):
+    class STATUS(enum.IntEnum):
+        PLAY = 1
+        COMPLETE = 2
+
     name = models.CharField("In-game name", max_length=200)
     data: dict = JSONField(editable=False, default=dict, blank=True)
     _date_finished = models.DateTimeField(null=True, blank=True)
@@ -465,6 +471,16 @@ class BaseCharacterData(DataMixin, models.Model):
     @property
     def date_finished(self):
         return self._date_finished
+
+    @property
+    def status(self):
+        # This should always be in sync with managers.CharacterQuerySet.annotate_status
+        now = timezone.now()
+        if (self.date_finished and self.date_finished <= now) or (
+            self.instance.date_end and self.instance.date_end <= now
+        ):
+            return self.STATUS.COMPLETE
+        return self.STATUS.PLAY
 
     def save(self, *args, **kwargs):
         if not self.name:

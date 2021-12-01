@@ -7,9 +7,8 @@ $theme-asset-path: "/static/admin-theme/";
 
 @import "breakpoint-sass/stylesheets/breakpoint";
 @import "breakpoint-sass/stylesheets/breakpoint";
-@import 'tippy.js/dist/tippy.css';
-@import 'tippy.js/themes/light';
-
+@import "tippy.js/dist/tippy.css";
+@import "tippy.js/themes/light";
 
 @import "base/fonts";
 @import "base/mixins";
@@ -44,6 +43,7 @@ $theme-asset-path: "/static/admin-theme/";
 @import "module/game-stages";
 @import "module/modal";
 @import "module/note";
+@import "module/notification-badges";
 @import "module/progress";
 @import "module/search";
 @import "module/simpl-header";

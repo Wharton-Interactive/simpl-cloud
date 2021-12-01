@@ -6,6 +6,7 @@ from typing import Union
 from django.db import models
 from django.db.models import Q
 from django.db.models.expressions import Case, Value, When
+from django.db.models.functions import Now
 from packaging.version import parse
 
 
@@ -134,3 +135,21 @@ class LobbyQuerySet(models.QuerySet):
         if value:
             return qs.filter(ready=True)
         return qs.filter(not_ready=True)
+
+
+class CharacterQuerySet(models.QuerySet):
+
+    def annotate_status(self):
+        # This should always be in sync with BaseCharacterData.status
+        from .models import BaseCharacterData
+
+        return self.annotate(
+            _status=models.Case(
+                models.When(
+                    models.Q(_date_finished__lte=Now()) | models.Q(instance__date_end__lte=Now()),
+                    then=BaseCharacterData.STATUS.COMPLETE,
+                ),
+                default=BaseCharacterData.STATUS.PLAY,
+                output_field=models.PositiveSmallIntegerField(),
+            ),
+        )
