@@ -42,21 +42,7 @@
         <div class="player-header is-nested">
           <p class="walkthrough-chapter-heading">Active Players
             ({{ players|length }}{% if players|length != players_count %}/{{ players_count }}{% endif %})</p>
-
-          <a href="#" data-expand-all class="toggle-expandables hide">Expand all</a>
-          <a href="#" data-collapse-all class="toggle-expandables">Collapse all</a>
-
-          {% if inactive_players %}
-          <ul class="player-toggle">
-            <li><a href="#" data-toggle-elements="[data-tab-pane]" aria-selected="true">Active</a></li>
-            <li>
-              <a href="#" data-toggle-elements="[data-tab-pane]">
-                Inactive
-                ({{ inactive_players|length }}{% if inactive_players|length != inactive_count %}/{{ inactive_count }}{% endif %})
-              </a>
-            </li>
-          </ul>
-          {% endif %}
+            {% include "simpl/includes/players_list/list_header_togglers.html" %}
         </div>
         {% endif %}
 
@@ -98,23 +84,7 @@
         <div class="player-header is-nested">
           <p class="walkthrough-chapter-heading">Ready to Play
           ({{ players|length }}{% if players|length != players_count %}/{{ players_count }}{% endif %})</p>
-
-          {% if run.multiplayer %}
-          <a href="#" data-expand-all class="toggle-expandables hide">Expand all</a>
-          <a href="#" data-collapse-all class="toggle-expandables">Collapse all</a>
-          {% endif %}
-
-          {% if inactive_players %}
-          <ul class="player-toggle">
-            <li><a href="#" data-toggle-elements="[data-tab-pane]" aria-selected="true">Active</a></li>
-            <li>
-              <a href="#" data-toggle-elements="[data-tab-pane]">
-                Inactive
-                ({{ inactive_players|length }}{% if inactive_players|length != inactive_count %}/{{ inactive_count }}{% endif %})
-              </a>
-            </li>
-          </ul>
-          {% endif %}
+          {% include "simpl/includes/players_list/list_header_togglers.html" %}
         </div>
         {% endif %}
 
