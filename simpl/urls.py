@@ -20,4 +20,5 @@ urlpatterns = [
     path("<int:pk>/start/", views.StartView.as_view(), name="simpl.start"),
     path("<int:pk>/debrief/", views.DebriefView.as_view(), name="simpl.debrief"),
     path("<int:pk>/end/", views.EndGameplayView.as_view(), name="simpl.end"),
+    path("<int:pk>/download-players/", views.DownloadPlayers.as_view(), name="simpl.download_players"),
 ]

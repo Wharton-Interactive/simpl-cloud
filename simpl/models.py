@@ -608,6 +608,14 @@ class BasePlayer(models.Model):
                 name += f": {self.character}"
         return name
 
+    @property
+    def team_name(self):
+        if self.run.multiplayer:
+            if self.lobby:
+                return self.lobby.name
+            if self.character:
+                return self.character.instance.name
+
     def get_play_url(self) -> str:
         custom_play_url = getattr(settings, "SIMPL_GET_PLAY_URL", None)
         if custom_play_url:

@@ -1,12 +1,13 @@
+import csv
 from typing import ClassVar, Optional
 
 from django.contrib import messages
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
+from django.core.files.base import ContentFile
 from django.db.models import Q
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse
-from django.utils import timezone
 from django.utils.functional import cached_property
 from django.views.generic import DetailView, RedirectView
 from django.views.generic.detail import SingleObjectMixin
@@ -183,6 +184,34 @@ class PlayersView(SimplMixin, DetailView):
         if reactivate:
             Player.objects.filter(pk__in=reactivate).update(inactive=False)
         return redirect(".")
+
+
+class DownloadPlayers(SimplMixin, DetailView):
+    def get(self, request, *args, **kwargs):
+        filename = self.run.name.replace(' ', '')
+        response = HttpResponse(
+            content_type="text/csv",
+            headers={"Content-Disposition": f'attachment; filename="{filename}.csv"'},
+        )
+        team_field = ["Team"] if self.run.multiplayer else []
+        fieldnames = team_field + ["Name", "Inactive"]
+        writer = csv.DictWriter(response, fieldnames=fieldnames)
+        writer.writeheader()
+        order_by_team = ["character__instance__name"] if self.run.multiplayer else []
+        players = self.run.player_set.select_related(
+            "lobby", "character__instance", "user"
+        ).order_by(*order_by_team, "user__first_name", "user__last_name")
+
+        for player in players:
+            row = {
+                "Name": player.public_name,
+                "Inactive": "Yes" if player.inactive else "",
+            }
+            if self.run.multiplayer:
+                row["Team"] = player.team_name
+            writer.writerow(row)
+
+        return response
 
 
 class StartView(SimplMixin, DetailView):

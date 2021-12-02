@@ -178,7 +178,7 @@
     {% endif %}
 
     <p class="walkthrough-help-text is-large">
-      <a href="#TODO-need-CSV" download>Download CSV of players</a>
+      <a href="{% url 'simpl.download_players' run.pk %}" target="_blank">Download CSV of players</a>
     </p>
 
   </div>
