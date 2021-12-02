@@ -36,20 +36,21 @@
       {% endif %}
 
       {% if run.status >= run.STATUS.PLAY %}
+
       <div id="active" data-tab-pane>
-        {% if players %}
+        {% if players or inactive_players%}
         <div class="player-header is-nested">
           <p class="walkthrough-chapter-heading">Active Players
             ({{ players|length }}{% if players|length != players_count %}/{{ players_count }}{% endif %})</p>
 
-          <a href="#" class="toggle-expandables expand-all hide">Expand all</a>
-          <a href="#" class="toggle-expandables collapse-all">Collapse all</a>
+          <a href="#" data-expand-all class="toggle-expandables hide">Expand all</a>
+          <a href="#" data-collapse-all class="toggle-expandables">Collapse all</a>
 
           {% if inactive_players %}
           <ul class="player-toggle">
-            <li><a href="#" data-toggle-attr="[data-tab-pane]" aria-selected="true">Active</a></li>
+            <li><a href="#" data-toggle-elements="[data-tab-pane]" aria-selected="true">Active</a></li>
             <li>
-              <a href="#" data-toggle-attr="[data-tab-pane]">
+              <a href="#" data-toggle-elements="[data-tab-pane]">
                 Inactive
                 ({{ inactive_players|length }}{% if inactive_players|length != inactive_count %}/{{ inactive_count }}{% endif %})
               </a>
@@ -69,7 +70,7 @@
                 </h2>
 
                 <div class="player-card-actions">
-                  <button class="toggle-button is-expanded" data-toggle-attr="#id_{{ team | slugify }}">
+                  <button class="toggle-button is-expanded" data-toggle-collapsible="#id_{{ team | slugify }}">
                     {% include "includes/icon.html" with icon="caret" %}
                   </button>
                 </div>
@@ -88,12 +89,32 @@
             {% endfor %}
           </div>
         {% endif %}
+      </div>
 
       {% else %}{% comment %} Setup {% endcomment %}
-        {% if players %}
+
+      <div id="active" data-tab-pane>
+        {% if players or inactive_players %}
         <div class="player-header is-nested">
           <p class="walkthrough-chapter-heading">Ready to Play
           ({{ players|length }}{% if players|length != players_count %}/{{ players_count }}{% endif %})</p>
+
+          {% if run.multiplayer %}
+          <a href="#" data-expand-all class="toggle-expandables hide">Expand all</a>
+          <a href="#" data-collapse-all class="toggle-expandables">Collapse all</a>
+          {% endif %}
+
+          {% if inactive_players %}
+          <ul class="player-toggle">
+            <li><a href="#" data-toggle-elements="[data-tab-pane]" aria-selected="true">Active</a></li>
+            <li>
+              <a href="#" data-toggle-elements="[data-tab-pane]">
+                Inactive
+                ({{ inactive_players|length }}{% if inactive_players|length != inactive_count %}/{{ inactive_count }}{% endif %})
+              </a>
+            </li>
+          </ul>
+          {% endif %}
         </div>
         {% endif %}
 
@@ -117,24 +138,23 @@
             {% endfor %}
           </div>
         {% endif %}
+      </div>
 
       {% endif %}
 
-      </div>
       {% if inactive_players %}
       <div id="inactive" class="hide" data-tab-pane>
         <div class="player-header is-nested">
           <p class="walkthrough-chapter-heading">Inactive Players
           ({{ inactive_players|length }}{% if inactive_players|length != inactive_count %}/{{ inactive_count }}{% endif %})</p>
 
-
           <ul class="player-toggle">
             <li>
-              <a href="#" data-toggle-attr="[data-tab-pane]">
+              <a href="#" data-toggle-elements="[data-tab-pane]">
                 Active
                 ({{ players|length }}{% if players|length != players_count %}/{{ players_count }}{% endif %})
               </a></li>
-            <li><a href="#" data-toggle-attr="[data-tab-pane]" aria-selected="true">Inactive</a></li>
+            <li><a href="#" data-toggle-elements="[data-tab-pane]" aria-selected="true">Inactive</a></li>
           </ul>
         </div>
         <div class="card player-card team-card is-inactive-player">
@@ -162,14 +182,19 @@
 
   <div class="player-col">
     {% if inactive_players %}
-    <p class="walkthrough-help-heading">
-      {% include "includes/icon.html" with icon="info_alt" %}
-      There {% if inactive_players|length > 1 %}are{% else %}is{% endif %} {{ inactive_players|length }} inactive player{{ inactive_players | pluralize }}.
-    </p>
-    <p class="walkthrough-help-text is-large">
-      Select ‘Mark Active’ next to each player’s name to allow them to join
-      the game.
-    </p>
+      <p class="walkthrough-help-heading">
+        {% include "includes/icon.html" with icon="info_alt" %}
+        There {% if inactive_players|length > 1 %}are{% else %}is{% endif %} {{ inactive_players|length }} inactive player{{ inactive_players | pluralize }}.
+      </p>
+      {% if not run.multiplayer or simpl_configuring %}
+      <p class="walkthrough-help-text is-large">
+        Select ‘Mark Active’ next to each player’s name to allow them to join
+        the game.
+      </p>
+      {% endif %}
+    {% endif %}
+
+
     <p class="walkthrough-help-text is-large">
       Click ‘Impersonate’ next to a player to view their game. NOTE: No actions
       can be made as the player while impersonating.
@@ -181,10 +206,11 @@
       to join, return to the Game Status screen.
     </p>
     {% endif %}
+
     <p class="walkthrough-help-text is-large">
       <a href="#TODO-need-CSV" download>Download CSV of players</a>
     </p>
-    {% endif %}
+
   </div>
 
 </div>
