@@ -54,7 +54,7 @@ class SimplInstance(DjangoObjectType):
     class Meta:
         model = Instance
         skip_registry = True
-        fields = ["name"]
+        fields = ["name", "date_end"]
 
     @staticmethod
     def resolve_status(obj, info):
@@ -162,7 +162,8 @@ class SimplUserInstance(graphene.ObjectType):
     status = graphene.Field(InstanceStatus)
     url = graphene.Field(graphene.String, deprecation_reason="Use SimplUserRun.url")
     player_name = graphene.String()
-    player_complete = graphene.Boolean()
+    player_status = graphene.String()
+    player_finished = graphene.String()
 
     @staticmethod
     def resolve_name(obj, info):
@@ -178,9 +179,11 @@ class SimplUserInstance(graphene.ObjectType):
 
     @staticmethod
     def resolve_player_status(obj, info):
-        if obj.instance.status >= models.BaseInstance.STATUS.DEBRIEF:
-            return True
-        return bool(obj.data.get("complete"))
+        return obj.status.name
+
+    @staticmethod
+    def resolve_player_finished(obj, info):
+        return obj.date_finished
 
 
 class SimplUserRun(graphene.ObjectType):
