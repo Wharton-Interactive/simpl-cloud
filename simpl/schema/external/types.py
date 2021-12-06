@@ -160,10 +160,11 @@ class SimplUserInstance(graphene.ObjectType):
     # Actually based on a Character model instance.
     name = graphene.String()
     status = graphene.Field(InstanceStatus)
+    date_end = graphene.DateTime()
     url = graphene.Field(graphene.String, deprecation_reason="Use SimplUserRun.url")
     player_name = graphene.String()
     player_status = graphene.String()
-    player_finished = graphene.String()
+    player_finished = graphene.DateTime()
 
     @staticmethod
     def resolve_name(obj, info):
@@ -172,6 +173,10 @@ class SimplUserInstance(graphene.ObjectType):
     @staticmethod
     def resolve_status(obj, info):
         return obj.instance.status
+
+    @staticmethod
+    def resolve_date_end(obj, info):
+        return obj.instance.date_end
 
     @staticmethod
     def resolve_player_name(obj, info):
