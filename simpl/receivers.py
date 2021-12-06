@@ -43,7 +43,7 @@ def update_user_from_socialaccount(instance: SocialAccount, **kwargs):
             data_keys = data_key
         for data_key in data_keys:
             value = data.get(data_key, UNSET)
-            if value:
+            if value and value is not UNSET:
                 break
         if value is UNSET or value == user_value:
             return False
