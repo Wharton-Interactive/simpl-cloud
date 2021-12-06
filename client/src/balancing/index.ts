@@ -43,6 +43,6 @@ export function init(target) {
         props: { href },
       });
     }
-    unsubscribe();
+    // unsubscribe();
   });
 }

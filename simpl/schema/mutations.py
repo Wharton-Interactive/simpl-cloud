@@ -28,23 +28,22 @@ class BalanceTeams(query.BalancingMixin, graphene.Mutation):
         if not run:
             raise graphql.GraphQLError(message="Permission denied")
 
-        run_teams = dict((str(team.pk), team) for team in run.lobby_set.all())
+        lobbies = dict((str(team.pk), team) for team in run.lobby_set.all())
         run_players = dict((str(player.pk), player) for player in run.player_set.all())
 
         if teams:
-            for team in teams:
-                if delete_teams and team.id in delete_teams:
+            for team_input in teams:
+                if delete_teams and team_input.id in delete_teams:
                     continue
-                if team.id:
-                    run_team = run_teams.get(team.id)
-                    if not run_team:
+                if team_input.id:
+                    lobby = lobbies.get(team_input.id)
+                    if not lobby:
                         continue
                 else:
-                    run_team = models.Lobby(run=run)
-                run_team.name = team.name
-                run_team.save()
-                run_team.player_set.set(
-                    [run_players[pk] for pk in team.players if pk in run_players]
+                    lobby = models.Lobby(run=run)
+                cls.save_lobby_data(lobby, team_input)
+                lobby.player_set.set(
+                    [run_players[pk] for pk in team_input.players if pk in run_players]
                 )
 
         if delete_teams:
@@ -52,6 +51,13 @@ class BalanceTeams(query.BalancingMixin, graphene.Mutation):
 
         # Get the object (with prefetches) fresh from the DB.
         return cls.get_run(info, run_id)
+
+    @staticmethod
+    def save_lobby_data(lobby: models.Lobby, team: TeamInput, save: bool = True):
+        lobby.name = team.name
+        if save:
+            lobby.save()
+        return lobby
 
 
 class AlterPlayer(query.BalancingMixin, graphene.Mutation):

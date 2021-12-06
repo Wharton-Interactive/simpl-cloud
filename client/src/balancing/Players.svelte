@@ -5,17 +5,22 @@
 
   export let selected;
   export let unassigned;
-  export const nextStep = null;
+  export let allInactive;
+  export let nextStep = null;
+  export let unassignedIsError = false;
 
   let inactive = false;
-  $: players = unassigned.filter((p) => p.inactive == inactive);
-  $: inactiveCount = unassigned.filter((p) => p.inactive).length;
-  $: if (!inactiveCount) inactive = false;
+  $: players = inactive ? allInactive : unassigned.filter((p) => !p.inactive);
+  $: if (!allInactive.length) inactive = false;
 </script>
 
 <div class="player-col">
   <div class="player-header">
-    <p class="walkthrough-chapter-heading">
+    <p
+      class="walkthrough-chapter-heading"
+      class:note={!inactive && players.length && unassignedIsError}
+      class:theme-alert-color={!inactive && players.length && unassignedIsError}
+    >
       {#if !inactive}
         Unassigned Players
       {:else}
@@ -44,11 +49,11 @@
           role="tab"
           aria-controls="inactive"
           aria-selected={inactive}
-          aria-disabled={!inactiveCount}
+          aria-disabled={!allInactive.length}
           tabindex="-1"
           on:click|preventDefault={(e) => {
-            inactive = unassigned.some((p) => p.inactive);
-          }}>Inactive ({inactiveCount})</a
+            inactive = !!allInactive.length;
+          }}>Inactive ({allInactive.length})</a
         >
       </li>
     </ul>
@@ -108,9 +113,16 @@
           /></svg
         >
         <p class="text-center">
-          All players are assigned to teams and ready to play. You may now
-          enable Players Prepare and Start Game in
-          <strong>{#if nextStep}<a href={nextStep}>Game Status</a>{:else}Game Status{/if}</strong>.
+          {#if nextStep !== false}
+            All players are assigned to teams and ready to play. You may now
+            enable Players Prepare and Start Game in
+            <strong
+              >{#if nextStep}<a href={nextStep}>Game Status</a>{:else}Game
+                Status{/if}</strong
+            >.
+          {:else}
+            All players are assigned for this session group.
+          {/if}
         </p>
       </div>
     {/if}

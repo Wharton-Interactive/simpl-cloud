@@ -16,6 +16,9 @@ from simpl.models import Lobby, BaseRun
 from django.contrib.auth import get_user_model
 
 
+Character = get_character_model()
+
+
 class RunTest(TestCase):
     def setUp(self):
         Player = get_player_model()
@@ -219,7 +222,6 @@ class SocialAccountTestCase(TestCase):
 
 class CharacterTestCase(TestCase):
     def setUp(self):
-        Character = get_character_model()
         self.character = baker.make(Character)
 
     def test_finish(self):
@@ -227,22 +229,40 @@ class CharacterTestCase(TestCase):
         self.character.finish()
         self.assertEqual(self.character.date_finished.date(), timezone.now().date())
 
+    def test_status_play_by_default(self):
+        character = Character.objects.annotate_status().get(id=self.character.id)
+        self.assertEqual(character.status, character.STATUS.PLAY)
+        self.assertEqual(character._status, character.STATUS.PLAY)
+
+    def test_status_complete_if_fnished(self):
+        self.character.finish()
+        character = Character.objects.annotate_status().get(id=self.character.id)
+        self.assertEqual(character.status, character.STATUS.COMPLETE)
+        self.assertEqual(character._status, character.STATUS.COMPLETE)
+
+    def test_status_complete_if_instance_ended(self):
+        self.character.instance.stop()
+        character = Character.objects.annotate_status().get(id=self.character.id)
+        self.assertEqual(character.status, character.STATUS.COMPLETE)
+        self.assertEqual(character._status, character.STATUS.COMPLETE)
+
 
 class InstanceTestCase(TestCase):
     def setUp(self):
         Instance = get_instance_model()
         Character = get_character_model()
         self.instance = baker.make(Instance)
-        self.characters = baker.make(Character, _quantity=3)
+        self.characters = baker.make(
+            Character, instance=self.instance, user__is_active=True, _quantity=3
+        )
 
     def test_finish_character(self):
         character = self.characters[0]
-        self.instance.finish_character(character)
+        self.instance.finish_characters(character)
         character.refresh_from_db()
         self.assertEqual(character.date_finished.date(), timezone.now().date())
 
     def test_finish_all_characters(self):
-        for character in self.characters:
-            self.instance.finish_character(character)
+        self.instance.finish_characters(*self.characters)
         self.instance.refresh_from_db()
         self.assertEqual(self.instance.date_end.date(), timezone.now().date())
