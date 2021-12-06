@@ -524,6 +524,8 @@ class Character(BaseCharacterData, BaseCharacterLinked):
     Only characters with :attr:`user` set, are considered player characters.
     """
 
+    objects = managers.CharacterQuerySet.as_manager()
+
     class Meta:
         swappable = "SIMPL_CHARACTER"
 
