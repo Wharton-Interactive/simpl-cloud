@@ -3,3 +3,4 @@ prune client
 recursive-include simpl/templates *.html
 graft simpl/static
 include *.md
+include tox.ini

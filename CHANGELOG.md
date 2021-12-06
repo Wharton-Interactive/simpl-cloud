@@ -3,11 +3,17 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-0.57 (unreleased)
-=================
+0.57 (6 December 2021)
+======================
 
-- Nothing changed yet.
+- Add fields to API:
+  - run.instances.dateEnd
+  - user.runs.instance.dateEnd
+  - user.runs.instance.playerFinished
 
+- Add and fix tests.
+
+- Run tests in GitHub actions.
 
 0.56 (1 December 2021)
 ======================
