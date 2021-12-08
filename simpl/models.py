@@ -428,7 +428,7 @@ class BaseInstance(DataMixin, models.Model):
     def get_play_url(self):
         return ""
 
-    def finish_characters(self, *characters: List[BaseCharacterData]):
+    def finish_characters(self, *characters: BaseCharacterData):
         for character in characters:
             assert character.instance_id == self.id
             character.finish()
