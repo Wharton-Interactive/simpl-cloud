@@ -3,7 +3,7 @@
 .site-header.is-simpl {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 1rem;
   padding-right: 1rem;
   padding-left: 1rem;
   min-height: var(--site-nav-height);
@@ -18,6 +18,19 @@
 
   .nav-items {
     flex: 1 1 auto;
+  }
+
+  &.nav-open {
+    display: grid;
+
+    .simpl-header-title-wrap {
+      display: none;
+    }
+
+    .simpl-header-link {
+      margin-top: 40px;
+      font-size: rem-calc(20);
+    }
   }
 }
 
@@ -90,6 +103,10 @@
 }
 
 @include breakpoint($nav-breakpoint) {
+  .site-header.is-simpl {
+    gap: 2rem;
+  }
+  
   .simpl-header {
     &.has-todos {
       padding-right: calc(var(--todo-aside-width) + 20px);

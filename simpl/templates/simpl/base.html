@@ -44,9 +44,12 @@
     </div>
 
     {% endblock content %}
+    {% block foot_text %}
     <div class="copyright-text">
     <p>©{% now "Y" %}, The Wharton School, The University of Pennsylvania</p>
     </div>
+    {% endblock %}
+
   </main>
 
   <script type="module">
