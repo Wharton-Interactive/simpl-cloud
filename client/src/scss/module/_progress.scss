@@ -42,6 +42,7 @@
     font-size: rem-calc(16);
     width: var(--team-heading-w);
     padding-right: 0.5rem;
+    background: var(--body-bg-color);
   }
 
   &-progress-list {
@@ -175,25 +176,55 @@
 
 }
 
+.progress-epic-table-wrap {
+  width: 100%;
+  max-height: calc(100vh - 293px);
+  overflow: auto;
+  background: var(--body-bg-color);
+  border: 1px solid var(--card-border-color-default);
+  border-radius: var(--global-radius);
+}
+
 .progress-epic-table {
-  border-spacing: 6px;
+  border-spacing: 6px 0;
   width: auto;
   font-size: 1em;
   margin: 0;
   border-collapse: inherit;
+  table-layout: fixed;
 
   thead th {
-    padding: 0;
+    padding: 1rem 0 0.5rem 0;
+    background: var(--body-bg-color);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+
+    &:first-child {
+      position: sticky;
+      left: 0;
+      z-index: 2;
+    }
+  }
+
+  tbody th {
+    position: sticky;
+    left: 0;
+    z-index: 1;
   }
 
   td {
-    background: #fff;
     padding: 0;
   }
 
   tbody > tr,
   tbody table {
     height: 48px;
+    margin-bottom: 6px;
+  }
+
+  tbody table {
+    background: #fff;
   }
   tr table tr {
     height: 100%;
