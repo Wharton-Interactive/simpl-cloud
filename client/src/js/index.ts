@@ -124,7 +124,7 @@ class CheckboxEnhancement {
   selector: string;
   checkbox: Element;
   willDisable: Element;
-  willDisableField: Element;
+  willDisableFields: NodeListOf<Element>;
 
   constructor() {
     this.selector = ".field-pair";
@@ -136,13 +136,13 @@ class CheckboxEnhancement {
   toggleCheckboxes(el: Element) {
     this.checkbox = el.querySelector("[type=checkbox]");
     this.willDisable = el.querySelector("[data-disabled-when-unchecked]");
-    this.willDisableField = this.willDisable.querySelector('input');
-    let isChecked = !!el.querySelector(":checked");
+    this.willDisableFields = this.willDisable.querySelectorAll('input');
+    let isChecked = !!el.querySelector("[data-disable-fields]:checked");
 
     if (isChecked) {
-      this.willDisableField.removeAttribute('disabled');
+      this.willDisableFields.forEach((el) => el.removeAttribute('disabled'));
     } else {
-      this.willDisableField.setAttribute('disabled', 'disabled');
+      this.willDisableFields.forEach((el) => el.setAttribute('disabled', 'disabled'));
     }
 
     this.willDisable.classList.toggle('is-disabled', !isChecked);
