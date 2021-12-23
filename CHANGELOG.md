@@ -3,10 +3,14 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-0.58 (unreleased)
-=================
+1.0 (23 December 2021)
+======================
 
-- Nothing changed yet.
+- Add players CSV download.
+
+- Add instructions to manage teams page.
+
+- Redesign UI.
 
 
 0.57 (6 December 2021)
