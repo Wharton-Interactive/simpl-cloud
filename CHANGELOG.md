@@ -3,10 +3,10 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-1.0.2 (unreleased)
-==================
+1.0.2 (23 December 2021)
+========================
 
-- Nothing changed yet.
+- Fix CSS issue with SVG image again.
 
 
 1.0.1 (23 December 2021)
