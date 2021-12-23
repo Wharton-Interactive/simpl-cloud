@@ -19,7 +19,7 @@ if TYPE_CHECKING:
         auth0_id: str
 
 
-def get_auth0_ids(*users: List[User]) -> List[str]:
+def get_auth0_ids(*users: User) -> List[str]:
     return list(
         SocialAccount.objects.filter(provider="auth0", user__in=users).values_list(
             "uid", flat=True
@@ -43,7 +43,7 @@ def _get_user_data(auth0_id: str):
 
 
 def get_auth0_users(
-    *auth0_ids: List[str], create_users: bool = True, update_user_data: bool = True
+    *auth0_ids: str, create_users: bool = True, update_user_data: bool = True
 ):
     users: List[UserWithAuth0] = []
     for auth0_id in auth0_ids:
