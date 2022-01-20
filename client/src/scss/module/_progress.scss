@@ -177,7 +177,8 @@
 }
 
 .progress-epic-table-wrap {
-  width: 100%;
+  max-width: 100%;
+  width: calc(100vw - #{rem-calc(20)});
   max-height: calc(100vh - 293px);
   overflow: auto;
   background: var(--body-bg-color);
