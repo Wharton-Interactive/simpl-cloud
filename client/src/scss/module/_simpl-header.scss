@@ -84,16 +84,13 @@
   }
 
   &-back {
-    font-weight: var(--global-weight-semibold);
-    color: var(--site-nav-link-color);
-    text-decoration: none;
-
-    &:before {
-      content: "« ";
-    }
-
-    &:hover {
-      color: var(--site-nav-link-color-hover);
+    &.button.small {
+      font-weight: var(--global-weight-semibold);
+      font-size: rem-calc(14);
+      min-height: rem-calc(28);
+      text-decoration: none;
+      margin: -6px 0;
+      padding: 0 16px 0 10px;
     }
   }
 
