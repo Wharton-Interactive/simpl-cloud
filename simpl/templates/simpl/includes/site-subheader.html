@@ -3,7 +3,7 @@
   <a class="simpl-subheader-back" href="{% url 'simpl.status' run.id %}">Return to Game Status</a>
   {% else %}
   <span class="simpl-subheader-status">
-    The game is in {% if run.status == 0 %}Setup{% elif run.status == 2 %}Play{% endif %}
+    Game Status: {% if run.status == 0 %}Setup{% elif run.status == 2 %}Play{% else %}{{ run.status }}{% endif %}
   </span>
   {% endif %}
   <p class="simpl-subheader-help"><span class="hide-on-mobile">Have questions or need assistance?</span>

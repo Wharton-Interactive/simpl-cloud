@@ -76,6 +76,8 @@
   font-size: var(--font-size-small);
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
 
   p {
     margin: 0;
@@ -98,7 +100,25 @@
   &-status {
     font-size: var(--font-size-base);
     font-weight: var(--global-weight-semibold);
-    font-style: italic;
+    margin: -4px 0;
+    padding: 2px 20px;
+    height: calc(100% + 8px);
+    color: var(--tint);
+
+    background-image:
+      svg-url('<svg fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" viewBox="0 0 8 43"><path d="M3.5 0A3.5 3.5 0 0 0 .232 4.753l5.803 15.136a4.5 4.5 0 0 1 0 3.222L.232 38.247A3.5 3.5 0 0 0 3.5 43h3.738V0H3.5Z" fill="#00D86B"/></svg>'),
+      svg-url('<svg fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" viewBox="0 0 16 11"><path fill="#00D86B" d="M0 0h16v11H0z"/></svg>'),
+      svg-url('<svg fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" viewBox="0 0 12 43"><path d="m11.467 20.045-8.228-18A3.494 3.494 0 0 0 .238.013v42.974a3.494 3.494 0 0 0 3-2.032l8.23-18a3.5 3.5 0 0 0 0-2.91Z" fill="#00D86B"/></svg>');
+    background-size:
+      8px 100%,
+      calc(100% - 18px) 100%,
+      12px 100%;
+    background-position:
+      top left,
+      top left 7px,
+      top right;
+    background-repeat: no-repeat, no-repeat, no-repeat;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15));
   }
 }
 
@@ -106,7 +126,7 @@
   .site-header.is-simpl {
     gap: 2rem;
   }
-  
+
   .simpl-header {
     &.has-todos {
       padding-right: calc(var(--todo-aside-width) + 20px);
