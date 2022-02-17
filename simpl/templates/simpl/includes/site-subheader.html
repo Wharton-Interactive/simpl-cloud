@@ -6,7 +6,16 @@
   </a>
   {% else %}
   <span class="simpl-subheader-status">
-    Game Status: {% if run.status == 0 %}Setup{% elif run.status == 2 %}Play{% else %}{{ run.status }}{% endif %}
+    Game Status:
+    {% if run.status == 0 %}Setup
+    {% elif run.status == 2 and not run.ended %}
+    Play
+    {% elif run.status == 2 and run.ended %}
+    Debrief
+    {% else %}
+    {# this shouldn't ever be seen, but it'll make debugging easier if it is #}
+    {{ run.status }}
+    {% endif %}
   </span>
   {% endif %}
   <p class="simpl-subheader-help"><span class="hide-on-mobile">Have questions or need assistance?</span>

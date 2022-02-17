@@ -1,4 +1,4 @@
-{% if run.status < run.STATUS.PLAY %}
+{% if run.status < run.STATUS.PLAY and not run.ended %}
     <p class="walkthrough-help-heading">
       The game is currently in Setup.
     </p>
@@ -13,7 +13,10 @@
   </p>
 {% elif run.ended %}
 <p class="walkthrough-help-heading">
-  Gameplay has ended.
+  The game has now ended for all players. Reference the Resources on your
+  <a href="https://interactive.wharton.upenn.edu/dashboard/classes/">My Interactive</a>
+  dashboard for suggestions and more information on debriefing
+  the experience.
 </p>
 {% endif %}
 

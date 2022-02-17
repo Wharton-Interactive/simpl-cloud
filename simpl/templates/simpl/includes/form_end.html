@@ -5,14 +5,17 @@
   {% csrf_token %}
   {% if redirect_to %}<input type="hidden" value="{{ redirect_to }}" name="redirect_to" />{% endif %}
   <p>
-    {% if not run.ended and run.can_end %}
+    {% if run.ended %}
+    The game has now ended for all players. Reference the Resources on your
+    <a href="https://interactive.wharton.upenn.edu/dashboard/classes/">My Interactive</a>
+    dashboard for suggestions and more information on debriefing
+    the experience.
+    {% elif not run.ended and run.can_end %}
     <strong>{% trans "End Gameplay" %}</strong>
     {% trans "stops the game. Players will no longer be able to play or submit decisions." %}
     {% elif run.can_restart %}
     <strong>{% trans "Restart Gameplay" %}</strong>
     {% trans "resumes the game allowing players to continue playing and submitting decisions." %}
-    {% elif run.ended %}
-    {% trans "Gameplay is ended and can not be restarted." %}
     {% endif %}
   </p>
   {% if not run.ended and run.can_end %}
