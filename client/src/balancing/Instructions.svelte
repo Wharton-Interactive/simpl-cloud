@@ -36,7 +36,7 @@
   <h3 class="player-help-header">{#if showAutoBalance}Option 2: {/if}Build teams manually</h3>
   <img class="player-help-img" src={example} alt="Player Management Examples" />
   <ol>
-    <li>Select one or more players from the ’Unassigned Players’ list by hovering over their name and clickinghe check box.</li>
+    <li>Select one or more players from the ’Unassigned Players’ list by hovering over their name and clicking the check box.</li>
     <li>Click
       <button
         class="button no-border strong theme-info-color inline-help-button"
