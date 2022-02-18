@@ -37,7 +37,7 @@ class RunStatus(graphene.Enum):
 
 class InstanceStatus(graphene.Enum):
     class Meta:
-        enum = models.BaseInstance.STATUS
+        enum = Instance.STATUS
 
 
 class SimplInstance(DjangoObjectType):
