@@ -22,9 +22,10 @@
   <li class="game-stage-item">
     <span class="
         game-stage-link {% if run.status == run.STATUS.PLAY and not run.ended %}is-this-step{% endif %}
+        {% if not run.use_status_debrief and run.ended %}is-this-step{% endif %}
         {% if run.status > run.STATUS.PLAY or run.ended %}is-complete{% endif %}
         ">
-      <span>Play</span>
+      <span>Play {% if not run.use_status_debrief %}&amp; Debrief{% endif %}</span>
     </span>
   </li>
   {% if run.use_status_debrief %}
