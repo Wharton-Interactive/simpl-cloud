@@ -1,0 +1,101 @@
+// Grid Utilities
+//
+// These utility classes and components aid in the development of basic layouts.
+//
+// Weight: 7
+//
+// Style guide: grid-utilities
+
+.grid {
+    display: grid;
+    grid-gap: var(--global-margin);
+  
+    &.variable-column {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+  
+    &.align-center {
+      align-items: center;
+    }
+  
+    > *,
+    .well + .well {
+      margin: 0;
+    }
+  
+    @include breakpoint($smedium) {
+      > .well {
+        margin: 0;
+      }
+  
+      &.two-column {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      }
+  
+      &.three-column {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+      }
+  
+      &.four-column {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+      }
+  
+      .span-two {
+        grid-column-end: span 2;
+      }
+  
+      .span-three {
+        grid-column-end: span 3;
+      }
+  
+      .full-width {
+        grid-column-start: 1;
+        grid-column-end: -1;
+      }
+    }
+  }
+  
+  // Fixed column count grid component
+  //
+  // These classes are useful when you want a more traditional grid display.
+  // Regardless of the number of child elements, these classes will fit the number
+  // of columns that you specify.
+  //
+  // .two-column - Columns will be 50% wide
+  // .three-column - Columns will be 33% wide
+  // .four-column - Columns will be 25% wide
+  //
+  // Markup: ../../styleguide/src/components/grids-fixed-size.hbs
+  //
+  // Style guide: grid-utilities.fixed-size
+  //
+  // Weight: 2
+  
+  // Variable column grid component
+  //
+  // This utility is useful when long lists of data should be spaced out between
+  // multiple columns. The columns will fill the space of the container depending
+  // on how many children exist in the component, with a minimum width that when
+  // hit, will push the last column down to the next line.
+  //
+  // Markup: ../../styleguide/src/components/grids-variable-column.hbs
+  //
+  // Style guide: grid-utilities.variable-column-grid
+  //
+  // Weight: 3
+  
+  // Modifier classes for grid cells
+  //
+  // These classes can be added to grid cells to span the specified number of
+  // columns.
+  //
+  // .span-two - This class spans two columns.
+  // .span-three - This class spans three columns. It should not be used on two-column layouts.
+  // .full-width - Regardless of the original column count, this class will span the full width.
+  //
+  // Markup: ../../styleguide/src/components/grids-interior-modifiers.hbs
+  //
+  // Style guide: grid-utilities.interior-modifiers
+  //
+  // Weight: 4
+  

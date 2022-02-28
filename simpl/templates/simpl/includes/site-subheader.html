@@ -10,7 +10,7 @@
     {% if run.status == 0 %}Setup
     {% elif run.status == 2 and not run.ended %}
     Play
-    {% elif run.status == 2 and run.ended %}
+    {% elif run.status == 3 and not run.ended %}
     Debrief
     {% else %}
     {# this shouldn't ever be seen, but it'll make debugging easier if it is #}

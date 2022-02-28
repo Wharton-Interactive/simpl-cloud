@@ -257,6 +257,11 @@
     font-size: rem-calc(12);
     text-transform: uppercase;
     color: var(--theme-color, var(--text-color));
+
+    .feature-card & {
+     font-size: rem-calc(16);
+     text-transform: none;; 
+    }
   }
 
   &-time {
