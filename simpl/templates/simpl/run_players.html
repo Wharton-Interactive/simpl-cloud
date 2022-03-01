@@ -165,12 +165,16 @@
     {% endif %}
 
 
+    {% if run.continuous %}
+    <p class="walkthrough-help-text is-large">
+      New players are allowed to continuously join this game. 
+      To see the most up-to-date list of players, please refresh your browser.
+    </p>
+    {% else %}
     <p class="walkthrough-help-text is-large">
       Click ‘Impersonate’ next to a player to view their game. NOTE: No actions
       can be made as the player while impersonating.
     </p>
-
-    {% if run.continuous %}
     <p class="walkthrough-help-text is-large">
       New players are not currently able to join this game. To allow new players
       to join, return to the Game Status screen.
