@@ -95,6 +95,10 @@
   &.is-disabled {
     cursor: not-allowed;
   }
+
+  &.no-dot:before {
+    content: none;
+  }
 }
 
 .todo-count {
