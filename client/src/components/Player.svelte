@@ -45,19 +45,9 @@
       <a
         href="."
         on:click|preventDefault|stopPropagation
-        class="dropdown-button settings-button"
+        class="button dropdown-button hollow small"
       >
-        <svg
-          class="icon"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-        >
-          <path
-            fill="var(--text-color)"
-            d="M14.25 12a2.25 2.25 0 11-4.501-.001A2.25 2.25 0 0114.25 12zM6.75 12a2.25 2.25 0 11-4.501-.001A2.25 2.25 0 016.75 12zM21.75 12a2.25 2.25 0 11-4.501-.001A2.25 2.25 0 0121.75 12z"
-          />
-        </svg>
+        Assign to&hellip;
       </a>
       <div class="dropdown">
         <ul class="dropdown-list">

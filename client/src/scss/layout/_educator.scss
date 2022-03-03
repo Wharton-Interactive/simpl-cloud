@@ -67,7 +67,7 @@
   padding-bottom: 100px;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: calc(100vh - var(--site-nav-height) - var(--site-subheader-height));
 
   @include breakpoint($nav-breakpoint) {
     padding-bottom: 0;
@@ -296,13 +296,21 @@
   }
 }
 
+.team-grid-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem 3.75rem;
+  
+  @include breakpoint($nav-breakpoint) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 .player {
   &-col {
-    overflow: hidden;
-    height: 100%;
     padding-bottom: rem-calc(20);
-    margin: 0 -16px;
-
+    
     .status-flag {
       display: inline-flex;
       padding: 2px 8px;
@@ -333,11 +341,14 @@
     align-items: center;
     flex-wrap: wrap;
     min-height: 40px;
-    padding: 0 16px;
 
     &.is-nested {
       padding-left: 0;
       padding-right: 0;
+    }
+
+    &.pad-top {
+      padding-top: 3rem;
     }
 
     p {
@@ -362,12 +373,12 @@
   &-card {
     padding: 0;
 
-    & + * {
-      margin-top: 2rem;
-    }
-
     > *:not(dialog) {
       position: static;
+    }
+
+    .card {
+      box-shadow: none;
     }
 
     &.is-inactive-player {
@@ -412,6 +423,29 @@
 
     .field {
       margin: 0;
+    }
+
+    .has-dropdown {
+      flex: 0 0 auto;
+    }
+
+    .dropdown-button.button.hollow {
+      --theme-text-color: var(--info-color);
+      border-color: var(--info-color);
+      color: var(--info-color);
+      
+      &:hover,
+      &:focus {
+        background-color: var(--tint);
+      }
+
+      &:before {
+        right: 9px;
+      }
+    }
+
+    .dropdown-link {
+      font-size: var(--font-size-small);
     }
 
     &.no-checkbox,
@@ -471,6 +505,13 @@
       .button {
         flex: 1 0 auto;
         white-space: nowrap;
+        color: var(--tint);
+
+        &:hover, 
+        &:focus {
+          color: var(--tint);
+          background: var(--info-color-tint2);
+        }
       }
 
       .start-button {
@@ -496,6 +537,7 @@
     justify-content: flex-end;
     align-items: center;
     flex: 1 0 auto;
+    gap: 4px;
   }
 
   @include breakpoint($nav-breakpoint) {
@@ -534,6 +576,57 @@
   }
 }
 
+.pill-list {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  gap: 0.25rem;
+  padding: 0;
+  margin: 0 0 0.5rem 0;
+  font-size: var(--font-size-small);
+
+  &.is-horizontal {
+    flex-direction: row;
+    gap: 1rem;
+  }
+
+  &.is-large {
+    font-size: var(--font-size-base);
+  }
+
+}
+
+.pill-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pill-var {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  min-height: 32px;
+  padding: 4px;
+  font-size: var(--font-size-base);
+  font-weight: var(--global-weight-semibold);
+  background: var(--tint);
+  border-radius: var(--global-radius);
+  border: 1px solid var(--card-border-color-default);
+}
+
+.team-status-box {
+  position: relative;
+
+  .download-button {
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+  }
+}
+
+
 .player-help-header {
   font-size: rem-calc(18);
   margin: 1rem 0 0.5rem;
@@ -552,31 +645,6 @@
   display: inline-flex;
   align-items: center;
   margin: -7px 8px 0;
-}
-
-.team-scroll {
-  overflow: auto;
-  padding: 0 16px 60px;
-  height: 100%;
-  -webkit-mask-image: svg-url(
-    '<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 1572" preserveAspectRatio="none"><path d="M379.566 1571.15H0V-.001h379.566V1571.15z" fill="url(#paint0_linear)"/><defs><linearGradient id="paint0_linear" x1="189.783" y1="3.501" x2="189.783" y2="1571" gradientUnits="userSpaceOnUse"><stop stop-opacity="0"/><stop offset=".035"/><stop offset=".955"/><stop offset="1" stop-opacity="0"/></linearGradient></defs></svg>'
-  );
-  -webkit-mask-size: 100% 100%;
-  -webkit-mask-repeat: no-repeat;
-  mask-image: svg-url(
-    '<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 1572" preserveAspectRatio="none"><path d="M379.566 1571.15H0V-.001h379.566V1571.15z" fill="url(#paint0_linear)"/><defs><linearGradient id="paint0_linear" x1="189.783" y1="3.501" x2="189.783" y2="1571" gradientUnits="userSpaceOnUse"><stop stop-opacity="0"/><stop offset=".035"/><stop offset=".955"/><stop offset="1" stop-opacity="0"/></linearGradient></defs></svg>'
-  );
-  mask-size: 100% 100%;
-  mask-repeat: no-repeat;
-
-  > *:first-child,
-  [data-tab-pane] {
-    margin-top: 16px;
-  }
-
-  @at-root .modal-is-open & {
-    mask-image: none;
-  }
 }
 
 .settings-button,
@@ -776,9 +844,9 @@
   overflow: auto;
 }
 
-.svelte-app-wrap {
-  height: 100%;
-}
+// .svelte-app-wrap {
+//   height: 100%;
+// }
 
 .report-header-wrap {
   display: flex;

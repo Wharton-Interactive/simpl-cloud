@@ -11,7 +11,7 @@
 <div>
 
   {#if showAutoBalance}
-  <h3 class="player-help-header">Option 1: Build teams automatically</h3>
+  
   <p>Choose
     <button
       class="button no-border strong theme-info-color inline-help-button"

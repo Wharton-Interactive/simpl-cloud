@@ -3,12 +3,15 @@
   import Switcher from "../components/Switcher.svelte";
   import SwitcherOption from "../components/SwitcherOption.svelte";
   import Players from "./Players.svelte";
+  import InactivePlayers from "./InactivePlayers.svelte";
+  import StatusBox from "./StatusBox.svelte";
   import { data } from "./stores";
   import Teams from "./Teams.svelte";
   import { formatSession, shuffle } from "./utils";
 
   let showDialog = false;
   export let nextStep = null;
+  let showAutoBalance;
 
   const exampleData = {
     sessions: [
@@ -178,36 +181,68 @@
 {#if $data.players}
   {#each [currentSession] as s (s)}
     <div class="player-grid">
-      <Players
-        {selected}
-        unassigned={currentSession === null
-          ? allUnassigned
-          : unassigned[currentSession] || []}
-        {allInactive}
-        on:selectPlayer={(e) => {
-          clickPlayer(e.detail.id);
-        }}
-        nextStep={useSessions && currentSession !== null ? false : nextStep}
-        unassignedIsError={useSessions && currentSession === null}
-      />
+      <div class="player-col">
+        <Players
+          {selected}
+          unassigned={currentSession === null
+            ? allUnassigned
+            : unassigned[currentSession] || []}
+          {allInactive}
+          on:selectPlayer={(e) => {
+            clickPlayer(e.detail.id);
+          }}
+          nextStep={useSessions && currentSession !== null ? false : nextStep}
+          unassignedIsError={useSessions && currentSession === null}
+        />
+      </div>
 
-      <Teams
-        bind:selected
-        {data}
-        bind:currentSession
-        {currentSessionSelected}
-        {createTeam}
-        showAutoBalance={(
-          unassigned[currentSession]?.filter((p) => !p.inactive) || []
-        ).length}
-        bind:showDialog
-        on:selectPlayer={(e) => {
-          clickPlayer(e.detail.id);
-        }}
-        on:unassignPlayer={(e) => {
-          unassignPlayer(e.detail.id);
-        }}
-      />
+      <div class="player-col">
+        <StatusBox
+          {showAutoBalance}
+          on:clickCreateTeam={() => {
+            const team = createTeam();
+            addPlayers(team, true);
+            $data.teams = [team, ...$data.teams];
+          }}
+          on:openAutoBalance={() => {
+            showDialog = true;
+          }}
+        />
+      </div>
+    </div>
+
+    <Teams
+      bind:selected
+      {data}
+      bind:currentSession
+      {currentSessionSelected}
+      {createTeam}
+      showAutoBalance={(
+        unassigned[currentSession]?.filter((p) => !p.inactive) || []
+      ).length}
+      bind:showDialog
+      on:selectPlayer={(e) => {
+        clickPlayer(e.detail.id);
+      }}
+      on:unassignPlayer={(e) => {
+        unassignPlayer(e.detail.id);
+      }}
+    />
+
+    <div class="player-grid">
+      <div class="player-col">
+        <InactivePlayers
+          {selected}
+          unassigned={currentSession === null
+            ? allUnassigned
+            : unassigned[currentSession] || []}
+          {allInactive}
+          on:selectPlayer={(e) => {
+            clickPlayer(e.detail.id);
+          }}
+          unassignedIsError={useSessions && currentSession === null}
+        />
+      </div>
     </div>
   {/each}
 {/if}

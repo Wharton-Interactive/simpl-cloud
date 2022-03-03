@@ -182,7 +182,7 @@
         --theme-text-color,
         var(--button-color-default, var(--knockout-color))
       );
-      // mask-image: url('#{$sprite-path}#arrow_down');
+      mask-image: svg-url('<svg viewBox="0 0 14 8.84" id="arrow_down" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M11.61 0H.73A.73.73 0 000 .72a.7.7 0 00.13.42l.08.1 6 7.21a1.09 1.09 0 001.54.14l.15-.14 5.94-7.2.1-.12a.8.8 0 00.06-.4.73.73 0 00-.72-.73z"/></svg>');
       mask-position: top right;
       mask-repeat: no-repeat;
       mask-size: 10px 10px;
