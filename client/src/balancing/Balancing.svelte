@@ -3,7 +3,6 @@
   import Switcher from "../components/Switcher.svelte";
   import SwitcherOption from "../components/SwitcherOption.svelte";
   import Players from "./Players.svelte";
-  import InactivePlayers from "./InactivePlayers.svelte";
   import StatusBox from "./StatusBox.svelte";
   import { data } from "./stores";
   import Teams from "./Teams.svelte";
@@ -74,8 +73,11 @@
     }
   }
   $: allInactive = $data?.players?.filter((p) => p.inactive) || [];
+  $: unassignedPlayers = (
+    currentSession === null ? allUnassigned : unassigned[currentSession] || []
+  ).filter((p) => !p.inactive);
 
-  const createTeam = (name) => {
+  const createTeam = ({ name = null, session = null } = {}) => {
     if (!name) {
       const existingNames = $data.teams.map((team) => team.name);
       var i = 0;
@@ -86,7 +88,7 @@
     return {
       internalId: `tmp${Math.random() * 1000000000 + 1000}`,
       name,
-      session: currentSession,
+      session: session || currentSession,
       players: [],
     };
   };
@@ -123,6 +125,51 @@
       team.players = team.players.filter((playerId) => playerId !== id);
     }
     $data = $data;
+  };
+
+  const addPlayers = ({
+    team,
+    onlyUnassigned = false,
+    adding = null,
+    session = null,
+  }) => {
+    const teams = $data.teams;
+    if (!team) {
+      team = createTeam({ session });
+      $data.teams = [...$data.teams, team];
+    }
+    if (adding === null) {
+      adding = currentSessionSelected;
+      if (onlyUnassigned) {
+        const assigned = teams.flatMap((t) => t.players);
+        const selectedAssigned = adding.filter((id) => assigned.includes(id));
+        adding = adding.filter(
+          (id) =>
+            !selectedAssigned.includes(id) &&
+            !allInactive.map((p) => p.id).includes(id)
+        );
+      }
+    }
+    team.players = [
+      ...team.players,
+      ...adding.filter((id) => !team.players.includes(id)),
+    ];
+    for (const otherTeam of teams.filter((t) => t !== team)) {
+      otherTeam.players = otherTeam.players.filter(
+        (id) => !adding.includes(id)
+      );
+    }
+    allInactive
+      .filter((p) => adding.includes(p.id))
+      .map((p) => {
+        p.inactive = false;
+      });
+    // We mutated the teams internal arrays, so trigger reactive stuff.
+    $data = $data;
+    selected = selected.filter((id) => !team.players.includes(id));
+    if (session) {
+      currentSession = session;
+    }
   };
 
   let fillCount = 3;
@@ -178,71 +225,118 @@
   }}
 />
 
-{#if $data.players}
-  {#each [currentSession] as s (s)}
-    <div class="player-grid">
+{#each [currentSession] as s (s)}
+  <div class="player-grid">
+    {#if unassignedPlayers.length}
       <div class="player-col">
         <Players
           {selected}
-          unassigned={currentSession === null
-            ? allUnassigned
-            : unassigned[currentSession] || []}
-          {allInactive}
+          players={unassignedPlayers}
           on:selectPlayer={(e) => {
             clickPlayer(e.detail.id);
           }}
-          nextStep={useSessions && currentSession !== null ? false : nextStep}
+          on:addPlayers={(e) => {
+            addPlayers(e.detail);
+          }}
           unassignedIsError={useSessions && currentSession === null}
         />
       </div>
-
-      <div class="player-col">
-        <StatusBox
-          {showAutoBalance}
-          on:clickCreateTeam={() => {
-            const team = createTeam();
-            addPlayers(team, true);
-            $data.teams = [team, ...$data.teams];
-          }}
-          on:openAutoBalance={() => {
-            showDialog = true;
-          }}
-        />
+    {:else if !$data.players.length}
+      <div class="all-players-managed">
+        <h3 class="card-heading text-center">
+          There are no players registered.
+        </h3>
+        <p class="text-center">
+          Once players have accepted their invitation from the marketplace, they
+          will appear in this list.
+        </p>
+        <p class="text-center">
+          All unassigned players must either be assigned to teams or made
+          inactive before the run may begin.
+        </p>
       </div>
+    {:else}
+      <div class="all-players-managed">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 23.043 17.154"
+          class="icon"
+          ><path
+            fill="currentColor"
+            d="M22.501.542a1.852 1.852 0 00-2.526-.086l-.178.179-7.551 7.554-3.383 3.384c-.019.021-.038.043-.059.063l-.063.058-.007.006-.008.006a1.022 1.022 0 01-1.325-.027l-.009-.008a1.19 1.19 0 01-.073-.073l-.007-.009-3.404-3.403-.737-.738a1.855 1.855 0 00-2.627 0 1.852 1.852 0 00-.042 2.58l.087.088 6.7 6.7.056.057.019.018c.383.344.962.352 1.351.021l.12-.121 1.84-1.839-.001-.001.535-.534 4.7-4.699.042-.045.046-.042.678-.68.006.005L22.347 3.3l.291-.292a1.852 1.852 0 00-.137-2.466z"
+          /></svg
+        >
+        <p>
+          {#if !useSessions || currentSession === null}
+            All players are assigned to teams and ready to play. You may now
+            enable Players Prepare and Start Game in
+            <strong
+              >{#if nextStep}<a href={nextStep}>Game Status</a>{:else}Game
+                Status{/if}</strong
+            >.
+          {:else}
+            All players are assigned for this session group.
+          {/if}
+        </p>
+      </div>
+    {/if}
+
+    <div class="player-col">
+      <StatusBox
+        unassigned={allUnassigned.length}
+        teams={$data.teams}
+        inactive={allInactive.length}
+        {showAutoBalance}
+        allowCreate={!useSessions || currentSession !== null}
+        bind:currentSession
+        on:clickCreateTeam={() => {
+          const team = createTeam();
+          $data.teams = [...$data.teams, team];
+          addPlayers({ team, onlyUnassigned: true });
+        }}
+        on:openAutoBalance={() => {
+          showDialog = true;
+        }}
+      />
     </div>
+  </div>
 
-    <Teams
-      bind:selected
-      {data}
-      bind:currentSession
-      {currentSessionSelected}
-      {createTeam}
-      showAutoBalance={(
-        unassigned[currentSession]?.filter((p) => !p.inactive) || []
-      ).length}
-      bind:showDialog
-      on:selectPlayer={(e) => {
-        clickPlayer(e.detail.id);
-      }}
-      on:unassignPlayer={(e) => {
-        unassignPlayer(e.detail.id);
-      }}
-    />
+  <Teams
+    {data}
+    bind:currentSession
+    {currentSessionSelected}
+    {createTeam}
+    showAutoBalance={(
+      unassigned[currentSession]?.filter((p) => !p.inactive) || []
+    ).length}
+    bind:showDialog
+    on:selectPlayer={(e) => {
+      clickPlayer(e.detail.id);
+    }}
+    on:unassignPlayer={(e) => {
+      unassignPlayer(e.detail.id);
+    }}
+    on:addPlayers={(e) => {
+      addPlayers(e.detail);
+    }}
+  />
 
+  {#if allInactive.length}
     <div class="player-grid">
       <div class="player-col">
-        <InactivePlayers
+        <Players
+          inactive
           {selected}
-          unassigned={currentSession === null
-            ? allUnassigned
-            : unassigned[currentSession] || []}
-          {allInactive}
+          players={allInactive}
           on:selectPlayer={(e) => {
             clickPlayer(e.detail.id);
+          }}
+          on:addPlayers={(e) => {
+            addPlayers(e.detail);
           }}
           unassignedIsError={useSessions && currentSession === null}
         />
       </div>
     </div>
-  {/each}
-{/if}
+  {/if}
+{/each}

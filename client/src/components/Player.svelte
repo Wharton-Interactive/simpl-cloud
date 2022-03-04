@@ -1,10 +1,11 @@
 <script>
   import { createEventDispatcher } from "svelte";
-  import { alterPlayer } from "../balancing/stores";
-  import { stringToColour } from "../balancing/utils";
+  import { alterPlayer, data } from "../balancing/stores";
+  import { formatSession, stringToColour } from "../balancing/utils";
 
   export let isSelected = false;
   export let player;
+  export let currentTeam = null;
 
   export let readOnly = false;
   export let assigned = false;
@@ -15,6 +16,17 @@
     .replace(/(\w)[^ ]+/g, "$1")
     .replace(/[^\w]/g, "");
   var letters = initials[0] + initials[initials.length - 1];
+  let teams;
+
+  $: {
+    teams = $data.teams;
+    if (player.session) {
+      teams = teams.filter((t) => t.session === player.session);
+    }
+    if (currentTeam) {
+      teams = teams.filter((t) => t !== currentTeam);
+    }
+  }
 </script>
 
 <div
@@ -40,7 +52,7 @@
     <!-- <p>{#if player.ready}Ready{:else}Not Ready{/if}</p> -->
   </div>
 
-  {#if !assigned || !readOnly}
+  {#if !readOnly}
     <div class="has-dropdown narrow-dropdown">
       <a
         href="."
@@ -51,6 +63,33 @@
       </a>
       <div class="dropdown">
         <ul class="dropdown-list">
+          {#if player.inactive}
+            <li class="dropdown-item">
+              <a
+                class="dropdown-link"
+                href="."
+                on:click|preventDefault|stopPropagation={() => {
+                  alterPlayer.notify({ playerId: player.id, active: true });
+                  player.inactive = false;
+                  $data = $data;
+                }}>Mark active</a
+              >
+            </li>
+          {:else}
+            <li class="dropdown-item">
+              <a
+                class="dropdown-link"
+                href="."
+                on:click|preventDefault|stopPropagation={() => {
+                  alterPlayer.notify({ playerId: player.id, active: false });
+                  if (isSelected) dispatch("selectPlayer", { id: player.id });
+                  if (assigned) dispatch("unassignPlayer", { id: player.id });
+                  player.inactive = true;
+                  $data = $data;
+                }}>Mark inactive</a
+              >
+            </li>
+          {/if}
           {#if assigned}
             <li class="dropdown-item">
               <a
@@ -61,30 +100,34 @@
                 }}>Unassign</a
               >
             </li>
-          {:else if readOnly}
+          {/if}
+          {#each teams as team}
             <li class="dropdown-item">
               <a
                 class="dropdown-link"
                 href="."
                 on:click|preventDefault|stopPropagation={() => {
-                  alterPlayer.notify({ playerId: player.id, active: true });
-                }}>Mark active</a
+                  dispatch("addPlayers", { team, adding: [player.id] });
+                }}
+                >{team.name}
+                {#if team.session}<small>{formatSession(team.session)}</small
+                  >{/if}</a
               >
             </li>
-          {/if}
-          {#if !player.inactive}
-            <li class="dropdown-item">
-              <a
-                class="dropdown-link"
-                href="."
-                on:click|preventDefault|stopPropagation={() => {
-                  alterPlayer.notify({ playerId: player.id, active: false });
-                  if (isSelected) dispatch("selectPlayer", { id: player.id });
-                  if (assigned) dispatch("unassignPlayer", { id: player.id });
-                }}>Mark inactive</a
-              >
-            </li>
-          {/if}
+          {/each}
+          <li class="dropdown-item">
+            <a
+              class="dropdown-link"
+              href="."
+              on:click|preventDefault|stopPropagation={() => {
+                dispatch("addPlayers", {
+                  team: null,
+                  adding: [player.id],
+                  session: player.session,
+                });
+              }}>New Team</a
+            >
+          </li>
         </ul>
       </div>
     </div>

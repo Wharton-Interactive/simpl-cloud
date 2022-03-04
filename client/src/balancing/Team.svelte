@@ -17,7 +17,7 @@
 
 </script>
 
-<div class="player-item is-header">
+<div class="player-item is-header" id={team.internalId || team.id}>
   <h2
     class="player-card-heading"
     on:dblclick={() => {
@@ -76,8 +76,10 @@
         {player}
         assigned
         {readOnly}
+        currentTeam={team}
         on:selectPlayer
         on:unassignPlayer
+        on:addPlayers
       />
     </div>
   {/each}
