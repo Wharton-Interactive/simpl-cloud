@@ -74,8 +74,8 @@
           on:rename={(e) => {
             renameTeam(e, team);
           }}
-          on:addPlayers={e => {
-            const detail = e.detail || { team: team }
+          on:addPlayers={(e) => {
+            const detail = e.detail || { team: team };
             dispatch("addPlayers", detail);
           }}
           on:unassignPlayer={(e) => {
@@ -125,6 +125,14 @@
               }}
               on:rename={(e) => {
                 renameTeam(e, team);
+              }}
+              on:addPlayers={(e) => {
+                const detail = e.detail || { team: team };
+                dispatch("addPlayers", detail);
+              }}
+              on:unassignPlayer={(e) => {
+                team.players = team.players.filter((id) => id !== e.detail.id);
+                $data = $data;
               }}
             />
           </div>

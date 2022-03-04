@@ -167,7 +167,7 @@
     // We mutated the teams internal arrays, so trigger reactive stuff.
     $data = $data;
     selected = selected.filter((id) => !team.players.includes(id));
-    if (session) {
+    if (session && currentSession) {
       currentSession = session;
     }
   };

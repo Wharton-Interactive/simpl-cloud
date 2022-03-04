@@ -52,87 +52,85 @@
     <!-- <p>{#if player.ready}Ready{:else}Not Ready{/if}</p> -->
   </div>
 
-  {#if !readOnly}
-    <div class="has-dropdown narrow-dropdown">
-      <a
-        href="."
-        on:click|preventDefault|stopPropagation
-        class="button dropdown-button hollow small"
-      >
-        Assign to&hellip;
-      </a>
-      <div class="dropdown">
-        <ul class="dropdown-list">
-          {#if player.inactive}
-            <li class="dropdown-item">
-              <a
-                class="dropdown-link"
-                href="."
-                on:click|preventDefault|stopPropagation={() => {
-                  alterPlayer.notify({ playerId: player.id, active: true });
-                  player.inactive = false;
-                  $data = $data;
-                }}>Mark active</a
-              >
-            </li>
-          {:else}
-            <li class="dropdown-item">
-              <a
-                class="dropdown-link"
-                href="."
-                on:click|preventDefault|stopPropagation={() => {
-                  alterPlayer.notify({ playerId: player.id, active: false });
-                  if (isSelected) dispatch("selectPlayer", { id: player.id });
-                  if (assigned) dispatch("unassignPlayer", { id: player.id });
-                  player.inactive = true;
-                  $data = $data;
-                }}>Mark inactive</a
-              >
-            </li>
-          {/if}
-          {#if assigned}
-            <li class="dropdown-item">
-              <a
-                class="dropdown-link"
-                href="."
-                on:click|preventDefault|stopPropagation={() => {
-                  dispatch("unassignPlayer", { id: player.id });
-                }}>Unassign</a
-              >
-            </li>
-          {/if}
-          {#each teams as team}
-            <li class="dropdown-item">
-              <a
-                class="dropdown-link"
-                href="."
-                on:click|preventDefault|stopPropagation={() => {
-                  dispatch("addPlayers", { team, adding: [player.id] });
-                }}
-                >{team.name}
-                {#if team.session}<small>{formatSession(team.session)}</small
-                  >{/if}</a
-              >
-            </li>
-          {/each}
+  <div class="has-dropdown narrow-dropdown">
+    <a
+      href="."
+      on:click|preventDefault|stopPropagation
+      class="button dropdown-button hollow small"
+    >
+      Assign to&hellip;
+    </a>
+    <div class="dropdown">
+      <ul class="dropdown-list">
+        {#if player.inactive}
           <li class="dropdown-item">
             <a
               class="dropdown-link"
               href="."
               on:click|preventDefault|stopPropagation={() => {
-                dispatch("addPlayers", {
-                  team: null,
-                  adding: [player.id],
-                  session: player.session,
-                });
-              }}>New Team</a
+                alterPlayer.notify({ playerId: player.id, active: true });
+                player.inactive = false;
+                $data = $data;
+              }}>Mark active</a
             >
           </li>
-        </ul>
-      </div>
+        {:else}
+          <li class="dropdown-item">
+            <a
+              class="dropdown-link"
+              href="."
+              on:click|preventDefault|stopPropagation={() => {
+                alterPlayer.notify({ playerId: player.id, active: false });
+                if (isSelected) dispatch("selectPlayer", { id: player.id });
+                if (assigned) dispatch("unassignPlayer", { id: player.id });
+                player.inactive = true;
+                $data = $data;
+              }}>Mark inactive</a
+            >
+          </li>
+        {/if}
+        {#if assigned}
+          <li class="dropdown-item">
+            <a
+              class="dropdown-link"
+              href="."
+              on:click|preventDefault|stopPropagation={() => {
+                dispatch("unassignPlayer", { id: player.id });
+              }}>Unassign</a
+            >
+          </li>
+        {/if}
+        {#each teams as team}
+          <li class="dropdown-item">
+            <a
+              class="dropdown-link"
+              href="."
+              on:click|preventDefault|stopPropagation={() => {
+                dispatch("addPlayers", { team, adding: [player.id] });
+              }}
+              >{team.name}
+              {#if team.session}<small>{formatSession(team.session)}</small
+                >{/if}</a
+            >
+          </li>
+        {/each}
+        <li class="dropdown-item">
+          <a
+            class="dropdown-link"
+            href="."
+            on:click|preventDefault|stopPropagation={() => {
+              dispatch("addPlayers", {
+                team: null,
+                adding: [player.id],
+                session: player.session,
+              });
+            }}>New Team</a
+          >
+        </li>
+      </ul>
     </div>
-    <input class="show-for-sr-only" type="checkbox" checked={isSelected} />
-  {/if}
+  </div>
+  <input class="show-for-sr-only" type="checkbox" checked={isSelected} />
 </div>
 
 <style>
