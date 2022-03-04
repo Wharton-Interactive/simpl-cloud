@@ -3,7 +3,7 @@
 {% load i18n %}
 {% load includecontents %}
 
-{% block main_wrap_classes %}v-nav-page-layout{% endblock %}
+{% block main_wrap_classes %}v-nav-flex-layout{% endblock %}
 
 
 
@@ -12,7 +12,7 @@
   <div class="main-container {% block page_header_width_classes %}{% endblock %}">
     <div class="player-grid">
       <div class="player-col">
-        <div class="page-header-flex-wrap h-pad">
+        <div class="page-header-flex-wrap">
           <h1 class="page-heading">{% trans "Manage Players" %}</h1>
           {% includecontents "simpl/includes/search_form.html" with value=request.GET.q %}
           Filter players

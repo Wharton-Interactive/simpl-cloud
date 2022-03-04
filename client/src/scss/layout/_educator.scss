@@ -421,6 +421,10 @@
     padding: rem-calc(8);
     border-bottom: 1px solid var(--card-border-color-default);
 
+    &:last-child {
+      border-bottom: 0 none;
+    }
+
     .field {
       margin: 0;
     }
