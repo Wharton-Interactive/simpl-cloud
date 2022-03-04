@@ -9,8 +9,8 @@ export const data = writable({
 export const loaded = writable(false);
 
 function notifier() {
-  const subs = new Set();
-  const subscribe = (cb) => {
+  const subs: Set<CallableFunction> = new Set();
+  const subscribe = (cb: CallableFunction) => {
     subs.add(cb);
     return () => {
       subs.delete(cb);
