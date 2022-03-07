@@ -3,10 +3,16 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-1.0.3 (unreleased)
+1.0.4 (unreleased)
 ==================
 
 - Nothing changed yet.
+
+
+1.0.3 (18 February 2022)
+========================
+
+- Fix instance API schema to allow application to override status field.
 
 
 1.0.2 (23 December 2021)
