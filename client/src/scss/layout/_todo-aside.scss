@@ -99,6 +99,24 @@
   &.no-dot:before {
     content: none;
   }
+
+  &.is-centered {
+    justify-content: center;
+  }
+
+  &.is-button-style {
+    background-color: var(--info-color);
+    background-image: none;
+    color: var(--knockout-color);
+    transition: var(--button-transition, none);
+
+    &:not(:disabled):hover,
+    &:not(:disabled):focus {
+      color: var(--info-color);
+      background-color: var(--knockout-color);
+      background-image: none;
+    }
+  }
 }
 
 .todo-count {
