@@ -8,6 +8,7 @@
   export let inactive;
   export let currentSession;
   export let allowCreate = true;
+  export let downloadPlayersUrl;
 
   const dispatch = createEventDispatcher();
 </script>
@@ -39,7 +40,9 @@
 
 <div class="team-status-box well">
   {#if teams.length}
-    <button class="button no-border download-button">Download CSV</button>
+    {#if downloadPlayersUrl}
+      <a href={downloadPlayersUrl} class="button no-border download-button">Download CSV</a>
+    {/if}
     <ul class="pill-list is-large">
       {#each teams as team (team.internalId || team.id)}
         <li class="pill-item">

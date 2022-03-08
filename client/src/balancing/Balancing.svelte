@@ -10,6 +10,7 @@
 
   let showDialog = false;
   export let nextStep = null;
+  export let downloadPlayersUrl = null;
   let showAutoBalance;
 
   const exampleData = {
@@ -286,6 +287,7 @@
         unassigned={allUnassigned.length}
         teams={$data.teams}
         inactive={allInactive.length}
+        {downloadPlayersUrl}
         {showAutoBalance}
         allowCreate={!useSessions || currentSession !== null}
         bind:currentSession
