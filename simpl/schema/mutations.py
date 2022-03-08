@@ -31,6 +31,7 @@ class BalanceTeams(query.BalancingMixin, graphene.Mutation):
         lobbies = dict((str(team.pk), team) for team in run.lobby_set.all())
         run_players = dict((str(player.pk), player) for player in run.player_set.all())
 
+        all_team_players: set[Player] = set()
         if teams:
             for team_input in teams:
                 if delete_teams and team_input.id in delete_teams:
@@ -42,9 +43,12 @@ class BalanceTeams(query.BalancingMixin, graphene.Mutation):
                 else:
                     lobby = models.Lobby(run=run)
                 cls.save_lobby_data(lobby, team_input)
-                lobby.player_set.set(
-                    [run_players[pk] for pk in team_input.players if pk in run_players]
-                )
+                players = {run_players[pk] for pk in team_input.players if pk in run_players}
+                lobby.player_set.set(players)
+                all_team_players |= players
+        inactive_team_players = [player.pk for player in all_team_players if player.inactive]
+        if inactive_team_players:
+            Player.objects.filter(pk__in=inactive_team_players).update(inactive=False)
 
         if delete_teams:
             run.lobby_set.filter(pk__in=delete_teams).delete()
