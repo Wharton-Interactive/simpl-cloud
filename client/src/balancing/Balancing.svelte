@@ -242,7 +242,7 @@
           unassignedIsError={useSessions && currentSession === null}
         />
       </div>
-    {:else if !$data.players.length}
+    {:else if !$data?.players?.length}
       <div class="all-players-managed">
         <h3 class="card-heading text-center">
           There are no players registered.
