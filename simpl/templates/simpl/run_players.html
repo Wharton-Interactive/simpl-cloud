@@ -30,14 +30,13 @@
 <div class="player-grid">
 
   <div class="player-col">
-    <div class="team-scroll is-taller">
       {% if not players and not inactive_players and not invites %}
       <p>No players found.</p>
       {% endif %}
 
       {% if run.status >= run.STATUS.PLAY %}
 
-      <div id="active" data-tab-pane>
+      <div id="active">
         {% if players or inactive_players%}
         <div class="player-header is-nested">
           <p class="walkthrough-chapter-heading">Active Players
@@ -79,7 +78,7 @@
 
       {% else %}{% comment %} Setup {% endcomment %}
 
-      <div id="active" data-tab-pane>
+      <div id="active">
         {% if players or inactive_players %}
         <div class="player-header is-nested">
           <p class="walkthrough-chapter-heading">Ready to Play
@@ -113,19 +112,10 @@
       {% endif %}
 
       {% if inactive_players %}
-      <div id="inactive" class="hide" data-tab-pane>
+      <div id="inactive">
         <div class="player-header is-nested">
           <p class="walkthrough-chapter-heading">Inactive Players
           ({{ inactive_players|length }}{% if inactive_players|length != inactive_count %}/{{ inactive_count }}{% endif %})</p>
-
-          <ul class="player-toggle">
-            <li>
-              <a href="#" data-toggle-elements="[data-tab-pane]">
-                Active
-                ({{ players|length }}{% if players|length != players_count %}/{{ players_count }}{% endif %})
-              </a></li>
-            <li><a href="#" data-toggle-elements="[data-tab-pane]" aria-selected="true">Inactive</a></li>
-          </ul>
         </div>
         <div class="card player-card team-card is-inactive-player">
           {% for player in inactive_players %}
@@ -146,8 +136,6 @@
         {% endfor %}
       </div>
       {% endif %}{% comment %} Invites {% endcomment %}
-    </div>
-
   </div>
 
   <div class="player-col">
