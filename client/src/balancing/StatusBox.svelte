@@ -104,7 +104,7 @@
               /></g
             ></svg
           >
-          Auto-assign 10 players to teams
+          Auto-assign {showAutoBalance} player{showAutoBalance !==1 ? 's' : '' } to teams
         </button>
       {/if}
     {/if}

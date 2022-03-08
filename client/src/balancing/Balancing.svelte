@@ -11,7 +11,6 @@
   let showDialog = false;
   export let nextStep = null;
   export let downloadPlayersUrl = null;
-  let showAutoBalance;
 
   const exampleData = {
     sessions: [
@@ -173,6 +172,10 @@
     }
   };
 
+  $: showAutoBalance = (
+    unassigned[currentSession]?.filter((p) => !p.inactive) || []
+  ).length;
+
   let fillCount = 3;
 </script>
 
@@ -308,9 +311,7 @@
     bind:currentSession
     {currentSessionSelected}
     {createTeam}
-    showAutoBalance={(
-      unassigned[currentSession]?.filter((p) => !p.inactive) || []
-    ).length}
+    {showAutoBalance}
     bind:showDialog
     on:selectPlayer={(e) => {
       clickPlayer(e.detail.id);
