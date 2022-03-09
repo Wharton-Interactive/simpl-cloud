@@ -6,7 +6,9 @@ A list of notable changes to the Simpl-Cloud library included in each release.
 1.0.4 (unreleased)
 ==================
 
-- Nothing changed yet.
+- UI revisions for Team Management on non-continuous games
+- UI revisions for Player Management on continuous games
+- Copy changes and UI revisions for Game Status page and modals
 
 
 1.0.3 (18 February 2022)
