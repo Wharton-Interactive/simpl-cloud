@@ -450,6 +450,11 @@
 
     .dropdown-link {
       font-size: var(--font-size-small);
+
+      small {
+        flex-shrink: 0;
+        margin-left: auto;
+      }
     }
 
     &.no-checkbox,

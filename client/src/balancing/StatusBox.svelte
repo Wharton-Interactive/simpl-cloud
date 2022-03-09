@@ -62,9 +62,17 @@
         </li>
       {/each}
     </ul>
+  {:else}
+    <h3 class="card-heading text-center">Create your first team</h3>
+    <p class="text-center">
+      Teams may be created manually now. Alternatively once players arrive, you
+      may randomly distribute players into teams.
+    </p>
   {/if}
 
-  <div class="button-wrap" style="padding-bottom: 0;">
+  <div 
+    class={!teams.length ? 'button-wrap align-center' : 'button-wrap'}
+    style="padding-bottom: 0;">
     {#if allowCreate}
       <button class="button" on:click={() => dispatch("clickCreateTeam")}>
         <svg
@@ -109,12 +117,4 @@
       {/if}
     {/if}
   </div>
-
-  {#if !teams.length}
-    <h3 class="card-heading text-center">Create your first team</h3>
-    <p class="text-center">
-      Teams may be created manually now. Alternatively once players arrive, you
-      may randomly distribute players into teams.
-    </p>
-  {/if}
 </div>
