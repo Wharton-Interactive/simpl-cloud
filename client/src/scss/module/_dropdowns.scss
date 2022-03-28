@@ -34,7 +34,8 @@
 
   // Open dropdown
   &.is-expanded,
-  &:not(.disable-focus-within):focus-within {
+  &:not(.disable-focus-within):focus-within,
+  &.tooltip-dropdown:hover {
     .dropdown,
     .dropdown-button:before {
       display: block;
@@ -58,6 +59,10 @@
         transform: rotate(180deg);
       }
     }
+  }
+
+  &.tooltip-dropdown .dropdown {
+    padding: rem-calc(8);
   }
 
   &.is-heading-select {
@@ -138,6 +143,11 @@
     right: auto;
     left: 0;
     min-width: 100%;
+  }
+
+  .align-right & {
+    left: calc(100% + #{rem-calc(12)});
+    top: -50%;
   }
 
   .narrow-dropdown & {

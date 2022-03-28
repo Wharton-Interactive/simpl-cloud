@@ -255,8 +255,7 @@
           will appear in this list.
         </p>
         <p class="text-center">
-          All unassigned players must either be assigned to teams or made
-          inactive before the run may begin.
+          All unassigned players must either be assigned to teams or made inactive before the game may begin.
         </p>
       </div>
     {:else}
@@ -272,12 +271,7 @@
         >
         <p class="text-center">
           {#if !useSessions || currentSession === null}
-            All players are assigned to teams and ready to play. You may now
-            enable Players Prepare and Start Game in
-            <strong
-              >{#if nextStep}<a href={nextStep}>Game Status</a>{:else}Game
-                Status{/if}</strong
-            >.
+            All players are assigned to teams or marked Inactive.
           {:else}
             All players are assigned for this session group.
           {/if}

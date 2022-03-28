@@ -3,10 +3,10 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-1.0.5 (unreleased)
-==================
+1.0.5 (28 March 2022)
+=====================
 
-- Nothing changed yet.
+- UI revisions for players list and management.
 
 
 1.0.4 (9 March 2022)
