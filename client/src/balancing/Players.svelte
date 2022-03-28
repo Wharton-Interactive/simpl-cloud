@@ -27,6 +27,7 @@
   <div
     class="card player-card tab-pane"
     class:glow-shadow={!inactive}
+    class:is-inactive-player={inactive}
     role="tabpanel"
     aria-labelledby="tabby-toggle_active"
   >
