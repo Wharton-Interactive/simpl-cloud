@@ -6,7 +6,7 @@ A list of notable changes to the Simpl-Cloud library included in each release.
 1.0.6 (unreleased)
 ==================
 
-- Nothing changed yet.
+- Merged v0.58 hotfix.
 
 
 1.0.5 (28 March 2022)
@@ -49,6 +49,11 @@ A list of notable changes to the Simpl-Cloud library included in each release.
 - Add instructions to manage teams page.
 
 - Redesign UI.
+
+0.58 (6 April 2022)
+===================
+
+- Fix error building players initials when name has weird characters.
 
 
 0.57 (6 December 2021)
