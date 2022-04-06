@@ -28,4 +28,4 @@ def playercolor(player):
 def playerinitials(player):
     initials = re.sub(r"(\w)[^ ]+", r"\1", str(player))
     initials = re.sub(r"[^\w]", "", initials)
-    return f"{initials[0]}{initials[-1]}"
+    return f"{initials[0]}{initials[-1]}" if initials else ""
