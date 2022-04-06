@@ -3,8 +3,8 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-1.0.6 (unreleased)
-==================
+1.0.6 (6 April 2022)
+====================
 
 - Merged v0.58 hotfix.
 
