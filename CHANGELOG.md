@@ -3,6 +3,12 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
+0.58 (6 April 2022)
+===================
+
+- Fix error building players initials when name has weird characters.
+
+
 0.57 (6 December 2021)
 ======================
 
