@@ -518,6 +518,22 @@ textarea {
     opacity: 0;
   }
 
+  &.priority-label {
+    padding-left: 24px;
+
+    label {
+      font-size: rem-calc(18);
+      color: var(--primary-heading-color);
+      font-weight: var(--global-weight-semibold);
+      padding-left: 0;
+
+      &:before {
+        left: -24px;
+        top: 4px;
+      }
+    }
+  }
+
   label {
     position: relative;
     padding-left: calc(var(--radio-size) * 1.4);
@@ -534,7 +550,7 @@ textarea {
       border: none;
       background-color: var(--checkbox-radio-color);
       background-position: top center;
-      // mask-image: url('#{$sprite-path}#radio_empty');
+      mask-image: svg-url('<svg viewBox="0 0 21.75 21.75" xmlns="http://www.w3.org/2000/svg"><circle cx="10.88" cy="10.88" r="10.38" fill="transparent" vector-effect="non-scaling-stroke" stroke="currentColor"/></svg>');
       mask-repeat: no-repeat;
       mask-size: 100% 100%;
       vertical-align: top;
@@ -545,7 +561,7 @@ textarea {
   [type='radio']:checked + label:before,
   label.is-checked:before {
     // background, checked state
-    // mask-image: url('#{$sprite-path}#radio_selected');
+    mask-image: svg-url('<svg viewBox="0 0 21.75 21.75" xmlns="http://www.w3.org/2000/svg"><circle cx="10.88" cy="10.88" r="10.38" fill="transparent" vector-effect="non-scaling-stroke" stroke="currentColor"/><circle cx="10.88" cy="10.88" r="7.34" fill="currentColor"/></svg>');
     background-color: var(--checkbox-radio-selected-color);
   }
 }
