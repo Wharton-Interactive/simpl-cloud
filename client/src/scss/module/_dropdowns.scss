@@ -66,6 +66,8 @@
   }
 
   &.is-heading-select {
+    outline: none;
+    
     .dropdown-button {
       padding-left: rem-calc(8);
       padding-right: rem-calc(40);
