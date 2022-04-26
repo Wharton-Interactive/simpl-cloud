@@ -558,6 +558,11 @@ textarea {
         top: 4px;
       }
     }
+
+    &:focus-within [type='radio'] + label:after {
+      top: 6px;
+      left: -22px;
+    }
   }
 
   label {

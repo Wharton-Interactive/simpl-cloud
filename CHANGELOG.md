@@ -56,6 +56,19 @@ A list of notable changes to the Simpl-Cloud library included in each release.
 
 - Redesign UI.
 
+
+0.60 (26 April 2022)
+====================
+
+- Fix visual bug on radio button.
+
+
+0.59 (26 April 2022)
+====================
+
+- Style updates.
+
+
 0.58 (6 April 2022)
 ===================
 
