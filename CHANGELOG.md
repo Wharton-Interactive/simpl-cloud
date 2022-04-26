@@ -3,6 +3,12 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
+0.60 (unreleased)
+=================
+
+- Fix visual bug on radio button.
+
+
 0.59 (26 April 2022)
 ====================
 
