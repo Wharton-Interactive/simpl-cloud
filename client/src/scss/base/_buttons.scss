@@ -531,7 +531,10 @@ input[type='file']:focus + .file-label-button {
     margin-top: rem-calc(36);
     padding-right: rem-calc(30);
     padding-left: rem-calc(30);
+  }
 
+  &.pad-0 {
+    padding: 0;
   }
 
   > * {
