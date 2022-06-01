@@ -1,0 +1,109 @@
+// Tag list
+//
+// Tag lists can be read-only or contain links. the 'has-hash' modifier class
+// can be added to add the hash character at the beginning of each tag.
+//
+// .has-hash - adds a hash character via CSS.
+//
+// Markup: ../../styleguide/src/components/tag-list.hbs
+//
+// Weight: 32
+//
+// Style guide: tag-list
+
+:root {
+  --tag-bg: var(--card-bg-shade);
+  --tag-bg-hover: var(--card-bg-shade2);
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: var(--global-margin) 0;
+  padding: 0;
+  list-style: none;
+  font-size: rem-calc(14);
+
+  &-label {
+    margin-right: rem-calc(4);
+  }
+
+  &.has-hash .tag:not(.is-leader) {
+    &:before {
+      opacity: 0.5;
+      content: '#';
+    }
+  }
+
+  li:first-child .tag {
+    margin-left: 0;
+  }
+
+  .tag {
+    margin: 0 rem-calc(8) rem-calc(4) 0;
+  }
+}
+
+.tag {
+  display: inline-block;
+  margin: 0;
+  padding: 0 rem-calc(6);
+  border-radius: var(--global-radius);
+  background: var(--tag-bg-color, var(--theme-color-tint4, var(--tag-bg)));
+  text-decoration: none;
+  color: var(--tag-color, var(--text-color));
+  font-family: var(--global-font-family);
+
+  &-link {
+    color: var(--tag-link-color, var(--text-color));
+  }
+
+  &.is-leader {
+    background-color: var(--leader-color);
+    color: var(--knockout-color);
+    display: var(--tag-is-leader-display, inline-block);
+
+    &:before {
+      display: inline-block;
+      margin-right: rem-calc(4);
+      width: rem-calc(10);
+      height: rem-calc(10);
+      background-color: var(--knockout-color);
+      mask-image: svg-url('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.602 15.749" id="asterisk"><path fill="currentColor" d="M16.252 6.239h-3.519a.613.613 0 01-.331-.083.62.62 0 01-.208-.882l.002-.006 1.532-2.653.216-.374a1.562 1.562 0 00-.668-1.943L13.127.21a1.565 1.565 0 00-2.014.389l-.223.385-1.527 2.645a.4.4 0 01-.04.07l-.002.003a.622.622 0 01-1.059-.032l-.003-.005L6.711.983 6.489.599A1.564 1.564 0 004.477.21l-.15.087a1.564 1.564 0 00-.669 1.943l.217.374 1.531 2.652v.001a.622.622 0 01.106.349.623.623 0 01-.624.623H1.35A1.565 1.565 0 000 7.789v.173c0 .789.584 1.442 1.344 1.549h3.499a.62.62 0 01.359.082c.294.17.397.544.234.841l-.006.011-.01.015-1.542 2.67-.222.385a1.563 1.563 0 00.67 1.938l.15.087a1.562 1.562 0 002.016-.394l.217-.375 1.531-2.65v-.001c.014-.027.027-.054.045-.079a.624.624 0 011.033.003l.006.009a.419.419 0 00.017.028l.011.021 1.542 2.67.216.375a1.567 1.567 0 002.018.394l.148-.086a1.564 1.564 0 00.67-1.938l-.221-.385-1.536-2.66a.62.62 0 01-.098-.337c0-.33.258-.602.583-.622l.04-.001.039.001h3.506a1.564 1.564 0 001.344-1.549v-.175a1.567 1.567 0 00-1.351-1.55z"/></svg>');
+      mask-position: center center;
+      mask-repeat: no-repeat;
+      mask-size: 100% 100%;
+      content: '';
+    }
+  }
+}
+
+a.tag:hover {
+  background: var(--tag-link-hover-bg, var(--theme-color-tint3, var(--tag-bg-hover)));
+  text-decoration: underline;
+}
+
+.tag-description {
+  --tag-bg: var(--info-color-tint4);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  &-desc {
+    margin-bottom: 0;
+  }
+
+  &-item {
+    margin-bottom: var(--global-margin);
+  }
+
+  @include breakpoint($medium) {
+    &-item {
+      display: flex;
+    }
+
+    &-tags {
+      width: 20%;
+    }
+  }
+}
