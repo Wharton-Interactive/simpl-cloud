@@ -501,6 +501,10 @@
     .avatar-detail-meta {
       font-weight: var(--global-weight-semibold);
       font-size: var(--font-size-small);
+
+      .tag-list {
+        font-weight: var(--global-weight-normal);
+      }
     }
 
     &.is-header {
