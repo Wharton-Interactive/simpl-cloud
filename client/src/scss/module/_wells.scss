@@ -22,6 +22,11 @@
       font-size: 0.8em;
     }
   }
+
+  &.has-overflow {
+    max-height: 150px;
+    overflow: auto;
+  }
 }
 
 .well-headline {

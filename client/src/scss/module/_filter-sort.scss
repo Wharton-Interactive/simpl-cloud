@@ -41,6 +41,7 @@
   &-secondary {
     grid-area: secondary;
     display: flex;
+    gap: 0.5rem;
   }
 
   &-heading {
@@ -182,7 +183,6 @@
     grid-gap: 0 10px;
 
     .search-wrap {
-      margin: 0 rem-calc(10) 0 0;
       max-width: 350px;
 
       &:last-child {
