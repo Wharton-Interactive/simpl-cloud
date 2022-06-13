@@ -3,8 +3,8 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-1.1 (unreleased)
-================
+1.1 (13 June 2022)
+==================
 
 - Change sessions to be an object with an id, name, and description rather than
   just a plain string. **Backwards incompatible**
