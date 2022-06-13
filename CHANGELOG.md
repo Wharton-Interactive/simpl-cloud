@@ -3,10 +3,12 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-1.1.1 (unreleased)
-==================
+1.1.0.1 (13 June 2022)
+======================
 
-- Nothing changed yet.
+Hotfix
+
+- Actually compile the Javascript for 1.1.
 
 
 1.1 (13 June 2022)
