@@ -6,7 +6,7 @@ A list of notable changes to the Simpl-Cloud library included in each release.
 1.0.10 (unreleased)
 ===================
 
-- Nothing changed yet.
+- Better handling of player public names.
 
 
 1.0.9 (2 June 2022)

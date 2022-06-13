@@ -602,12 +602,11 @@ class BasePlayer(models.Model):
 
     @property
     def public_name(self):
-        if self.user:
-            name = self.user.get_full_name()
-        else:
-            name = "Anonymous Player"
-            if self.character:
-                name += f": {self.character}"
+        name = self.user and self.user.get_full_name() or "Anonymous Player"
+        if self.character:
+            character = str(self.character)
+            if character != name:
+                name += f": {character}"
         return name
 
     @property
