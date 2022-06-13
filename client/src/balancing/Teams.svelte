@@ -1,10 +1,10 @@
 <script>
   import { createEventDispatcher } from "svelte";
+  import { flip } from "svelte/animate";
   import { fade, slide } from "svelte/transition";
-  import Team from "./Team.svelte";
-  import Instructions from "./Instructions.svelte";
   import Modal from "../components/Modal.svelte";
-  import { formatSession } from "./utils";
+  import Instructions from "./Instructions.svelte";
+  import Team from "./Team.svelte";
 
   export let data;
   export let currentSession = undefined;
@@ -49,6 +49,9 @@
       $data = $data;
     }
   }
+
+  const getSessionName = (sessionId) =>
+    $data.sessions.find((session) => session.id === sessionId).name;
 </script>
 
 {#if !readOnly}
@@ -60,6 +63,7 @@
       <div
         class="card player-card glow-shadow team-card"
         transition:fade|local={{ duration: 200 }}
+        animate:flip={{ duration: 400 }}
       >
         <Team
           {team}
@@ -99,7 +103,7 @@
                   currentSession = session;
                 }}
               >
-                {formatSession(session)}
+                {getSessionName(session)}
               </a>
             {:else}
               <em>No Session Group</em>

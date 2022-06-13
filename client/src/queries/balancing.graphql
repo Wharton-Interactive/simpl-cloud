@@ -1,6 +1,9 @@
 query Balancing($run: ID!) {
   balancing(runId: $run) {
-    sessions
+    sessions {
+      id
+      name
+    }
     players {
       id
       session

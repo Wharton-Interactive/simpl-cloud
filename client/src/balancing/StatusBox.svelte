@@ -1,16 +1,22 @@
 <script>
   import { createEventDispatcher } from "svelte";
-  import { formatSession } from "./utils";
 
   export let showAutoBalance;
   export let unassigned;
-  export let teams;
+  export let data;
   export let inactive;
   export let currentSession;
   export let allowCreate = true;
   export let downloadPlayersUrl;
 
   const dispatch = createEventDispatcher();
+
+  $: teams = $data.teams;
+
+  const getSession = (sessionId) => {
+    if ($data.sessions.length <= 1) return null;
+    return $data.sessions.find((session) => session.id === sessionId);
+  };
 </script>
 
 <ul class="pill-list is-horizontal">
@@ -41,7 +47,9 @@
 <div class="team-status-box well">
   {#if teams.length}
     {#if downloadPlayersUrl}
-      <a href={downloadPlayersUrl} class="button no-border download-button">Download CSV</a>
+      <a href={downloadPlayersUrl} class="button no-border download-button"
+        >Download CSV</a
+      >
     {/if}
     <ul class="pill-list is-large">
       {#each teams as team (team.internalId || team.id)}
@@ -55,8 +63,8 @@
                   currentSession = team.session;
               }}>{team.name}</a
             >
-            {#if team.session}<small>
-                ({formatSession(team.session)})</small
+            {#if getSession(team.session)}<small>
+                ({getSession(team.session).name})</small
               >{/if}</span
           >
         </li>
@@ -70,9 +78,10 @@
     </p>
   {/if}
 
-  <div 
-    class={!teams.length ? 'button-wrap align-center' : 'button-wrap'}
-    style="padding-bottom: 0;">
+  <div
+    class={!teams.length ? "button-wrap align-center" : "button-wrap"}
+    style="padding-bottom: 0;"
+  >
     {#if allowCreate}
       <button class="button" on:click={() => dispatch("clickCreateTeam")}>
         <svg
@@ -112,7 +121,8 @@
               /></g
             ></svg
           >
-          Auto-assign {showAutoBalance} player{showAutoBalance !==1 ? 's' : '' } to teams
+          Auto-assign {showAutoBalance} player{showAutoBalance !== 1 ? "s" : ""}
+          to teams
         </button>
       {/if}
     {/if}

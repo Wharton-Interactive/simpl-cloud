@@ -6,7 +6,7 @@
   import StatusBox from "./StatusBox.svelte";
   import { data } from "./stores";
   import Teams from "./Teams.svelte";
-  import { formatSession, shuffle } from "./utils";
+  import { shuffle } from "./utils";
 
   let showDialog = false;
   export let nextStep = null;
@@ -15,9 +15,9 @@
   const exampleData = {
     sessions: [
       // comment all but one session to see different behaviour
-      "10:00:00",
-      "14:00:00",
-      "other",
+      { id: "10:00:00", name: "10 a.m." },
+      { id: "14:00:00", name: "2 p.m." },
+      { id: 1, name: "other" },
     ],
     players: [
       { id: 1, session: "10:00:00", name: "John Sampson", inactive: false },
@@ -25,7 +25,7 @@
       { id: 3, session: "10:00:00", name: "Jane Beard", inactive: false },
       { id: 4, session: "14:00:00", name: "Lucy Lawless", inactive: false },
       { id: 5, session: "14:00:00", name: "Gengis Khan", inactive: true },
-      { id: 6, session: "other", name: "Michael Trythall", inactive: false },
+      { id: 6, session: 1, name: "Michael Trythall", inactive: false },
       { id: 7, name: "The Wellerman", inactive: false },
     ],
     teams: [{ id: 1, session: "10:00:00", name: "First", players: [2] }],
@@ -56,19 +56,19 @@
       unassigned = {};
       if (useSessions) {
         for (const session of $data.sessions) {
-          unassigned[session] = allUnassigned.filter(
-            (p) => !p.inactive && (!p.session || p.session === session)
+          unassigned[session.id] = allUnassigned.filter(
+            (p) => !p.inactive && (!p.session || p.session === session.id)
           );
         }
       } else {
         if ($data?.sessions?.length === 1) {
-          currentSession = $data.sessions[0];
+          currentSession = $data.sessions[0].id;
         }
         unassigned[currentSession] = allUnassigned;
       }
       if (useSessions && currentSession === undefined) {
         currentSession =
-          assigned && !allUnassigned.length ? null : $data.sessions[0];
+          assigned && !allUnassigned.length ? null : $data.sessions[0].id;
       }
     }
   }
@@ -181,15 +181,15 @@
 
 {#if $data.sessions && useSessions}
   <Switcher>
-    {#each switcherSessions as session (session)}
+    {#each switcherSessions as session (session?.id)}
       <SwitcherOption
         bind:state={currentSession}
-        badge={(unassigned[session] &&
-          unassigned[session].filter((p) => !p.inactive).length) ||
+        badge={(unassigned[session?.id] &&
+          unassigned[session?.id].filter((p) => !p.inactive).length) ||
           null}
         outline={!session && !allUnassigned.length}
-        value={session}
-        >{session ? formatSession(session) : "Summary"}</SwitcherOption
+        value={session?.id || null}
+        >{session ? session.name : "Summary"}</SwitcherOption
       >
     {/each}
   </Switcher>
@@ -255,7 +255,8 @@
           will appear in this list.
         </p>
         <p class="text-center">
-          All unassigned players must either be assigned to teams or made inactive before the game may begin.
+          All unassigned players must either be assigned to teams or made
+          inactive before the game may begin.
         </p>
       </div>
     {:else}
@@ -271,7 +272,13 @@
         >
         <p class="text-center">
           {#if !useSessions || currentSession === null}
-            All players are assigned to teams or marked Inactive.
+            {#if allInactive.length}
+              All players are assigned to teams or marked <a
+                href="#inactive-players">Inactive</a
+              >.
+            {:else}
+              All players are assigned to teams.
+            {/if}
           {:else}
             All players are assigned for this session group.
           {/if}
@@ -282,7 +289,7 @@
     <div class="player-col">
       <StatusBox
         unassigned={allUnassigned.length}
-        teams={$data.teams}
+        {data}
         inactive={allInactive.length}
         {downloadPlayersUrl}
         {showAutoBalance}

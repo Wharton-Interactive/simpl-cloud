@@ -3,10 +3,17 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-1.0.10 (unreleased)
-===================
+1.1 (unreleased)
+================
+
+- Change sessions to be an object with an id, name, and description rather than
+  just a plain string. **Backwards incompatible**
 
 - Better handling of player public names.
+
+- Better animation when deleting teams.
+
+- More accurate wording on team summary page when all players are assigned.
 
 
 1.0.9 (2 June 2022)

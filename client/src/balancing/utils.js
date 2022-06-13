@@ -98,19 +98,3 @@ export function shuffle(array) {
     array[j] = temp;
   }
 }
-
-export function formatSession(session) {
-  try {
-    var d = Date.parse("2020-1-1 " + session);
-    if (isNaN(d)) {
-      throw new Error("Invalid date");
-    }
-    return new Date(d).toLocaleTimeString([], {
-      hourCycle: "h12",
-      hour: "numeric",
-      minute: "numeric",
-    });
-  } catch {
-    return session;
-  }
-}

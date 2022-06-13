@@ -49,12 +49,18 @@ class BalancingTeam(DjangoObjectType):
         return [player.pk for player in obj.player_set.all()]
 
 
+class BalancingSession(graphene.ObjectType):
+    id = graphene.ID()
+    name = graphene.String()
+    description = graphene.String()
+
+
 class Balancing(DjangoObjectType):
     class Meta:
         model = Run
         fields = []
 
-    sessions = graphene.List(graphene.String)
+    sessions = graphene.List(BalancingSession)
     players = graphene.List(BalancingPlayer)
     teams = graphene.List(BalancingTeam)
 
