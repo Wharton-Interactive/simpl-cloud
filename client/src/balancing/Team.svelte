@@ -16,8 +16,8 @@
   $: selectedElsewhere = selected.filter((id) => !team.players.includes(id));
 
 </script>
-
-<div class="player-item is-header" id={team.internalId || team.id}>
+<!-- todo: theme-caution-color should be added as error state. -->
+<div class="player-item is-header theme-caution-color" id={team.internalId || team.id}>
   <h2
     class="player-card-heading"
     on:dblclick={() => {
@@ -37,7 +37,7 @@
     </button>
   {/if}
   <p class="player-card-summary">
-    {team.players.length || "No"} Players
+    {team.players.length || "No"} Players <em>(3 to 6 required)</em><!-- todo: this em tag should only be visible in the error state. needs data. -->
   </p>
   <div class="player-card-actions">
     <a class="button icon-button circle "

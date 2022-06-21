@@ -19,6 +19,12 @@
       }}
     >
       <h2 class="modal-heading">Auto Assign</h2>
+
+      <!-- TODO: needs data and conditionals -->
+      <p>Fill or create teams between <strong>3</strong> and <strong>6</strong> players.</p>
+      
+      <!-- else... -->
+
       <p>
         Fill or create teams of up to <input
           class="auto-assign-input"
