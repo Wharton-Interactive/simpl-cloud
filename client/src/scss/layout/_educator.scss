@@ -394,13 +394,14 @@
     align-items: baseline;
     flex-wrap: wrap;
     gap: 8px;
-    color: var(--knockout-color);
+    color: var(--theme-text-color, var(--knockout-color));
     font-size: rem-calc(18);
     margin: 0;
   }
 
   &-card-summary {
     display: flex;
+    gap: 4px;
     justify-content: space-between;
     align-items: center;
     margin: 0 0 0 auto;
@@ -508,8 +509,8 @@
     }
 
     &.is-header {
-      color: var(--knockout-color);
-      background-color: var(--game-header-bg);
+      color: var(--theme-text-color, var(--knockout-color));
+      background-color: var(--theme-color, var(--game-header-bg));
       border-radius: var(--global-radius-tl) var(--global-radius-tr) 0 0;
       display: flex;
       gap: 1rem;
@@ -518,12 +519,12 @@
       .button {
         flex: 1 0 auto;
         white-space: nowrap;
-        color: var(--tint);
+        color: var(--theme-text-color, var(--knockout-color));
 
         &:hover, 
         &:focus {
-          color: var(--tint);
-          background: var(--info-color-tint2);
+          color: var(--theme-text-color, var(--knockout-color));
+          background: var(--theme-color-shade, var(--info-color-tint2));
         }
       }
 
