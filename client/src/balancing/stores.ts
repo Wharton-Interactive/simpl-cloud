@@ -4,6 +4,8 @@ export const data = writable({
   sessions: [],
   teams: [],
   players: null,
+  minimumPlayers: null,
+  maximumPlayers: null,
 });
 
 export const loaded = writable(false);

@@ -19,5 +19,7 @@ query Balancing($run: ID!) {
       ready
       players
     }
+    minimumPlayers
+    maximumPlayers
   }
 }

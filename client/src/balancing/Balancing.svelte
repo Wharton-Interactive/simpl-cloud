@@ -29,6 +29,8 @@
       { id: 7, name: "The Wellerman", inactive: false },
     ],
     teams: [{ id: 1, session: "10:00:00", name: "First", players: [2] }],
+    minimumPlayers: 2,
+    maximumPlayers: 3,
   };
   exampleData.players.map(
     (p) => (p.email = `${p.name.replace(" ", ".").toLowerCase()}@wharton.edu`)

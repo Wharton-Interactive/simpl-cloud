@@ -98,6 +98,8 @@ class SimplRun(DjangoObjectType):
     class_id = graphene.ID()
     class_name = graphene.Field(graphene.String)
     continuous_open = graphene.Boolean()
+    minimum_players = graphene.Int()
+    maximum_players = graphene.Int()
 
     class Meta:
         model = Run
