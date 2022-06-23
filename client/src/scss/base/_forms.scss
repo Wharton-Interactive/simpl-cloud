@@ -89,7 +89,7 @@ span.label {
     --select-border-color: var(--error-border-color, var(--error-color));
 
     label:not(.file-label-button),
-    [type='checkbox'] + label .values:before {
+    [type="checkbox"] + label .values:before {
       color: var(--error-color);
     }
 
@@ -101,14 +101,14 @@ span.label {
       display: block;
     }
 
-    .checkbox [type='checkbox'] + label:before {
+    .checkbox [type="checkbox"] + label:before {
       border-color: var(--error-color);
     }
 
     &.checkbox label:before,
     &.radio label:before,
     &.toggle label:before,
-    input:not([type='submit']):not([type='checkbox']):not([type='radio']),
+    input:not([type="submit"]):not([type="checkbox"]):not([type="radio"]),
     select,
     textarea,
     .upload-preview {
@@ -121,7 +121,7 @@ span.label {
       font-weight: var(--global-weight-semibold);
 
       &:after {
-        content: '*';
+        content: "*";
       }
     }
   }
@@ -135,8 +135,8 @@ span.label {
       box-shadow: var(--focus-shadow);
     }
 
-    [type='checkbox']:checked + label:after,
-    [type='radio'] + label:after {
+    [type="checkbox"]:checked + label:after,
+    [type="radio"] + label:after {
       position: absolute;
       top: 4px;
       left: 1px;
@@ -144,10 +144,10 @@ span.label {
       width: 14px;
       height: 13px;
       box-shadow: var(--focus-shadow);
-      content: '';
+      content: "";
     }
 
-    [type='radio'] + label:after {
+    [type="radio"] + label:after {
       top: 2px;
       left: 2px;
       width: calc(var(--radio-size) - 4px);
@@ -156,8 +156,8 @@ span.label {
     }
   }
 
-  [type='checkbox']:invalid:focus + label:after,
-  [type='radio']:invalid:focus + label:after {
+  [type="checkbox"]:invalid:focus + label:after,
+  [type="radio"]:invalid:focus + label:after {
     position: absolute;
     top: 4px;
     left: 1px;
@@ -165,10 +165,10 @@ span.label {
     width: 14px;
     height: 13px;
     box-shadow: var(--error-shadow);
-    content: '';
+    content: "";
   }
 
-  [type='radio']:invalid:focus + label:after {
+  [type="radio"]:invalid:focus + label:after {
     top: 2px;
     left: 2px;
     width: calc(var(--radio-size) - 4px);
@@ -253,7 +253,7 @@ span.label {
   @include disabled;
 }
 
-input:not([type='submit']):not([type='checkbox']):not([type='radio']):not([type='file']),
+input:not([type="submit"]):not([type="checkbox"]):not([type="radio"]):not([type="file"]),
 select,
 textarea {
   appearance: none;
@@ -287,7 +287,7 @@ textarea {
 
   &[required] + label {
     &:after {
-      content: '*';
+      content: "*";
     }
   }
 
@@ -307,16 +307,10 @@ textarea {
   }
 
   &.auto-assign-input {
-    -moz-appearance: textfield;
-    width: 36px;
+    width: 60px;
     margin: 0 4px;
+    padding-right: 4px;
     text-align: center;
-
-    &::-webkit-outer-spin-button,
-    &::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
   }
 }
 
@@ -329,7 +323,7 @@ textarea {
     width: 100%;
   }
 
-  input:not([type='submit']):not([type='checkbox']):not([type='radio']):not([type='file']),
+  input:not([type="submit"]):not([type="checkbox"]):not([type="radio"]):not([type="file"]),
   select,
   textarea {
     flex: 1 1 auto;
@@ -364,7 +358,7 @@ textarea {
 }
 
 // clears out styles and matches site font.
-input[type='file'] {
+input[type="file"] {
   appearance: none;
   width: 100%;
   border-color: transparent;
@@ -479,7 +473,7 @@ textarea {
 // Style guide: forms.input-checkboxes
 
 .checkbox {
-  [type='checkbox'] {
+  [type="checkbox"] {
     position: absolute;
     left: 0;
     opacity: 0;
@@ -492,17 +486,19 @@ textarea {
     margin-bottom: -3px;
     border: 1px solid var(--checkbox-radio-color);
     vertical-align: baseline;
-    content: '';
+    content: "";
   }
 
-  [type='checkbox']:checked + label:before,
+  [type="checkbox"]:checked + label:before,
   label.is-checked:before {
     // background, checked state
     @include square(16px);
     z-index: 1;
     border: none;
     background-color: var(--checkbox-radio-selected-color);
-    mask-image: svg-url('<svg viewBox="0 0 16 16" id="checkbox_selected" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M8 12L3 7l2-2 3 3 8-8H0v16h16V4z"/></svg>');
+    mask-image: svg-url(
+      '<svg viewBox="0 0 16 16" id="checkbox_selected" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M8 12L3 7l2-2 3 3 8-8H0v16h16V4z"/></svg>'
+    );
     mask-position: center center;
     mask-repeat: no-repeat;
     mask-size: 18px 18px;
@@ -537,7 +533,7 @@ textarea {
 // Style guide: forms.input-radio
 
 .radio {
-  [type='radio'] {
+  [type="radio"] {
     position: absolute;
     top: 0;
     left: 0;
@@ -559,7 +555,7 @@ textarea {
       }
     }
 
-    &:focus-within [type='radio'] + label:after {
+    &:focus-within [type="radio"] + label:after {
       top: 6px;
       left: -22px;
     }
@@ -581,18 +577,22 @@ textarea {
       border: none;
       background-color: var(--checkbox-radio-color);
       background-position: top center;
-      mask-image: svg-url('<svg viewBox="0 0 21.75 21.75" xmlns="http://www.w3.org/2000/svg"><circle cx="10.88" cy="10.88" r="10.38" fill="transparent" vector-effect="non-scaling-stroke" stroke="currentColor"/></svg>');
+      mask-image: svg-url(
+        '<svg viewBox="0 0 21.75 21.75" xmlns="http://www.w3.org/2000/svg"><circle cx="10.88" cy="10.88" r="10.38" fill="transparent" vector-effect="non-scaling-stroke" stroke="currentColor"/></svg>'
+      );
       mask-repeat: no-repeat;
       mask-size: 100% 100%;
       vertical-align: top;
-      content: '';
+      content: "";
     }
   }
 
-  [type='radio']:checked + label:before,
+  [type="radio"]:checked + label:before,
   label.is-checked:before {
     // background, checked state
-    mask-image: svg-url('<svg viewBox="0 0 21.75 21.75" xmlns="http://www.w3.org/2000/svg"><circle cx="10.88" cy="10.88" r="10.38" fill="transparent" vector-effect="non-scaling-stroke" stroke="currentColor"/><circle cx="10.88" cy="10.88" r="7.34" fill="currentColor"/></svg>');
+    mask-image: svg-url(
+      '<svg viewBox="0 0 21.75 21.75" xmlns="http://www.w3.org/2000/svg"><circle cx="10.88" cy="10.88" r="10.38" fill="transparent" vector-effect="non-scaling-stroke" stroke="currentColor"/><circle cx="10.88" cy="10.88" r="7.34" fill="currentColor"/></svg>'
+    );
     background-color: var(--checkbox-radio-selected-color);
   }
 }
@@ -713,10 +713,6 @@ textarea {
       }
     }
   }
-
-  &.nested-fields {
-
-  }
 }
 
 // See https://wharton-interactive.gitlab.io/js/wi/styleguide/item-forms-manage-settings.html
@@ -816,7 +812,6 @@ textarea {
 // full: true
 //
 // Style guide: forms.manage-settings
-
 
 .reporting-description {
   max-width: 600px;
