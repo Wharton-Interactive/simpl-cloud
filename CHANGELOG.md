@@ -3,10 +3,12 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-1.3 (unreleased)
-================
+1.2.1 (27 June 2022)
+====================
 
-- Nothing changed yet.
+- Upgrade node-fetch version for security reasons.
+
+- Fix testing of Django versions <3.2
 
 
 1.2 (27 June 2022)
