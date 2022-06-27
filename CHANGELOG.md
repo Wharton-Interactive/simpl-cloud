@@ -3,8 +3,8 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-1.2 (unreleased)
-================
+1.2 (27 June 2022)
+==================
 
 - Implement logic for restricting teams to a minimum/maximum player count
   (including balancing).
