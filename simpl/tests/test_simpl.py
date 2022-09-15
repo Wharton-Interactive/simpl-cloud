@@ -14,6 +14,7 @@ from simpl import (
     get_player_model,
     get_character_model,
     get_instance_model,
+    get_game_experience_model,
 )
 from simpl.models import APIToken, Class
 from simpl.schema import schema
@@ -23,6 +24,7 @@ Run = get_run_model()
 Player = get_player_model()
 Character = get_character_model()
 Instance = get_instance_model()
+GameExperience = get_game_experience_model()
 
 
 class FakeContext:
@@ -271,3 +273,37 @@ class SimplUserTestCase(TestCase):
                     }
                 },
             )
+
+
+class SimplGameTestCase(TestCase):
+    def test_get_game(self):
+        game = baker.make(GameExperience, experience_id=uuid.uuid4())
+        context = FakeContext()
+        context.user = baker.make(get_user_model(), is_superuser=True)
+        result = schema.execute(
+            """
+            query ($gameId: UUID!) {
+                game(id: $gameId) {
+                    id
+                    name
+                    continuous
+                    runs {
+                        id
+                    }
+                }
+            }""",
+            variable_values={"gameId": str(game.experience_id)},
+            context_value=context,
+        )
+
+        self.assertEqual(
+            result.data,
+            {
+                "game": {
+                    "id": str(game.experience_id),
+                    "name": game.name,
+                    "continuous": None,
+                    "runs": [],
+                }
+            },
+        )
