@@ -6,7 +6,9 @@ A list of notable changes to the Simpl-Cloud library included in each release.
 1.3 (unreleased)
 ================
 
-- Nothing changed yet.
+- Return min/max players in UpdateBalancing mutation
+
+- Require graphene-django<3
 
 
 1.2.1 (27 June 2022)
