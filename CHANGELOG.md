@@ -3,8 +3,8 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-1.3 (unreleased)
-================
+1.2.2 (20 October 2022)
+=======================
 
 - Return min/max players in UpdateBalancing mutation
 
