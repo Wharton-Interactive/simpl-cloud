@@ -19,5 +19,7 @@ mutation UpdateBalancing($run: ID!, $teams: [TeamInput!], $deleteTeams: [ID!]) {
       players
       ready
     }
+    minimumPlayers
+    maximumPlayers
   }
 }
