@@ -2,13 +2,14 @@ from typing import Sequence
 
 import graphene
 import graphql
-from simpl import get_game_experience_model, get_run_model, models
+from simpl import get_game_experience_model, get_run_model, models, get_instance_model
 
 from . import types
 from .utils import get_auth0_users, simpl_token_required
 
 GameExperience = get_game_experience_model()
 Run = get_run_model()
+Instance = get_instance_model()
 
 
 class SimplRun(graphene.Mutation):
@@ -120,7 +121,9 @@ class SimplPlayers(graphene.Mutation):
         if remove_users:
             run.player_set.filter(user__in=remove_users, character=None).delete()
             if not run.multiplayer:
-                run.instance_set.filter(character__user__in=remove_users).delete()
+                Instance.objects.filter(
+                    run=run, character__user__in=remove_users
+                ).delete()
         return run
 
     Output = types.SimplRun
