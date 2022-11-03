@@ -3,10 +3,11 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-0.61 (unreleased)
-=================
+0.61 (3 November 2022)
+======================
 
 - Fix access to instance model on remove players mutation
+- Cherry-pick Django and Graphene version fixes from 1.x releases
 
 
 0.60 (26 April 2022)
