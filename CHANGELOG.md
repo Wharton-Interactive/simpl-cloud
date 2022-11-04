@@ -122,6 +122,13 @@ Hotfix
 - Redesign UI.
 
 
+0.61 (3 November 2022)
+======================
+
+- Fix access to instance model on remove players mutation
+- Cherry-pick Django and Graphene version fixes from 1.x releases
+
+
 0.60 (26 April 2022)
 ====================
 
