@@ -3,10 +3,10 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-1.2.3 (unreleased)
-==================
+1.2.3 (4 November 2022)
+=======================
 
-- Nothing changed yet.
+- Merge v0.61 hotfix for remove player mutation
 
 
 1.2.2 (20 October 2022)
