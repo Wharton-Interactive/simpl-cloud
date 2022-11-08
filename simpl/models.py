@@ -393,6 +393,9 @@ class BaseInstance(DataMixin, models.Model):
         abstract = True
         ordering = ("-date_created",)
 
+    def __str__(self):
+        return self.name
+
     def save(self, *args, **kwargs):
         if not self.name:
             if self.run and self.run.game:
