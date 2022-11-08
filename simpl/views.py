@@ -157,8 +157,9 @@ class PlayersView(SimplMixin, DetailView):
         if self.run.multiplayer:
             teams = {}
             for player in active_players:
-                teams.setdefault(player.character.instance.name, [])
-                teams[player.character.instance.name].append(player)
+                team_name = str(player.character.instance)
+                teams.setdefault(team_name, [])
+                teams[team_name].append(player)
             context["teams"] = teams
         context["players"] = active_players
         context["players_count"] = active_count
