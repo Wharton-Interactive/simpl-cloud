@@ -44,7 +44,7 @@ class SimplInstance(DjangoObjectType):
     """
     A Simpl game instance
     """
-
+    name = graphene.String(calculated=graphene.Boolean())
     status = graphene.Field(InstanceStatus)
     players = graphene.List(
         graphene.ID, description="List of Auth0 IDs for players of this instance"
@@ -54,7 +54,11 @@ class SimplInstance(DjangoObjectType):
     class Meta:
         model = Instance
         skip_registry = True
-        fields = ["name", "date_end"]
+        fields = ["date_end"]
+
+    @staticmethod
+    def resolve_name(obj, info, calculated=True):
+        return str(obj) if calculated else obj.name
 
     @staticmethod
     def resolve_status(obj, info):
@@ -160,7 +164,7 @@ class SimplUserInstance(graphene.ObjectType):
     """
 
     # Actually based on a Character model instance.
-    name = graphene.String()
+    name = graphene.String(calculated=graphene.Boolean())
     status = graphene.Field(InstanceStatus)
     date_end = graphene.DateTime()
     url = graphene.Field(graphene.String, deprecation_reason="Use SimplUserRun.url")
@@ -169,8 +173,8 @@ class SimplUserInstance(graphene.ObjectType):
     player_finished = graphene.DateTime()
 
     @staticmethod
-    def resolve_name(obj, info):
-        return obj.instance.name
+    def resolve_name(obj, info, calculated=True):
+        return str(obj.instance) if calculated else obj.instance.name
 
     @staticmethod
     def resolve_status(obj, info):
