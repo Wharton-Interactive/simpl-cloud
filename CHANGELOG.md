@@ -3,8 +3,8 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-1.2.4 (unreleased)
-==================
+1.2.4 (15 November 2022)
+========================
 
 - Use `__str__` to calculate the BaseInstance display name
   This enables BaseInstance subclasses to customise how names are displayed more easily
