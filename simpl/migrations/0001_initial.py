@@ -14,7 +14,6 @@ except ImportError:
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [

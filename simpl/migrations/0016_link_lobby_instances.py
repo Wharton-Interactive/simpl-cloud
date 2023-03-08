@@ -22,7 +22,6 @@ def unlink_lobby_instances(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("simpl", "0015_lobby_instance"),
     ]

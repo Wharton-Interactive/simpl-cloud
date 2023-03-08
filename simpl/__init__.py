@@ -25,9 +25,9 @@ def _get_model(key: str):
         )
 
 
-def get_character_model() -> Type[
-    Union[models.BaseCharacterData, models.BaseCharacterLinked]
-]:
+def get_character_model() -> (
+    Type[Union[models.BaseCharacterData, models.BaseCharacterLinked]]
+):
     return _get_model("CHARACTER")
 
 

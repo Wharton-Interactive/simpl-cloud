@@ -9,7 +9,6 @@ except ImportError:
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("simpl", "0001_initial"),
     ]

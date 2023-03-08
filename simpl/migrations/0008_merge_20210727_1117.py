@@ -4,7 +4,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("simpl", "0005_auto_20210707_0934"),
         ("simpl", "0007_shorten_lobby_name"),

@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("simpl", "0013_gameexperience_multiplayer"),
     ]
