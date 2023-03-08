@@ -1,6 +1,7 @@
+import graphene
+
 from simpl import get_game_experience_model, get_run_model, models
 from simpl.schema.external.utils import get_auth0_users, simpl_token_required
-import graphene
 
 from . import types
 
@@ -106,9 +107,7 @@ class Query(graphene.ObjectType):
     def resolve_game(root, info, id):
         games = GameExperience._default_manager.filter(experience_id=id)
         if games:
-            return GameExperience._default_manager.sort_games_by_version(
-                games
-            )[-1]
+            return GameExperience._default_manager.sort_games_by_version(games)[-1]
 
     @staticmethod
     @simpl_token_required

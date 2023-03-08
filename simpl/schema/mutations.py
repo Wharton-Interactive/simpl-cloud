@@ -43,10 +43,14 @@ class BalanceTeams(query.BalancingMixin, graphene.Mutation):
                 else:
                     lobby = models.Lobby(run=run)
                 cls.save_lobby_data(lobby, team_input)
-                players = {run_players[pk] for pk in team_input.players if pk in run_players}
+                players = {
+                    run_players[pk] for pk in team_input.players if pk in run_players
+                }
                 lobby.player_set.set(players)
                 all_team_players |= players
-        inactive_team_players = [player.pk for player in all_team_players if player.inactive]
+        inactive_team_players = [
+            player.pk for player in all_team_players if player.inactive
+        ]
         if inactive_team_players:
             Player.objects.filter(pk__in=inactive_team_players).update(inactive=False)
 

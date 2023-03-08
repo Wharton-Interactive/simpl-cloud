@@ -6,18 +6,25 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('simpl', '0004_rename_token_apitoken'),
+        ("simpl", "0004_rename_token_apitoken"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='gameexperience',
-            name='continuous',
-            field=models.BooleanField(blank=True, help_text='Whether players can join after a run is in play. If unset, this become configurable at the run level.', null=True),
+            model_name="gameexperience",
+            name="continuous",
+            field=models.BooleanField(
+                blank=True,
+                help_text="Whether players can join after a run is in play. If unset, this become configurable at the run level.",
+                null=True,
+            ),
         ),
         migrations.AddField(
-            model_name='run',
-            name='continuous',
-            field=models.BooleanField(default=False, help_text='Automatically add new players to new instances for runs in play.'),
+            model_name="run",
+            name="continuous",
+            field=models.BooleanField(
+                default=False,
+                help_text="Automatically add new players to new instances for runs in play.",
+            ),
         ),
     ]

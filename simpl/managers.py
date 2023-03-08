@@ -138,7 +138,6 @@ class LobbyQuerySet(models.QuerySet):
 
 
 class CharacterQuerySet(models.QuerySet):
-
     def annotate_status(self):
         # This should always be in sync with BaseCharacterData.status
         from .models import BaseCharacterData
@@ -146,7 +145,8 @@ class CharacterQuerySet(models.QuerySet):
         return self.annotate(
             _status=models.Case(
                 models.When(
-                    models.Q(_date_finished__lte=Now()) | models.Q(instance__date_end__lte=Now()),
+                    models.Q(_date_finished__lte=Now())
+                    | models.Q(instance__date_end__lte=Now()),
                     then=BaseCharacterData.STATUS.COMPLETE,
                 ),
                 default=BaseCharacterData.STATUS.PLAY,

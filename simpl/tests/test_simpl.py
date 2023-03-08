@@ -1,6 +1,6 @@
 import json
-from unittest import mock
 import uuid
+from unittest import mock
 
 from allauth.socialaccount.models import SocialAccount
 from django.contrib.auth import get_user_model
@@ -9,16 +9,10 @@ from django.urls import reverse
 from django.utils import timezone
 from model_bakery import baker
 
-from simpl import (
-    get_run_model,
-    get_player_model,
-    get_character_model,
-    get_instance_model,
-    get_game_experience_model,
-)
+from simpl import (get_character_model, get_game_experience_model,
+                   get_instance_model, get_player_model, get_run_model)
 from simpl.models import APIToken, Class
 from simpl.schema import schema
-
 
 Run = get_run_model()
 Player = get_player_model()

@@ -1,7 +1,7 @@
 from urllib.parse import urlencode
 
 from allauth.account.adapter import DefaultAccountAdapter
-from allauth.socialaccount.models import SocialApp, SocialAccount
+from allauth.socialaccount.models import SocialAccount, SocialApp
 from django.conf import settings
 
 

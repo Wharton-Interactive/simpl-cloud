@@ -2,17 +2,17 @@ import csv
 from typing import ClassVar, Optional
 
 from django.contrib import messages
-from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.files.base import ContentFile
 from django.db.models import Q
-from django.http import Http404, HttpResponseRedirect, HttpResponse
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.functional import cached_property
 from django.views.generic import DetailView, RedirectView
 from django.views.generic.detail import SingleObjectMixin
 
-from simpl import conf, get_run_model, get_player_model, nav
+from simpl import conf, get_player_model, get_run_model, nav
 
 from . import models
 
@@ -189,7 +189,7 @@ class PlayersView(SimplMixin, DetailView):
 
 class DownloadPlayers(SimplMixin, DetailView):
     def get(self, request, *args, **kwargs):
-        filename = self.run.name.replace(' ', '')
+        filename = self.run.name.replace(" ", "")
         response = HttpResponse(
             content_type="text/csv",
             headers={"Content-Disposition": f'attachment; filename="{filename}.csv"'},

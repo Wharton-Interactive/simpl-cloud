@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('simpl', '0017_run_date_continuous_end'),
+        ("simpl", "0017_run_date_continuous_end"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='apitoken',
-            name='name',
+            model_name="apitoken",
+            name="name",
             field=models.CharField(blank=True, max_length=100),
         ),
     ]

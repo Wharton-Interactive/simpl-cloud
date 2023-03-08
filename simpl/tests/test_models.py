@@ -1,20 +1,15 @@
 import uuid
-from allauth.socialaccount.models import SocialAccount
 
+from allauth.socialaccount.models import SocialAccount
 from django.apps import apps
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.utils import timezone
 from model_bakery import baker
-from simpl import (
-    get_character_model,
-    get_game_experience_model,
-    get_instance_model,
-    get_player_model,
-    get_run_model,
-)
-from simpl.models import Lobby, BaseRun
-from django.contrib.auth import get_user_model
 
+from simpl import (get_character_model, get_game_experience_model,
+                   get_instance_model, get_player_model, get_run_model)
+from simpl.models import BaseRun, Lobby
 
 Character = get_character_model()
 
