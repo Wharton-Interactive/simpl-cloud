@@ -15,7 +15,7 @@ class Query(graphene.ObjectType):
     user = graphene.Field(
         types.SimplUser,
         auth0_id=graphene.ID(required=True),
-        description="Return the User for the given auth0 ID.\n\nDoes not create non-existant users.",
+        description="Return the User for the given auth0 ID.\n\nDoes not create non-existant users.",  # noqa: E501
     )
     run = graphene.Field(
         types.SimplRun,
@@ -26,7 +26,7 @@ class Query(graphene.ObjectType):
         types.SimplRun,
         statuses=graphene.List(types.RunStatus),
         game_id=graphene.UUID(),
-        description=f"Return all Runs. Can be filtered by game ID and/or runs in specific statuses.\n\nValid statuses are: {', '.join(RUN_STATUSES)}",
+        description=f"Return all Runs. Can be filtered by game ID and/or runs in specific statuses.\n\nValid statuses are: {', '.join(RUN_STATUSES)}",  # noqa: E501
     )
     games = graphene.List(
         types.SimplGame,

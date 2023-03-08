@@ -5,8 +5,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from graphene_django import DjangoObjectType
 
-from simpl import (get_game_experience_model, get_instance_model,
-                   get_run_model, models)
+from simpl import get_game_experience_model, get_instance_model, get_run_model, models
 
 from . import utils
 

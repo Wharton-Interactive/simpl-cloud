@@ -2,7 +2,7 @@ import sys
 from typing import List
 
 if sys.version_info >= (3, 8):
-    from typing import List, TypedDict
+    from typing import TypedDict
 else:
     from typing_extensions import TypedDict
 from auth0.v3.management import Users, UsersByEmail

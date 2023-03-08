@@ -9,8 +9,13 @@ from django.urls import reverse
 from django.utils import timezone
 from model_bakery import baker
 
-from simpl import (get_character_model, get_game_experience_model,
-                   get_instance_model, get_player_model, get_run_model)
+from simpl import (
+    get_character_model,
+    get_game_experience_model,
+    get_instance_model,
+    get_player_model,
+    get_run_model,
+)
 from simpl.models import APIToken, Class
 from simpl.schema import schema
 
@@ -260,7 +265,7 @@ class SimplUserTestCase(TestCase):
                                     "dateEnd": self.instance.date_end.isoformat(),
                                     "playerName": self.character.name,
                                     "playerStatus": self.character.status.name,
-                                    "playerFinished": self.character.date_finished.isoformat(),
+                                    "playerFinished": self.character.date_finished.isoformat(),  # noqa: E501
                                 },
                             },
                         ],
