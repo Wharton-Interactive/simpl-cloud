@@ -2,12 +2,12 @@ from functools import wraps
 from typing import TYPE_CHECKING, List
 
 from allauth.socialaccount.models import SocialAccount
+from auth0.v3.exceptions import Auth0Error
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from graphql.execution.base import ResolveInfo
-from simpl import models
 
-from auth0.v3.exceptions import Auth0Error
+from simpl import models
 
 from . import auth0
 

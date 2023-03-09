@@ -1,6 +1,7 @@
+import graphene
+
 from simpl import get_game_experience_model, get_run_model, models
 from simpl.schema.external.utils import get_auth0_users, simpl_token_required
-import graphene
 
 from . import types
 
@@ -14,7 +15,7 @@ class Query(graphene.ObjectType):
     user = graphene.Field(
         types.SimplUser,
         auth0_id=graphene.ID(required=True),
-        description="Return the User for the given auth0 ID.\n\nDoes not create non-existant users.",
+        description="Return the User for the given auth0 ID.\n\nDoes not create non-existant users.",  # noqa: E501
     )
     run = graphene.Field(
         types.SimplRun,
@@ -25,7 +26,7 @@ class Query(graphene.ObjectType):
         types.SimplRun,
         statuses=graphene.List(types.RunStatus),
         game_id=graphene.UUID(),
-        description=f"Return all Runs. Can be filtered by game ID and/or runs in specific statuses.\n\nValid statuses are: {', '.join(RUN_STATUSES)}",
+        description=f"Return all Runs. Can be filtered by game ID and/or runs in specific statuses.\n\nValid statuses are: {', '.join(RUN_STATUSES)}",  # noqa: E501
     )
     games = graphene.List(
         types.SimplGame,
@@ -106,9 +107,7 @@ class Query(graphene.ObjectType):
     def resolve_game(root, info, id):
         games = GameExperience._default_manager.filter(experience_id=id)
         if games:
-            return GameExperience._default_manager.sort_games_by_version(
-                games
-            )[-1]
+            return GameExperience._default_manager.sort_games_by_version(games)[-1]
 
     @staticmethod
     @simpl_token_required

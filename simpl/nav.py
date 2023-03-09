@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import dataclasses
 import enum
-from typing import NewType, Dict
+from typing import Dict, NewType
 
 from django.conf import settings
 from django.urls import NoReverseMatch, reverse

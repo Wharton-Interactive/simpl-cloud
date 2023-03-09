@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('simpl', '0010_class'),
+        ("simpl", "0010_class"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='gameexperience',
-            name='experience_id',
+            model_name="gameexperience",
+            name="experience_id",
             field=models.UUIDField(blank=True, db_index=True, null=True),
         ),
     ]

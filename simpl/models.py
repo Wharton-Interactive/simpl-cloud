@@ -266,7 +266,7 @@ class BaseRun(DataMixin, models.Model):
         self, lobby: Lobby, defaults: dict = None
     ) -> Tuple[BaseInstance, bool]:
         defaults = defaults or {}
-        if not "name" in defaults:
+        if "name" not in defaults:
             defaults["name"] = lobby.name
         defaults["game"] = self.game
         instance, created = get_instance_model()._default_manager.get_or_create(

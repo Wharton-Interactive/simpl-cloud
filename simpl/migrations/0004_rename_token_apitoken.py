@@ -4,14 +4,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('simpl', '0003_auto_20210701_1047'),
+        ("simpl", "0003_auto_20210701_1047"),
     ]
 
     operations = [
         migrations.RenameModel(
-            old_name='Token',
-            new_name='APIToken',
+            old_name="Token",
+            new_name="APIToken",
         ),
     ]

@@ -4,6 +4,7 @@ from django import http
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from graphene_django import DjangoObjectType
+
 from simpl import get_game_experience_model, get_instance_model, get_run_model, models
 
 from . import utils
@@ -44,6 +45,7 @@ class SimplInstance(DjangoObjectType):
     """
     A Simpl game instance
     """
+
     name = graphene.String(calculated=graphene.Boolean())
     status = graphene.Field(InstanceStatus)
     players = graphene.List(

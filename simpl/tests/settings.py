@@ -1,5 +1,3 @@
-import os
-
 SECRET_KEY = "-"
 
 INSTALLED_APPS = [
@@ -21,11 +19,8 @@ SIMPL_PLAYER = "simpl.Player"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("POSTGRES_NAME", "simpl-test"),
-        "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
-        "USER": os.environ.get("POSTGRES_USER", "postgres"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", ""),
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": ":memory:",
     }
 }
 

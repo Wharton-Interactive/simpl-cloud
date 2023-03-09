@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, List, Union
 
-
 if TYPE_CHECKING:
-    from .models import BasePlayer
     from allauth.socialaccount.models import SocialAccount
+
+    from .models import BasePlayer
 
 
 UNSET = object()

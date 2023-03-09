@@ -2,7 +2,8 @@ from typing import Sequence
 
 import graphene
 import graphql
-from simpl import get_game_experience_model, get_run_model, models, get_instance_model
+
+from simpl import get_game_experience_model, get_instance_model, get_run_model, models
 
 from . import types
 from .utils import get_auth0_users, simpl_token_required

@@ -5,44 +5,51 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('simpl', '0002_run_data'),
+        ("simpl", "0002_run_data"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Token',
+            name="Token",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('token', models.CharField(editable=False, max_length=32, unique=True)),
-                ('last_used', models.DateField(blank=True, null=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("token", models.CharField(editable=False, max_length=32, unique=True)),
+                ("last_used", models.DateField(blank=True, null=True)),
             ],
         ),
         migrations.RemoveField(
-            model_name='gameexperience',
-            name='marketplace_key',
+            model_name="gameexperience",
+            name="marketplace_key",
         ),
         migrations.RemoveField(
-            model_name='player',
-            name='player_key',
+            model_name="player",
+            name="player_key",
         ),
         migrations.RemoveField(
-            model_name='run',
-            name='marketplace_closed',
+            model_name="run",
+            name="marketplace_closed",
         ),
         migrations.RemoveField(
-            model_name='run',
-            name='marketplace_key',
+            model_name="run",
+            name="marketplace_key",
         ),
         migrations.RemoveField(
-            model_name='run',
-            name='marketplace_open',
+            model_name="run",
+            name="marketplace_open",
         ),
         migrations.AddField(
-            model_name='run',
-            name='managers',
+            model_name="run",
+            name="managers",
             field=models.ManyToManyField(blank=True, to=settings.AUTH_USER_MODEL),
         ),
     ]
