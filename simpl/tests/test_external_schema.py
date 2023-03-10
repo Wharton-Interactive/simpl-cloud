@@ -102,8 +102,10 @@ class SimplInstanceTests(TestCase):
 
         instance_data = result.data["run"]["instances"][0]
 
-        # There should be 4 players
+        # playerCount says there should be 4 players
         self.assertEqual(instance_data["playerCount"], 4)
+        # However, there should be 2 players in `players`:
+        self.assertEqual(len(instance_data["players"]), 2)
         # Users with Auth0 IDs should be in the list of players
         self.assertIn(user1.uid, instance_data["players"])
         self.assertIn(user2.uid, instance_data["players"])
@@ -196,8 +198,10 @@ class SimplRunTests(TestCase):
 
         run_data = result.data["run"]
 
-        # There should be 3 players
+        # playerCount says there should be 3 players
         self.assertEqual(run_data["playerCount"], 3)
+        # However, there should be 1 player in `players`:
+        self.assertEqual(len(run_data["players"]), 1)
         # Players with Auth0 IDs should be in the list of players
         self.assertIn(auth0_user.uid, run_data["players"])
         # Users without Auth0 IDs should not be in the list of players
@@ -237,7 +241,6 @@ class SimplRunTests(TestCase):
             query ($runId: ID!) {
                 run(id: $runId) {
                     playersUnassigned
-                    playerCount
                 }
             }""",
             variable_values={"runId": run.id},
@@ -246,8 +249,6 @@ class SimplRunTests(TestCase):
 
         run_data = result.data["run"]
 
-        # There should be 3 players
-        self.assertEqual(run_data["playerCount"], 3)
         # Users assigned to a player should not be in list of playersUnassigned
         self.assertNotIn(auth0_user1.uid, run_data["playersUnassigned"])
         self.assertNotIn(auth0_user2.uid, run_data["playersUnassigned"])
@@ -272,7 +273,6 @@ class SimplRunTests(TestCase):
             query ($runId: ID!) {
                 run(id: $runId) {
                     playersInactive
-                    playerCount
                 }
             }""",
             variable_values={"runId": run.id},
@@ -281,8 +281,6 @@ class SimplRunTests(TestCase):
 
         run_data = result.data["run"]
 
-        # There should be 3 players
-        self.assertEqual(run_data["playerCount"], 3)
         # Users that are inactive should be in list of playersInactive
         self.assertIn(auth0_user1.uid, run_data["playersInactive"])
         self.assertIn(auth0_user2.uid, run_data["playersInactive"])
