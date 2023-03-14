@@ -2,12 +2,13 @@ from functools import wraps
 from typing import TYPE_CHECKING, List
 
 from allauth.socialaccount.models import SocialAccount
+from auth0.v3.exceptions import Auth0Error
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from graphql.execution.base import ResolveInfo
-from simpl import models
+from graphql.language.ast import FragmentSpread
 
-from auth0.v3.exceptions import Auth0Error
+from simpl import models
 
 from . import auth0
 
@@ -89,3 +90,47 @@ def simpl_token_required(func):
         return func(*args, **kwargs)
 
     return wrapper
+
+
+def walk_fields(info):
+    """
+    Walk all fields in the current info ast.
+    """
+
+    def walk(fields):
+        for field in fields:
+            yield field
+            if isinstance(field, FragmentSpread):
+                selection_set = info.fragments[field.name.value].selection_set
+            else:
+                selection_set = field.selection_set
+            if selection_set:
+                yield from walk(selection_set.selections)
+
+    return walk(info.field_asts)
+
+
+def has_field_named(info, *field_names):
+    """
+    Return true if any fields in the schema match the name(s) provided.
+
+    Use underscored field names and it will look for camelCase versions
+    of those fields too.
+    """
+    assert (
+        field_names
+    ), "At least one field name is required (remember the first argument should be `info`)."
+    all_fields = {*field_names}
+    for name in field_names:
+        if "_" in name:
+            parts = name.split("_")
+            camel_name = parts[0] + "".join(
+                f"{p[:1].upper()}{p[1:]}" for p in parts[1:]
+            )
+            all_fields.add(camel_name)
+    for field in walk_fields(info):
+        if not hasattr(field, "name"):
+            continue
+        if field.name.value in all_fields:
+            return True
+    return False
