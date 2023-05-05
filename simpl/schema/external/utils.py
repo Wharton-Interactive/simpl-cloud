@@ -8,7 +8,7 @@ from django.utils import timezone
 from graphql.execution.base import ResolveInfo
 from graphql.language.ast import FragmentSpread
 
-from simpl import models
+from simpl import get_instance_model, models
 
 from . import auth0
 
@@ -117,9 +117,10 @@ def has_field_named(info, *field_names):
     Use underscored field names and it will look for camelCase versions
     of those fields too.
     """
-    assert (
-        field_names
-    ), "At least one field name is required (remember the first argument should be `info`)."
+    assert field_names, (
+        "At least one field name is required "
+        "(remember the first argument should be `info`)."
+    )
     all_fields = {*field_names}
     for name in field_names:
         if "_" in name:
@@ -134,3 +135,9 @@ def has_field_named(info, *field_names):
         if field.name.value in all_fields:
             return True
     return False
+
+
+def get_run_instance_set_name() -> str:
+    """Get the name of the reverse relation from Run to Instance."""
+    Instance = get_instance_model()
+    return Instance._meta.get_field("run").remote_field.get_accessor_name()
