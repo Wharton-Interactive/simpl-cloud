@@ -8,7 +8,7 @@ from django.utils import timezone
 from graphql.execution.base import ResolveInfo
 from graphql.language.ast import FragmentSpread
 
-from simpl import get_instance_model, models
+from simpl import get_instance_model, get_player_model, models
 
 from . import auth0
 
@@ -141,3 +141,9 @@ def get_run_instance_set_name() -> str:
     """Get the name of the reverse relation from Run to Instance."""
     Instance = get_instance_model()
     return Instance._meta.get_field("run").remote_field.get_accessor_name()
+
+
+def get_run_player_set_name() -> str:
+    """Get the name of the reverse relation from Run to Player."""
+    Player = get_player_model()
+    return Player._meta.get_field("run").remote_field.get_accessor_name()

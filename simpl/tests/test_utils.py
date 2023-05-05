@@ -100,3 +100,19 @@ class TestGetRunInstanceSetName(TestCase):
     def test_can_get_name_from_testapp_world_with_related_name(self):
         instance_set_name = utils.get_run_instance_set_name()
         self.assertEqual(instance_set_name, "worldswithrelatedname")
+
+
+class TestGetRunPlayerSetName(TestCase):
+    def test_can_get_name_from_simpl_run_instance(self):
+        player_set_name = utils.get_run_player_set_name()
+        self.assertEqual(player_set_name, "player_set")
+
+    @override_settings(SIMPL_PLAYER="testapp.MyPlayer")
+    def test_can_get_name_from_testapp_myplayer(self):
+        player_set_name = utils.get_run_player_set_name()
+        self.assertEqual(player_set_name, "myplayer_set")
+
+    @override_settings(SIMPL_PLAYER="testapp.PlayerWithRelatedName")
+    def test_can_get_name_from_testapp_player_with_related_name(self):
+        player_set_name = utils.get_run_player_set_name()
+        self.assertEqual(player_set_name, "playerswithrelatedname")
