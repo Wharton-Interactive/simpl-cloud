@@ -1,6 +1,7 @@
 import graphene
 from allauth.socialaccount.models import SocialAccount
 from django import http
+from django.db.models import Prefetch
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from graphene_django import DjangoObjectType
@@ -44,6 +45,7 @@ class SimplInstance(DjangoObjectType):
     """
     A Simpl game instance
     """
+
     name = graphene.String(calculated=graphene.Boolean())
     status = graphene.Field(InstanceStatus)
     players = graphene.List(
@@ -110,6 +112,74 @@ class SimplRun(DjangoObjectType):
         skip_registry = True
         fields = ["id", "name", "multiplayer", "continuous"]
 
+    @classmethod
+    def get_queryset(cls, queryset, info):
+        if queryset is None:
+            queryset = Run._default_manager.all()
+
+        queryset = super().get_queryset(queryset, info)
+
+        if utils.has_field_named(info, "players"):
+            player_set_name = utils.get_run_player_set_name()
+            queryset = queryset.prefetch_related(player_set_name)
+
+        if utils.has_field_named(info, "instances"):
+            instance_set_name = utils.get_run_instance_set_name()
+            queryset = queryset.prefetch_related(instance_set_name)
+
+        return queryset
+
+    @staticmethod
+    def resolve_players(obj, info):
+        return (
+            getattr(obj, utils.get_run_player_set_name())
+            .all()
+            .filter(user__socialaccount__provider="auth0")
+            .values_list("user__socialaccount__uid", flat=True)
+        )
+
+    @staticmethod
+    def resolve_players_unassigned(obj, info):
+        return (
+            getattr(obj, utils.get_run_player_set_name())
+            .filter(user__socialaccount__provider="auth0", character=None)
+            .values_list("user__socialaccount__uid", flat=True)
+        )
+
+    @staticmethod
+    def resolve_players_inactive(obj, info):
+        return (
+            getattr(obj, utils.get_run_player_set_name())
+            .filter(inactive=True)
+            .values_list("user")
+            .filter(user__socialaccount__provider="auth0", character=None)
+            .values_list("user__socialaccount__uid", flat=True)
+        )
+
+    @staticmethod
+    def resolve_instances(obj, info):
+        user_query_name = utils.get_instance_user_query_name()
+        return getattr(obj, utils.get_run_instance_set_name()).prefetch_related(
+            Prefetch(
+                f"{user_query_name}__socialaccount_set",
+                queryset=SocialAccount.objects.filter(provider="auth0"),
+                to_attr="auth0_accounts",
+            ),
+        )
+
+    @staticmethod
+    def resolve_instances_count(obj, info):
+        return getattr(obj, utils.get_run_instance_set_name()).all().count()
+
+    @staticmethod
+    def resolve_managers(obj, info):
+        return (
+            obj.managers.all()
+            .prefetch_related("users")
+            .filter(socialaccount__provider="auth0")
+            .values_list("socialaccount__uid", flat=True)
+        )
+
     @staticmethod
     def resolve_management_url(obj, info):
         url = reverse("simpl", kwargs={"pk": obj.id})
@@ -117,31 +187,8 @@ class SimplRun(DjangoObjectType):
         return build_url(url, user_ids=manager_ids, request=info.context)
 
     @staticmethod
-    def resolve_players(obj, info):
-        users = User.objects.filter(player__run=obj)
-        return utils.get_auth0_ids(*users)
-
-    @staticmethod
-    def resolve_players_unassigned(obj, info):
-        users = User.objects.filter(player__run=obj, player__character=None)
-        return utils.get_auth0_ids(*users)
-
-    @staticmethod
-    def resolve_players_inactive(obj, info):
-        users = obj.player_set.filter(inactive=True).values_list("user")
-        return utils.get_auth0_ids(*users)
-
-    @staticmethod
     def resolve_player_count(obj, info):
-        return obj.player_set.exclude(user=None).count()
-
-    @staticmethod
-    def resolve_managers(obj, info):
-        return utils.get_auth0_ids(*obj.managers.all())
-
-    @staticmethod
-    def resolve_instances(obj, info):
-        return Instance._default_manager.filter(run=obj)
+        return getattr(obj, utils.get_run_player_set_name()).all().count()
 
     @staticmethod
     def resolve_game_id(obj, info):
