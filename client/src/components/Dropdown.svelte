@@ -1,4 +1,6 @@
 <script>
+  import {onMount, onDestroy} from "svelte";
+
   let dropdown; //Dropdown Ref
   export let placeholderText = 'Select'
   export let expanded = false;
@@ -22,12 +24,39 @@
     }
   }
 
-  const open = () => expanded = true
-  const close = () => expanded = false
+  const open = () => {
+    expanded = true;
+    closeOtherDropdowns();
+  };
+
+  const close = () => {
+    expanded = false;
+  };
 
   const toggle = () => {
-    expanded = !expanded
-  }
+    if (expanded) {
+      close();
+    } else {
+      open();
+    }
+  };
+
+  const closeOtherDropdowns = () => {
+    const allDropdowns = document.querySelectorAll('.has-dropdown');
+    allDropdowns.forEach((d) => {
+      if (d !== dropdown) {
+        d.dispatchEvent(new CustomEvent('closeDropdowns'));
+      }
+    });
+  };
+
+  onMount(() => {
+    dropdown.addEventListener('closeDropdowns', close);
+  });
+
+  onDestroy(() => {
+    dropdown.removeEventListener('closeDropdowns', close);
+  });
 </script>
 
 <div class="has-dropdown narrow-dropdown"
