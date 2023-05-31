@@ -45,17 +45,17 @@
     const allDropdowns = document.querySelectorAll('.has-dropdown');
     allDropdowns.forEach((d) => {
       if (d !== dropdown) {
-        d.dispatchEvent(new CustomEvent('closeDropdowns'));
+        d.dispatchEvent(new CustomEvent('closeDropdown'));
       }
     });
   };
 
   onMount(() => {
-    dropdown.addEventListener('closeDropdowns', close);
+    dropdown.addEventListener('closeDropdown', close);
   });
 
   onDestroy(() => {
-    dropdown.removeEventListener('closeDropdowns', close);
+    dropdown.removeEventListener('closeDropdown', close);
   });
 </script>
 
