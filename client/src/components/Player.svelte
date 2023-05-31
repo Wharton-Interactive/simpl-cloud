@@ -2,6 +2,7 @@
   import { createEventDispatcher } from "svelte";
   import { alterPlayer, data } from "../balancing/stores";
   import { stringToColour } from "../balancing/utils";
+  import Dropdown from "./Dropdown.svelte";
 
   export let isSelected = false;
   export let player;
@@ -47,7 +48,7 @@
   }}
 >
   <div class="avatar-detail">
-    <div class="avatar" style="background: {stringToColour(player.name)};">
+    <div class="avatar" style="background: {stringToColour(player.name)};">`
       <div class="avatar-inner">{letters}</div>
     </div>
     <p class="avatar-detail-meta">
@@ -61,15 +62,7 @@
     <!-- <p>{#if player.ready}Ready{:else}Not Ready{/if}</p> -->
   </div>
 
-  <div class="has-dropdown narrow-dropdown">
-    <a
-      href="."
-      on:click|preventDefault|stopPropagation
-      class="button dropdown-button hollow small"
-    >
-      Assign to&hellip;
-    </a>
-    <div class="dropdown">
+  <Dropdown placeholderText="Assign to&hellip;">
       <ul class="dropdown-list">
         {#each teams as team}
           <li class="dropdown-item">
@@ -180,8 +173,7 @@
           </li>
         {/if}
       </ul>
-    </div>
-  </div>
+  </Dropdown>
   <input class="show-for-sr-only" type="checkbox" checked={isSelected} />
 </div>
 
