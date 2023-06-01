@@ -8,7 +8,6 @@
   export let expanded = false;
 
   const clickOutside = () => {
-    //Close when clicking outside
     const onClick = (e) => {
       if (!dropdown.contains(e.target)) {
         close()
