@@ -1,77 +1,59 @@
 <script>
   import {onMount, onDestroy} from "svelte";
 
-  let dropdown; //Dropdown Ref
+  let dropdown;
+  let dropdownContainer;
+
   export let placeholderText = 'Select'
   export let expanded = false;
 
-  const clickOutside = (element, callbackFunction) => {
-    const onClick = (event) => {
-      if (!element.contains(event.target)) {
-        callbackFunction();
+  const clickOutside = () => {
+    //Close when clicking outside
+    const onClick = (e) => {
+      if (!dropdown.contains(e.target)) {
+        close()
       }
     }
 
-    window.addEventListener('click', onClick);
+   document.addEventListener('click', onClick);
 
     return {
-      update(newCallbackFunction) {
-        callbackFunction = newCallbackFunction;
-      },
       destroy() {
-        window.removeEventListener('click', onClick);
+        document.removeEventListener('click', onClick);
       }
     }
   }
-
-  const open = () => {
-    expanded = true;
-    closeOtherDropdowns();
-  };
 
   const close = () => {
     expanded = false;
   };
 
   const toggle = () => {
-    if (expanded) {
-      close();
-    } else {
-      open();
-    }
-  };
-
-  const closeOtherDropdowns = () => {
-    const allDropdowns = document.querySelectorAll('.has-dropdown');
-    allDropdowns.forEach((d) => {
-      if (d !== dropdown) {
-        d.dispatchEvent(new CustomEvent('closeDropdown'));
-      }
-    });
-  };
+    expanded = !expanded;
+  }
 
   onMount(() => {
-    dropdown.addEventListener('closeDropdown', close);
+    document.addEventListener('click', clickOutside)
   });
 
   onDestroy(() => {
-    dropdown.removeEventListener('closeDropdown', close);
+      document.removeEventListener('click', clickOutside)
   });
 </script>
 
 <div class="has-dropdown narrow-dropdown"
-     use:clickOutside={() => close()}
      class:is-expanded={expanded}
      bind:this={dropdown}>
   <a
     href="#"
-    on:click|preventDefault|stopPropagation
+    on:click|preventDefault
     on:click={toggle}
     class="button dropdown-button hollow small"
+    aria-expanded={expanded}
   >
     {placeholderText}
   </a>
-  <div class="dropdown">
+  <div class="dropdown" bind:this={dropdownContainer}>
     <slot></slot>
   </div>
 </div>
