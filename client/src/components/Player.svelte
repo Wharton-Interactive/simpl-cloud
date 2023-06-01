@@ -48,7 +48,7 @@
   }}
 >
   <div class="avatar-detail">
-    <div class="avatar" style="background: {stringToColour(player.name)};">`
+    <div class="avatar" style="background: {stringToColour(player.name)};">
       <div class="avatar-inner">{letters}</div>
     </div>
     <p class="avatar-detail-meta">
