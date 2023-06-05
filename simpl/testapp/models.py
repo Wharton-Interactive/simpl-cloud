@@ -31,3 +31,15 @@ class PlayerWithRelatedName(simpl_models.BaseInstance):
         on_delete=models.SET_NULL,
         related_name="playerswithrelatedname",
     )
+
+
+class MyCharacter(simpl_models.BaseCharacterLinked):
+    instance = models.ForeignKey(World, on_delete=models.CASCADE)
+
+
+class CharacterWithRelatedName(simpl_models.BaseCharacterLinked):
+    instance = models.ForeignKey(
+        World,
+        on_delete=models.CASCADE,
+        related_name="characters",
+    )
