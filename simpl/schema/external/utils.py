@@ -163,28 +163,24 @@ def get_instance_character_query_name() -> str:
 
 def get_run_instances(run):
     """Get the set of Instances for a Run."""
-    Instance = get_instance_model()
-    set_name = Instance._meta.get_field("run").remote_field.get_accessor_name()
-    return getattr(run, set_name).all()
+    instance_set_name = get_run_instance_set_name()
+    return getattr(run, instance_set_name).all()
 
 
 def get_run_players(run):
     """Get the set of Players for a Run."""
-    Player = get_player_model()
-    set_name = Player._meta.get_field("run").remote_field.get_accessor_name()
-    return getattr(run, set_name).all()
+    players_set_name = get_run_player_set_name()
+    return getattr(run, players_set_name).all()
 
 
 def get_instance_characters(instance):
     """Get the set of Characters for a Instance."""
-    Character = get_character_model()
-    set_name = Character._meta.get_field("instance").remote_field.get_accessor_name()
-    return getattr(instance, set_name).all()
+    character_set_name = get_instance_character_set_name()
+    return getattr(instance, character_set_name).all()
 
 
 def get_instance_users(instance):
     """Get the set of Users for a Instance."""
-    Character = get_character_model()
-    set_name = Character._meta.get_field("instance").remote_field.get_accessor_name()
-    characters = getattr(instance, set_name).select_related("user").all()
+    character_set_name = get_instance_character_set_name()
+    characters = getattr(instance, character_set_name).select_related("user").all()
     return [character.user for character in characters]
