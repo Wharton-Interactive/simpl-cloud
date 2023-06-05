@@ -149,10 +149,42 @@ def get_run_player_set_name() -> str:
     return Player._meta.get_field("run").remote_field.get_accessor_name()
 
 
-def get_instance_user_query_name() -> str:
-    """Get the query name for the relation from Instance to User, e.g. `users__socialaccount__in`"""
+def get_instance_character_set_name() -> str:
+    """Get the name of the reverse relation from Instance to Character."""
     Character = get_character_model()
-    character_query_name = Character._meta.get_field(
-        "instance"
-    ).remote_field.get_accessor_name()
-    return f"{character_query_name}__user"
+    return Character._meta.get_field("instance").remote_field.get_accessor_name()
+
+
+def get_instance_character_query_name() -> str:
+    """Get the query name for the relation from Instance to Character."""
+    Character = get_character_model()
+    return Character._meta.get_field("instance").related_query_name()
+
+
+def get_run_instances(run):
+    """Get the set of Instances for a Run."""
+    Instance = get_instance_model()
+    set_name = Instance._meta.get_field("run").remote_field.get_accessor_name()
+    return getattr(run, set_name).all()
+
+
+def get_run_players(run):
+    """Get the set of Players for a Run."""
+    Player = get_player_model()
+    set_name = Player._meta.get_field("run").remote_field.get_accessor_name()
+    return getattr(run, set_name).all()
+
+
+def get_instance_characters(instance):
+    """Get the set of Characters for a Instance."""
+    Character = get_character_model()
+    set_name = Character._meta.get_field("instance").remote_field.get_accessor_name()
+    return getattr(instance, set_name).all()
+
+
+def get_instance_users(instance):
+    """Get the set of Users for a Instance."""
+    Character = get_character_model()
+    set_name = Character._meta.get_field("instance").remote_field.get_accessor_name()
+    characters = getattr(instance, set_name).select_related("user").all()
+    return [character.user for character in characters]
