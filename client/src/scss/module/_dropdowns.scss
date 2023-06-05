@@ -2,11 +2,11 @@
 //
 // This element is used throughout the system in place of `<select>` boxes,
 // tooltips, or places where contextual options are hidden. The element can be
-// opened with keyboard navigation using the `:focus-within` pseudo element on
-// [most modern browsers](https://caniuse.com/#search=focus-within), or it can
+// opened with keyboard navigation using the `:focus-visible` pseudo element on
+// [most modern browsers](https://caniuse.com/#search=focus-visible), or it can
 // be opened with javascript by adding `.is-expanded` to the parent element. If
-// managing the state with CSS (`:focus-within`) gets in the way of javascript
-// state management, `.disable-focus-within` can be added to the `.has-dropdown`
+// managing the state with CSS (`:focus-visible`) gets in the way of javascript
+// state management, `.disable-focus-visible` can be added to the `.has-dropdown`
 // component to disable this feature.
 //
 // .disable-focus-within - This disables `:focus-within` CSS state management.
@@ -34,7 +34,7 @@
 
   // Open dropdown
   &.is-expanded,
-  &:not(.disable-focus-within):focus-within,
+  &:not(.disable-focus-visible):focus-visible,
   &.tooltip-dropdown:hover {
     .dropdown,
     .dropdown-button:before {
