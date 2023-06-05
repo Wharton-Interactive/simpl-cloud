@@ -1,11 +1,17 @@
 import graphene
 from allauth.socialaccount.models import SocialAccount
 from django import http
-from django.db.models import Prefetch
 from django.contrib.auth import get_user_model
+from django.db.models import Prefetch
 from django.urls import reverse
 from graphene_django import DjangoObjectType
-from simpl import get_game_experience_model, get_instance_model, get_run_model, models
+
+from simpl import (
+    get_game_experience_model,
+    get_instance_model,
+    get_run_model,
+    models,
+)
 
 from . import utils
 
@@ -68,12 +74,21 @@ class SimplInstance(DjangoObjectType):
 
     @staticmethod
     def resolve_players(obj, info):
-        users = User._default_manager.filter(character__instance=obj)
-        return utils.get_auth0_ids(*users)
+        try:
+            characters = utils.get_instance_characters(obj)
+            users = []
+            for character in characters:
+                users.extend([account.uid for account in character.user.auth0_accounts])
+        except (AttributeError, KeyError):
+            character_query_name = utils.get_instance_character_query_name()
+            character_filter = {f"{character_query_name}__instance": obj}
+            users = User._default_manager.filter(**character_filter)
+            users = utils.get_auth0_ids(*users)
+        return users
 
     @staticmethod
     def resolve_player_count(obj, info):
-        return obj.character_set.exclude(user=None).count()
+        return utils.get_instance_characters(obj).count()
 
 
 class SimplRun(DjangoObjectType):
@@ -131,37 +146,35 @@ class SimplRun(DjangoObjectType):
 
     @staticmethod
     def resolve_players(obj, info):
-        return (
-            getattr(obj, utils.get_run_player_set_name())
-            .all()
-            .filter(user__socialaccount__provider="auth0")
-            .values_list("user__socialaccount__uid", flat=True)
+        players = utils.get_run_players(obj)
+        return players.filter(user__socialaccount__provider="auth0").values_list(
+            "user__socialaccount__uid", flat=True
         )
 
     @staticmethod
     def resolve_players_unassigned(obj, info):
-        return (
-            getattr(obj, utils.get_run_player_set_name())
-            .filter(user__socialaccount__provider="auth0", character=None)
-            .values_list("user__socialaccount__uid", flat=True)
-        )
+        players = utils.get_run_players(obj)
+        return players.filter(
+            user__socialaccount__provider="auth0", character=None
+        ).values_list("user__socialaccount__uid", flat=True)
 
     @staticmethod
     def resolve_players_inactive(obj, info):
+        players = utils.get_run_players(obj)
         return (
-            getattr(obj, utils.get_run_player_set_name())
-            .filter(inactive=True)
+            players.filter(inactive=True)
             .values_list("user")
             .filter(user__socialaccount__provider="auth0", character=None)
-            .values_list("user__socialaccount__uid", flat=True)
+            .values_list(f"user__socialaccount__uid", flat=True)
         )
 
     @staticmethod
     def resolve_instances(obj, info):
-        user_query_name = utils.get_instance_user_query_name()
-        return getattr(obj, utils.get_run_instance_set_name()).prefetch_related(
+        character_set_name = utils.get_instance_character_set_name()
+        instances = utils.get_run_instances(obj)
+        return instances.prefetch_related(
             Prefetch(
-                f"{user_query_name}__socialaccount_set",
+                f"{character_set_name}__user__socialaccount_set",
                 queryset=SocialAccount.objects.filter(provider="auth0"),
                 to_attr="auth0_accounts",
             ),

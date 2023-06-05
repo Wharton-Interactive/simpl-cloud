@@ -1,12 +1,19 @@
 import uuid
 
+import graphene
 from allauth.socialaccount.models import SocialAccount
 from django.contrib.auth import get_user_model
-from django.test import TestCase
+from django.test import TestCase, TransactionTestCase, override_settings
 from model_bakery import baker
 
-from simpl import get_game_experience_model, get_instance_model, get_run_model
+from simpl import (
+    get_character_model,
+    get_game_experience_model,
+    get_instance_model,
+    get_run_model,
+)
 from simpl.schema import schema
+from simpl.schema.external import types
 
 Run = get_run_model()
 Instance = get_instance_model()
@@ -18,7 +25,7 @@ class FakeContext:
     pass
 
 
-class SimplInstanceTests(TestCase):
+class SimplInstanceTests(TransactionTestCase):
     """Test suite for Instances.
     Since the main Query does not define an `Instance` attribute, the instances are
     tested as part of a run.
@@ -113,6 +120,123 @@ class SimplInstanceTests(TestCase):
         self.assertNotIn(user3.uid, instance_data["players"])
         # Users without SocialAccounts should not be in the list of players
         self.assertNotIn(user4.id, instance_data["players"])
+
+    def test_number_of_queries_in_get_instance_with_multiple_players(self):
+        instance = baker.make(Instance, run=self.run)
+        n = 100
+
+        # Create n users with Auth0 IDs
+        users = []
+        for i in range(n):
+            users.append(baker.make(SocialAccount, provider="auth0", uid=f"auth0_{i}"))
+
+        # Create characters linking the users to the instance
+        for user in users:
+            baker.make("simpl.Character", instance=instance, user=user.user)
+
+        # All of this should take only 6 queries
+        with self.assertNumQueries(5):
+            result = schema.execute(
+                """
+                query ($runId: ID!) {
+                    run(id: $runId) {
+                        instances {
+                            players
+                            playerCount
+                        }
+                    }
+                }""",
+                variable_values={"runId": self.run.id},
+                context_value=self.context,
+            )
+
+        instance_data = result.data["run"]["instances"][0]
+
+        # There should be n players in playerCount
+        self.assertEqual(instance_data["playerCount"], n)
+        # There should be n players in `players`:
+        self.assertEqual(len(instance_data["players"]), n)
+
+
+@override_settings(
+    SIMPL_INSTANCE="testapp.World", SIMPL_CHARACTER="testapp.MyCharacter"
+)
+class WorldInstanceTests(TestCase):
+    @classmethod
+    def setUpClass(cls):
+        from simpl.testapp.models import World
+
+        class WorldStatus(graphene.Enum):
+            class Meta:
+                enum = World.STATUS
+
+        class WorldType(types.SimplInstance):
+            status = graphene.Field(WorldStatus)
+
+            class Meta:
+                model = World
+
+        class WorldQuery(graphene.ObjectType):
+            world = graphene.Field(
+                WorldType,
+                id=graphene.ID(required=True),
+                description="Return the World for a given world ID.",
+            )
+
+            @staticmethod
+            def resolve_world(root, info, id):
+                try:
+                    return World.objects.get(pk=id)
+                except World.DoesNotExist:
+                    return None
+
+        cls.schema = graphene.Schema(query=WorldQuery)
+
+        cls.game = baker.make(GameExperience, experience_id=uuid.uuid4())
+        cls.simpl_run = baker.make(Run, game=cls.game)
+        cls.context = FakeContext()
+        cls.context_user = baker.make(User, is_superuser=True)
+        cls.context.user = cls.context_user
+
+        return super().setUpClass()
+
+    def test_number_of_players_in_get_instance_with_world_class(self):
+        World = get_instance_model()
+        world = baker.make(World, run=self.simpl_run, name="My World")
+        n = 250
+
+        # Create n users with Auth0 IDs
+        users = []
+        for i in range(n):
+            users.append(baker.make(SocialAccount, provider="auth0", uid=f"auth0_{i}"))
+
+        # Create characters linking the users to the instance
+        Character = get_character_model()
+        for user in users:
+            baker.make(Character, instance=world, user=user.user)
+
+        # All of this should take only 6 queries
+        with self.assertNumQueries(6):
+            result = self.schema.execute(
+                """
+                query ($worldId: ID!) {
+                    world(id: $worldId) {
+                        players
+                        playerCount
+                    }
+                }""",
+                variable_values={"worldId": world.id},
+                context_value=self.context,
+            )
+
+        instance_data = result.data["world"]
+
+        print(result.errors)
+
+        # There should be n players in playerCount
+        self.assertEqual(instance_data["playerCount"], n)
+        # There should be n players in `players`:
+        self.assertEqual(len(instance_data["players"]), n)
 
 
 class SimplRunTests(TestCase):
@@ -345,3 +469,44 @@ class SimplRunTests(TestCase):
 
         # There should be 5 instances
         self.assertEqual(len(instances), 5)
+
+    def test_number_of_queries_with_multiple_instances_and_players(self):
+        run = baker.make(Run, game=self.game)
+
+        number_instances = 120
+        number_players_per_instance = 5
+
+        instances = []
+        for _ in range(number_instances):
+            instances.append(baker.make(Instance, run=run))
+
+        # Create n users with Auth0 IDs
+        users = []
+        for i in range(number_players_per_instance):
+            users.append(baker.make(SocialAccount, provider="auth0", uid=f"auth0_{i}"))
+
+        # Create characters linking the users to the instance
+        for instance in instances:
+            for user in users:
+                baker.make("simpl.Character", instance=instance, user=user.user)
+
+        # All of this should take only 2 queries
+        with self.assertNumQueries(5):
+            result = schema.execute(
+                """
+                query ($runId: ID!) {
+                    run(id: $runId) {
+                        instances {
+                            playerCount
+                        }
+                    }
+                }""",
+                variable_values={"runId": run.id},
+                context_value=self.context,
+            )
+
+        self.assertEqual(len(result.data["run"]["instances"]), number_instances)
+        self.assertEqual(
+            result.data["run"]["instances"][0]["playerCount"],
+            number_players_per_instance,
+        )
