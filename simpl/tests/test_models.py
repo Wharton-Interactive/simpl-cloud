@@ -203,7 +203,7 @@ class SocialAccountTestCase(TestCase):
     def test_updates_user_without_extra_data(self):
         user = baker.make(get_user_model())
         SocialAccount.objects.create(extra_data={}, user=user)
-        user_refreshed = get_user_model().objects.get()
+        user_refreshed = get_user_model().objects.get(pk=user.pk)
         self.assertEqual(user.first_name, user_refreshed.first_name)
         self.assertEqual(user.last_name, user_refreshed.last_name)
 
@@ -216,7 +216,7 @@ class SocialAccountTestCase(TestCase):
     def test_dont_update_user_email(self):
         user = baker.make(get_user_model(), email="old@example.com")
         SocialAccount.objects.create(extra_data={"email": "new@example.com"}, user=user)
-        user_refreshed = get_user_model().objects.get()
+        user_refreshed = get_user_model().objects.get(pk=user.pk)
         self.assertEqual(user.email, user_refreshed.email)
 
 

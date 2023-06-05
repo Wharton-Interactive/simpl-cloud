@@ -43,6 +43,7 @@ class AuthTestCase(TestCase):
         self.assertEqual(json.loads(request.content)["data"], {"runs": None})
 
     def test_auth(self):
+        Run.objects.all().delete()
         token = APIToken.objects.create()
         request = self.client.post(
             self.api_url,
