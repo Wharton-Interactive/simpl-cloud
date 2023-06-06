@@ -3,6 +3,7 @@ import os
 SECRET_KEY = "-"
 
 INSTALLED_APPS = [
+    "simpl.testapp",
     "simpl.apps.SimplConfig",
     "django.contrib.sites",
     "django.contrib.contenttypes",

@@ -2,12 +2,13 @@ from functools import wraps
 from typing import TYPE_CHECKING, List
 
 from allauth.socialaccount.models import SocialAccount
+from auth0.v3.exceptions import Auth0Error
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from graphql.execution.base import ResolveInfo
-from simpl import models
+from graphql.language.ast import FragmentSpread
 
-from auth0.v3.exceptions import Auth0Error
+from simpl import get_instance_model, get_player_model, get_character_model, models
 
 from . import auth0
 
@@ -89,3 +90,102 @@ def simpl_token_required(func):
         return func(*args, **kwargs)
 
     return wrapper
+
+
+def walk_fields(info):
+    """
+    Walk all fields in the current info ast.
+    """
+
+    def walk(fields):
+        for field in fields:
+            yield field
+            if isinstance(field, FragmentSpread):
+                selection_set = info.fragments[field.name.value].selection_set
+            else:
+                selection_set = field.selection_set
+            if selection_set:
+                yield from walk(selection_set.selections)
+
+    return walk(info.field_asts)
+
+
+def snake_to_camel(name):
+    """Convert a snake_case name to camelCase."""
+    if "_" in name:
+        parts = name.split("_")
+        return parts[0] + "".join(f"{p[:1].upper()}{p[1:]}" for p in parts[1:])
+    return name
+
+
+def has_field_named(info, *field_names):
+    """
+    Return true if any fields in the schema match the name(s) provided.
+
+    Use underscored field names and it will look for camelCase versions
+    of those fields too.
+    """
+    if not field_names:
+        raise ValueError(
+            "At least one field name is required (remember the first argument should be `info`)."
+        )
+
+    all_fields = {*field_names}
+    for name in field_names:
+        if "_" in name:
+            all_fields.add(snake_to_camel(name))
+    for field in walk_fields(info):
+        if not hasattr(field, "name"):
+            continue
+        if field.name.value in all_fields:
+            return True
+    return False
+
+
+def get_run_instance_set_name() -> str:
+    """Get the name of the reverse relation from Run to Instance."""
+    Instance = get_instance_model()
+    return Instance._meta.get_field("run").remote_field.get_accessor_name()
+
+
+def get_run_player_set_name() -> str:
+    """Get the name of the reverse relation from Run to Player."""
+    Player = get_player_model()
+    return Player._meta.get_field("run").remote_field.get_accessor_name()
+
+
+def get_instance_character_set_name() -> str:
+    """Get the name of the reverse relation from Instance to Character."""
+    Character = get_character_model()
+    return Character._meta.get_field("instance").remote_field.get_accessor_name()
+
+
+def get_instance_character_query_name() -> str:
+    """Get the query name for the relation from Instance to Character."""
+    Character = get_character_model()
+    return Character._meta.get_field("instance").related_query_name()
+
+
+def get_run_instances(run):
+    """Get the set of Instances for a Run."""
+    instance_set_name = get_run_instance_set_name()
+    return getattr(run, instance_set_name).all()
+
+
+def get_run_players(run):
+    """Get the set of Players for a Run."""
+    players_set_name = get_run_player_set_name()
+    return getattr(run, players_set_name).all()
+
+
+def get_instance_characters(instance):
+    """Get the set of Characters for a Instance."""
+    character_set_name = get_instance_character_set_name()
+    return getattr(instance, character_set_name).all()
+
+
+def get_instance_users(instance):
+    """Get the set of Users for a Instance."""
+    character_set_name = get_instance_character_set_name()
+    characters = getattr(instance, character_set_name).select_related("user").all()
+    return [character.user for character in characters]

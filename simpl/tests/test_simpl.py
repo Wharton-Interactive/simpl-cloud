@@ -4,7 +4,7 @@ import uuid
 
 from allauth.socialaccount.models import SocialAccount
 from django.contrib.auth import get_user_model
-from django.test import TestCase
+from django.test import TestCase, TransactionTestCase
 from django.urls import reverse
 from django.utils import timezone
 from model_bakery import baker
@@ -31,7 +31,7 @@ class FakeContext:
     pass
 
 
-class AuthTestCase(TestCase):
+class AuthTestCase(TransactionTestCase):
     def setUp(self):
         self.api_url = reverse("simpl-api")
 
