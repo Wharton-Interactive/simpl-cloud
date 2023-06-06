@@ -134,7 +134,6 @@ class SimplInstanceTests(TransactionTestCase):
         for user in users:
             baker.make("simpl.Character", instance=instance, user=user.user)
 
-        # All of this should take only 6 queries
         with self.assertNumQueries(5):
             result = schema.execute(
                 """
@@ -215,7 +214,6 @@ class WorldInstanceTests(TestCase):
         for user in users:
             baker.make(Character, instance=world, user=user.user)
 
-        # All of this should take only 6 queries
         with self.assertNumQueries(6):
             result = self.schema.execute(
                 """
@@ -230,8 +228,6 @@ class WorldInstanceTests(TestCase):
             )
 
         instance_data = result.data["world"]
-
-        print(result.errors)
 
         # There should be n players in playerCount
         self.assertEqual(instance_data["playerCount"], n)
@@ -490,7 +486,6 @@ class SimplRunTests(TestCase):
             for user in users:
                 baker.make("simpl.Character", instance=instance, user=user.user)
 
-        # All of this should take only 2 queries
         with self.assertNumQueries(5):
             result = schema.execute(
                 """
