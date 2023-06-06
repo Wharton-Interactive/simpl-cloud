@@ -93,6 +93,31 @@ class HasFieldNamedTests(TestCase):
         self.assertFalse(utils.has_field_named(info, "fourth_field"))
 
 
+class TestSnakeToCamel(TestCase):
+    def test_single_word(self):
+        self.assertEqual(utils.snake_to_camel("hello"), "hello")
+
+    def test_empty_string(self):
+        self.assertEqual(utils.snake_to_camel(""), "")
+
+    def test_hello_world(self):
+        self.assertEqual(utils.snake_to_camel("hello_world"), "helloWorld")
+
+    def test_consecutive_underscores(self):
+        self.assertEqual(utils.snake_to_camel("hello__world"), "helloWorld")
+
+    def test_underscores_at_beginning_or_end(self):
+        self.assertEqual(utils.snake_to_camel("_hello_world_"), "HelloWorld")
+
+    def test_mixed_case(self):
+        self.assertEqual(utils.snake_to_camel("snake_Case"), "snakeCase")
+
+    def test_multiple_words(self):
+        self.assertEqual(
+            utils.snake_to_camel("hello_world_how_are_you"), "helloWorldHowAreYou"
+        )
+
+
 class TestGetRunInstanceSetName(TestCase):
     def test_can_get_name_from_simpl_run_instance(self):
         instance_set_name = utils.get_run_instance_set_name()

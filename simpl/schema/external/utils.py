@@ -110,6 +110,14 @@ def walk_fields(info):
     return walk(info.field_asts)
 
 
+def snake_to_camel(name):
+    """Convert a snake_case name to camelCase."""
+    if "_" in name:
+        parts = name.split("_")
+        return parts[0] + "".join(f"{p[:1].upper()}{p[1:]}" for p in parts[1:])
+    return name
+
+
 def has_field_named(info, *field_names):
     """
     Return true if any fields in the schema match the name(s) provided.
@@ -117,18 +125,15 @@ def has_field_named(info, *field_names):
     Use underscored field names and it will look for camelCase versions
     of those fields too.
     """
-    assert field_names, (
-        "At least one field name is required "
-        "(remember the first argument should be `info`)."
-    )
+    if not field_names:
+        raise ValueError(
+            "At least one field name is required (remember the first argument should be `info`)."
+        )
+
     all_fields = {*field_names}
     for name in field_names:
         if "_" in name:
-            parts = name.split("_")
-            camel_name = parts[0] + "".join(
-                f"{p[:1].upper()}{p[1:]}" for p in parts[1:]
-            )
-            all_fields.add(camel_name)
+            all_fields.add(snake_to_camel(name))
     for field in walk_fields(info):
         if not hasattr(field, "name"):
             continue
