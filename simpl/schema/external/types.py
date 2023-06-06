@@ -75,11 +75,14 @@ class SimplInstance(DjangoObjectType):
     @staticmethod
     def resolve_players(obj, info):
         try:
+            # Try to get the players from the pre-fetched `auth0_accounts` attribute
+            # i.e. coming from the `instances` field on SimplRun
             characters = utils.get_instance_characters(obj)
             users = []
             for character in characters:
                 users.extend([account.uid for account in character.user.auth0_accounts])
         except (AttributeError, KeyError):
+            # Pre-fetched `auth0_accounts` not found. Fall back to querying the database
             character_query_name = utils.get_instance_character_query_name()
             character_filter = {f"{character_query_name}__instance": obj}
             users = User._default_manager.filter(**character_filter)
