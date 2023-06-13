@@ -9,7 +9,7 @@
 
   const clickOutside = () => {
     const onClick = (e) => {
-      if (!dropdown.contains(e.target)) {
+      if (!dropdown.contains(e?.target)) {
         close()
       }
     }
@@ -23,6 +23,14 @@
     }
   }
 
+  const onBlur = (e) => {
+    // Close dropdown if it doesn't have any focused elements
+    const dropdownContainsFocus = dropdown.contains(e.relatedTarget);
+    if (!dropdownContainsFocus) {
+      close()
+    }
+  }
+
   const close = () => {
     expanded = false;
   };
@@ -33,10 +41,12 @@
 
   onMount(() => {
     document.addEventListener('click', clickOutside)
+    dropdown.addEventListener('focusout', onBlur)
   });
 
   onDestroy(() => {
       document.removeEventListener('click', clickOutside)
+      dropdown.removeEventListener('focusout', onBlur)
   });
 </script>
 

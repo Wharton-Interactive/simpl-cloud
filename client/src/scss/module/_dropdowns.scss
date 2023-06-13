@@ -32,6 +32,10 @@
   display: inline-flex;
   font-weight: var(--global-weight-normal);
 
+  .dropdown-button:focus {
+    box-shadow: var(--focus-shadow);
+  }
+
   // Open dropdown
   &.is-expanded,
   &:not(.disable-focus-visible):focus-visible,
