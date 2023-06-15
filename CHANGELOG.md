@@ -6,7 +6,8 @@ A list of notable changes to the Simpl-Cloud library included in each release.
 1.2.5 (unreleased)
 ==================
 
-- Nothing changed yet.
+- Optimise `instance` and `run` queries
+- Replace CSS dropdown with JS, to fix issue with dropdown not opening on Safari, and improve keyboard navigation
 
 
 1.2.4 (15 November 2022)
