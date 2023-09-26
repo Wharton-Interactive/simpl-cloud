@@ -1,5 +1,6 @@
 {% extends "simpl/base.html" %}
 {% load static %}
+{% load l10n %}
 
 {% block heading %}Manage Teams{% endblock %}
 
@@ -15,8 +16,10 @@ or marked <em>inactive</em> before the game can start.
 {{ block.super }}
 
 
+{% localize off %}
 <div id="loader" data-run="{{ run.pk }}" data-endpoint="{% url 'simpl-api' %}"></div>
 <div id="app" class="svelte-app-wrap" {% if simpl_nav.team.next_url %}data-next-step="{{ simpl_nav.team.next_url }}" {% endif %}></div>
+{% endlocalize %}
 
 <script type="module">
   import { initBalancing } from "{% static 'simpl/simpl.es.js' %}";
