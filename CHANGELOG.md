@@ -3,7 +3,7 @@ Change log for Simpl Cloud
 
 A list of notable changes to the Simpl-Cloud library included in each release.
 
-0.61 (3 November 2022)
+## 0.62 (26 September 2023)
 ======================
 
 - Fix access to instance model on remove players mutation
